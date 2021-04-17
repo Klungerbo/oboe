@@ -1,8 +1,8 @@
-export function doCase(value) {
+export function setSearchTerm(searchTerm) {
     return function (dispatch) {
         dispatch({
-            type: "CASE_IDENTIFIER",
-            value: value 
+            type: "SET_SEARCH_TERM",
+            searchTerm: searchTerm 
         });
     };
 }

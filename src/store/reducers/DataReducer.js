@@ -1,12 +1,13 @@
 const initialState = {
+  searchTerm: ""
 };
 
 function DataReducer(state = initialState, action) {
     switch (action.type) {
-        case "CASE_IDENTIFIER":
+        case "SET_SEARCH_TERM":
             return {
                 ...state,
-                value: action.value
+                searchTerm: action.searchTerm
             };
 
         default:
