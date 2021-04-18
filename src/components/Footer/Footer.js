@@ -6,7 +6,10 @@ import {
 } from '@material-ui/core';
 
 import theme from '../../theme';
-import { StyledFooterContainer, StyledToolbar, StyledHorizontalList } from './FooterStyled';
+import { 
+  StyledFooterContainer, StyledToolbar, StyledHorizontalList,
+  StyledCopyrightContainer
+} from './FooterStyled';
 
 
 /**
@@ -49,14 +52,10 @@ export default function Footer() {
     <StyledFooterContainer>
       <Container maxWidth="xl">
         <StyledToolbar disableGutters>
-          <Box flexGrow="1">
-            <Typography noWrap variant="body2" color="textSecondary">
-              ©2021 WORK Rooted
-            </Typography>
-          </Box>
-          <StyledHorizontalList component="nav">
-            {mapPaths()}
-          </StyledHorizontalList>
+          <StyledCopyrightContainer flexGrow="1">
+            <Typography noWrap variant="body2" color="textSecondary">©2021 WORK Rooted</Typography>
+          </StyledCopyrightContainer>
+          <StyledHorizontalList component="nav">{mapPaths()}</StyledHorizontalList>
         </StyledToolbar>
       </Container>
     </StyledFooterContainer>

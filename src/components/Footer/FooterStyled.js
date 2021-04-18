@@ -1,4 +1,4 @@
-import { Toolbar, List } from '@material-ui/core';
+import { Toolbar, List, Box } from '@material-ui/core';
 import styled from 'styled-components';
 
 /**
@@ -7,6 +7,17 @@ import styled from 'styled-components';
 export const StyledHorizontalList = styled(List)`
   display: flex;
   flex-direction: row;
+`;
+
+/**
+ * Manages spacing for copyright on breakpoint.
+ */
+export const StyledCopyrightContainer = styled(Box)`
+  ${({ theme }) => `
+    ${theme.breakpoints.down('xs')} {
+      padding-bottom: 1rem;
+    },
+  `}
 `;
 
 /**
