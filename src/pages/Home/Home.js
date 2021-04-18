@@ -1,14 +1,33 @@
-import { Container, Box, Grid, Typography, TextField, FormGroup, Card, CardContent, Button } from '@material-ui/core'
+import { Container, Box, Grid, Divider, Typography, TextField, FormGroup, Card, CardContent, Button } from '@material-ui/core'
 import React from 'react'
 import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  flexbox: {
+    flexDirection: "row",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column"
+    }
+  },
+  newUserButton: {
+    backgroundColor: "dodgerblue",
+    color: "white"
+  },
+  loginForm: {
+    maxWidth: 400,
+    margin: "auto"
+  }
+}));
 
 export default function Home() {
   const [isOpen, setIsOpen] = React.useState(false);
+  const classes = useStyles();
 
   return (
     <>
       <Container>
-        <Box display="flex" gridGap={20}>
+        <Box display="flex" gridGap={20} className={classes.flexbox}>
           <Box flexGrow="1">
             <Typography variant="h1">Oboe</Typography>
             <Typography variant="h2">Decks and cards</Typography>
@@ -17,7 +36,7 @@ export default function Home() {
             <Typography variant="body1">Oboe automatically balances the frequency of a card’s presence in a review. Cards that have been forgotten will show up more frequently than those that were remembered. </Typography>
           </Box>
           <Box flexBasis={300} flexShrink={0}>
-            <Card raised={true}>
+            <Card raised={true} className={classes.loginForm}>
               <CardContent>
                 <FormGroup>
                   <Grid
@@ -40,7 +59,7 @@ export default function Home() {
                       <Divider variant="middle" />
                     </Grid>
                     <Grid item xs={12}>
-                      <Button variant="contained" style={{ backgroundColor: "dodgerblue", color: "white" }} onClick={() => setIsOpen(true)} fullWidth={true}>Create new user</Button>
+                      <Button variant="contained" className={classes.newUserButton} onClick={() => setIsOpen(true)} fullWidth={true}>Create new user</Button>
                     </Grid>
                   </Grid>
                 </FormGroup>
