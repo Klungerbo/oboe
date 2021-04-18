@@ -1,18 +1,33 @@
-import { Dialog, FormGroup, Card, CardContent, Grid, TextField, Button } from '@material-ui/core';
+import { Dialog, FormGroup, CardContent, Grid, TextField, Button, Typography } from '@material-ui/core';
 import React from 'react'
+import styled from "styled-components";
 
+const StyledDialogTitle = styled(Typography)`
+  ${({ theme }) => `
+    margin: ${theme.spacing(1,0,2,0)};
+  `}
+`;
+
+/**
+ * 
+ * @param {Object} props: (open) Getter for the dialog open state
+ *                        (onClose) Handler for closing the dialog i.e. set open state to false
+ * @returns Sign up dialog as JSX
+ */
 export default function SignUpDialog({open, onClose}) {
   return (
-    <Dialog open={open} maxWidth="xs" onClose={() => onClose(false)}>
+    <Dialog open={open} maxWidth="xs" onClose={() => onClose(false)} aria-labelledby="dialog-title">
         <CardContent>
           <FormGroup>
             <Grid
               container
               spacing={2}
-              direction="col"
               justify="flex-start"
               align="center"
             >
+              <Grid item xs={12}>
+                <StyledDialogTitle id="dialog-title" variant="h3" component="h1" >Create New User</StyledDialogTitle>
+              </Grid>
               <Grid item xs={12}>
                 <TextField id="newemail" fullWidth={true} variant="outlined" label="E-mail" />
               </Grid>
