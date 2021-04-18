@@ -1,9 +1,8 @@
 import { Container, Typography } from '@material-ui/core'
-import React from 'react'
 
 export default function Home() {
   return (
-    <Container>
+    <Container maxWidth="lg">
       <Typography variant="h1">Oboe</Typography>
     </Container>
   )

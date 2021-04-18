@@ -3,10 +3,36 @@ import { Switch, Route } from 'react-router';
 
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
+
 import Home from './Home/Home';
+import About from './About/About';
+import Contact from './Contact/Contact';
 
 import styled from 'styled-components';
 
+export default function Pages() {
+  return (
+    <Body>
+      <StyledHeader>
+        <Navbar />
+      </StyledHeader>
+
+      <StyledMainContent>
+        <Switch>
+          <Route exact path="/" component={Home}/>
+          <Route path='/about' component={About}/>
+          <Route path='/contact' component={Contact}/>
+        </Switch>
+      </StyledMainContent>
+
+      <StyledFooter>
+        <Footer />
+      </StyledFooter>
+    </Body>
+  )
+};
+
+/* Styles */
 const Body = styled.div`
   min-height: 100vh;
   display: flex;
@@ -26,23 +52,3 @@ const StyledHeader = styled.div`
 const StyledMainContent = styled.div`
   flex-grow: 1;
 `;
-
-export default function Pages() {
-  return (
-    <Body>
-      <StyledHeader>
-        <Navbar />
-      </StyledHeader>
-
-      <StyledMainContent>
-        <Switch>
-          <Route exact path="/" component={Home} />
-        </Switch>
-      </StyledMainContent>
-
-      <StyledFooter>
-        <Footer />
-      </StyledFooter>
-    </Body>
-  )
-};
