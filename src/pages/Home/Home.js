@@ -36,7 +36,7 @@ export default function Home() {
             <Typography variant="body1">Oboe automatically balances the frequency of a card’s presence in a review. Cards that have been forgotten will show up more frequently than those that were remembered. </Typography>
           </Box>
           <Box flexBasis={300} flexShrink={0}>
-            <Card raised={true} className={classes.loginForm}>
+            <Card raised className={classes.loginForm}>
               <CardContent>
                 <FormGroup>
                   <Grid
@@ -47,19 +47,19 @@ export default function Home() {
                     spacing={2}
                   >
                     <Grid item xs={12}>
-                      <TextField id="email" fullWidth={true} variant="outlined" label="E-mail" />
+                      <TextField id="email" fullWidth variant="outlined" label="E-mail" />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField id="password" fullWidth={true} variant="outlined" label="Password" type="password" />
+                      <TextField id="password" fullWidth variant="outlined" label="Password" type="password" />
                     </Grid>
                     <Grid item xs={12}>
-                      <Button variant="contained" color="primary" fullWidth={true}>Log in</Button>
+                      <Button variant="contained" color="primary" fullWidth>Log in</Button>
                     </Grid>
                     <Grid item xs={12}>
                       <Divider variant="middle" />
                     </Grid>
                     <Grid item xs={12}>
-                      <Button variant="contained" className={classes.newUserButton} onClick={() => setIsOpen(true)} fullWidth={true}>Create new user</Button>
+                      <Button variant="contained" onClick={() => setIsOpen(true)}>Create new user</Button>
                     </Grid>
                   </Grid>
                 </FormGroup>

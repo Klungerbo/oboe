@@ -29,19 +29,19 @@ export default function SignUpDialog({open, onClose}) {
                 <StyledDialogTitle id="dialog-title" variant="h3" component="h1" >Create New User</StyledDialogTitle>
               </Grid>
               <Grid item xs={12}>
-                <TextField id="newemail" fullWidth={true} variant="outlined" label="E-mail" />
+                <TextField id="newemail" fullWidth variant="outlined" label="E-mail" />
               </Grid>
               <Grid item xs={12}>
-                <TextField id="newpassword" fullWidth={true} variant="outlined" label="Password" type="password" />
+                <TextField id="newpassword" fullWidth variant="outlined" label="Password" type="password" />
               </Grid>
               <Grid item xs={12}>
-                <TextField id="confirmpassword" fullWidth={true} variant="outlined" label="Confirm password" type="password" />
+                <TextField id="confirmpassword" fullWidth variant="outlined" label="Confirm password" type="password" />
               </Grid>
               <Grid item xs={6}>
-                <Button variant="contained" onClick={() => onClose(false)} color="secondary" fullWidth={true}>Cancel</Button>
+                <Button variant="contained" onClick={() => onClose(false)} color="secondary" fullWidth>Cancel</Button>
               </Grid>
               <Grid item xs={6}>
-                <Button variant="contained" color="primary" fullWidth={true}>Sign up</Button>
+                <Button variant="contained" color="primary" fullWidth>Sign up</Button>
               </Grid>
             </Grid>
           </FormGroup>
