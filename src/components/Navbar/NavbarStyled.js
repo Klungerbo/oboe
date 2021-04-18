@@ -6,6 +6,7 @@ import styled from 'styled-components';
  */
 export const StyledHomeNav = styled(Typography)`
   font-family: 'Hammersmith One';
+  font-size: 1.5rem;
   display: flex;
   flex-direction: row;
 `;

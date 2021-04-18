@@ -72,19 +72,18 @@ export default function Navbar() {
   const xsNavbar = () => {
     return (
       <>
-        <Drawer anchor='left' open={state} onClose={toggleDrawer(false)}>
-          {drawerItems()}
-        </Drawer>
-        <Box flexGrow="1">
-          <IconButton onClick={toggleDrawer(true)} edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Button component={NavLink} to="/" underline="none">
-            <StyledHomeNav variant="h4">
-              Oboe
-            </StyledHomeNav>
-          </Button>
-        </Box>
+        {userLoggedIn ?
+          <>
+            <Drawer anchor='left' open={state} onClose={toggleDrawer(false)}>{drawerItems()}</Drawer>
+            <IconButton onClick={toggleDrawer(true)} edge="start" color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+          </>
+          : null}
+        <Button component={NavLink} to="/" underline="none">
+          <StyledHomeNav>Oboe</StyledHomeNav>
+        </Button>
+        <Box flexGrow="1" />
         {userLoggedIn ? searchBar() : null}
       </>
     );
