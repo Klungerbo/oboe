@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation, NavLink } from 'react-router-dom';
 import {
-  Container, Typography, Box,
-  ListItemText, ListItem
+  Container, Typography, ListItemText, 
+  ListItem
 } from '@material-ui/core';
 
 import theme from '../../theme';

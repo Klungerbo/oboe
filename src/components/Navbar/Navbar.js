@@ -17,7 +17,8 @@ import SearchBar from './Searchbar';
 
 
 /**
- * Oboe navbar.
+ * Oboe navbar. 
+ * Manages its own state between user logged in and guest.
  * 
  * @returns jsx of navbar to be rendered by React.
  */
@@ -50,7 +51,7 @@ export default function Navbar() {
    */
   const defaultNavbar = () => {
     return (
-      <React.Fragment>
+      <>
         <Box flexGrow="1" >
           <Button component={NavLink} to="/" underline="none">
             <StyledHomeNav variant="h4" aria-label="home">Oboe</StyledHomeNav>
@@ -59,7 +60,7 @@ export default function Navbar() {
         </Box>
         {userLoggedIn ? searchBar() : null}
         {userLoggedIn ? logoutButton() : null}
-      </React.Fragment>
+      </>
     );
   }
 
@@ -70,7 +71,7 @@ export default function Navbar() {
    */
   const xsNavbar = () => {
     return (
-      <React.Fragment>
+      <>
         <Drawer anchor='left' open={state} onClose={toggleDrawer(false)}>
           {drawerItems()}
         </Drawer>
@@ -85,7 +86,7 @@ export default function Navbar() {
           </Button>
         </Box>
         {userLoggedIn ? searchBar() : null}
-      </React.Fragment>
+      </>
     );
   }
 
