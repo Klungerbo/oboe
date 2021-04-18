@@ -22,7 +22,7 @@ export default function Home() {
                 <FormGroup>
                   <Grid
                     container
-                    direction="col"
+                    direction="column"
                     justify="flex-start"
                     align="center"
                     spacing={2}
