@@ -4,7 +4,7 @@ import styled from 'styled-components';
 /**
  * Container for nav link flexing.
  */
-export const HorizontalList = styled(List)`
+export const StyledHorizontalList = styled(List)`
   display: flex;
   flex-direction: row;
 `;

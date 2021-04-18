@@ -12,7 +12,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import { DrawerList, HomeNav } from './NavbarStyled';
+import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
 import SearchBar from './Searchbar';
 
 
@@ -53,7 +53,7 @@ export default function Navbar() {
       <React.Fragment>
         <Box flexGrow="1" >
           <Button component={NavLink} to="/" underline="none">
-            <HomeNav variant="h4" aria-label="home">Oboe</HomeNav>
+            <StyledHomeNav variant="h4" aria-label="home">Oboe</StyledHomeNav>
           </Button>
           {userLoggedIn ? <Button component={NavLink} to="/" underline="none">Decks</Button> : null}
         </Box>
@@ -79,9 +79,9 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Button component={NavLink} to="/" underline="none">
-            <HomeNav variant="h4">
+            <StyledHomeNav variant="h4">
               Oboe
-            </HomeNav>
+            </StyledHomeNav>
           </Button>
         </Box>
         {userLoggedIn ? searchBar() : null}
@@ -138,7 +138,7 @@ const searchBar = () => {
  */
 const drawerItems = () => {
   return (
-    <DrawerList>
+    <StyledDrawerList>
       <ListItem button component={NavLink} to="/">
         <ListItemIcon><AppsIcon /></ListItemIcon>
         <ListItemText primary="Decks" />
@@ -156,6 +156,6 @@ const drawerItems = () => {
         <ListItemIcon><ExitToAppIcon /></ListItemIcon>
         <ListItemText primary="Log out" />
       </ListItem>
-    </DrawerList>
+    </StyledDrawerList>
   );
 };

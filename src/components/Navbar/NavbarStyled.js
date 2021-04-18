@@ -4,7 +4,7 @@ import styled from 'styled-components';
 /**
  * Title styling.
  */
-export const HomeNav = styled(Typography)`
+export const StyledHomeNav = styled(Typography)`
   font-family: 'Hammersmith One';
   display: flex;
   flex-direction: row;
@@ -13,6 +13,6 @@ export const HomeNav = styled(Typography)`
 /**
  * Drawer List styling.
  */
-export const DrawerList = styled(List)`
+export const StyledDrawerList = styled(List)`
   width: 200px;
 `;
