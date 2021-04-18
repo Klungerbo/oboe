@@ -37,7 +37,7 @@ export default function Home() {
                       <Button variant="contained" color="primary" fullWidth={true}>Log in</Button>
                     </Grid>
                     <Grid item xs={12}>
-                      <div style={{ border: "white 1px solid", width: "95%" }}></div>
+                      <Divider variant="middle" />
                     </Grid>
                     <Grid item xs={12}>
                       <Button variant="contained" style={{ backgroundColor: "dodgerblue", color: "white" }} onClick={() => setIsOpen(true)} fullWidth={true}>Create new user</Button>
