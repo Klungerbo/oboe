@@ -4,10 +4,12 @@ import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-  flexbox: {
-    flexDirection: "row",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column"
+    flexbox: {
+      flexDirection: "row",
+      gap: 200,
+      [theme.breakpoints.down("sm")]: {
+        flexDirection: "column",
+        gap: 70
     }
   },
   newUserButton: {
@@ -27,7 +29,7 @@ export default function Home() {
   return (
     <>
       <Container>
-        <Box display="flex" gridGap={20} className={classes.flexbox}>
+        <Box display="flex" className={classes.flexbox}>
           <Box flexGrow="1">
             <Typography variant="h1">Oboe</Typography>
             <Typography variant="h2">Decks and cards</Typography>
