@@ -31,7 +31,7 @@ export default function Home() {
         <Grid container>
           <Grid item>
             <Box pb={3} display="flex" flexDirection="row">
-              <Typography variant="h2">My decks</Typography>
+              <Typography variant="h1">My decks</Typography>
               <Box px={1} alignSelf="flex-end">
                 <Typography gutterBottom variant="body1" color="textSecondary">({userEmail})</Typography>
               </Box>
