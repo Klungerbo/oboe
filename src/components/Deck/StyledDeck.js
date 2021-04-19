@@ -8,7 +8,3 @@ export const StyledFullHeightBox = styled(Box)`
 export const StyledFullHeightCardActionArea = styled(CardActionArea)`
   height: 100%;
 `;
-
-export const StyledReviewLabelContainer = styled(Box)`
-  width: 100%;
-`;

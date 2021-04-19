@@ -4,7 +4,7 @@ import { Card, Box, Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 
-import { StyledFullHeightBox, StyledFullHeightCardActionArea, StyledReviewLabelContainer } from './StyledDeck';
+import { StyledFullHeightBox, StyledFullHeightCardActionArea } from './StyledDeck';
 
 
 /**
@@ -46,9 +46,9 @@ export default function Deck({ deck, color }) {
             <Box px={1.5} flexGrow="1">
               <Typography variant="body2" color="textSecondary" component="p">{deck.description}</Typography>
             </Box>
-            <StyledReviewLabelContainer pb={1.5}>
+            <Box pb={1.5}>
               <Typography variant="h4" align="center">Review deck</Typography>
-            </StyledReviewLabelContainer>
+            </Box>
           </StyledFullHeightBox>
         </StyledFullHeightCardActionArea>
       </Card>
