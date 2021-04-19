@@ -27,7 +27,7 @@ export default function Home() {
    */
   const homeUser = () => {
     return (
-      <Container>
+      <Container maxWidth="lg">
         <Grid container>
           <Grid item>
             <Box pb={3} display="flex" flexDirection="row">
@@ -50,7 +50,7 @@ export default function Home() {
    */
   const homeGuest = () => {
     return (
-      <Container>
+      <Container maxWidth="lg">
         <Typography variant="h1">Oboe</Typography>
       </Container>
     );

@@ -1,40 +1,161 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import React from 'react'
+import { NavLink } from 'react-router-dom';
+import {
+  ListItem, Container, Box,
+  Button, AppBar, Hidden,
+  IconButton, Drawer, ListItemText,
+  ListItemIcon, Toolbar
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import InfoIcon from '@material-ui/icons/Info';
+import AppsIcon from '@material-ui/icons/Apps';
+import EmailIcon from '@material-ui/icons/Email';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
+import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
+import SearchBar from './Searchbar';
 
+
+/**
+ * Oboe navbar. 
+ * Manages its own state between user logged in and guest.
+ * 
+ * @returns jsx of navbar to be rendered by React.
+ */
 export default function Navbar() {
-  const classes = useStyles();
+  // TODO: Update when users are added.
+  const userLoggedIn = true;
+
+  const [state, setState] = React.useState(false);
+
+  /**
+   * Toggle left side drawer.
+   * 
+   * Adapted from:
+   * https://material-ui.com/components/drawers/#drawer
+   * 
+   * @param {boolean} open - the open state of the drawer.
+   */
+  const toggleDrawer = (open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState(open);
+  };
+
+  /**
+   * Creates a default navigation bar for sm and up.
+   * 
+   * @returns jsx of the default navigation bar.
+   */
+  const defaultNavbar = () => {
+    return (
+      <>
+        <Box flexGrow="1" >
+          <Button component={NavLink} to="/" underline="none">
+            <StyledHomeNav variant="h4" aria-label="home">Oboe</StyledHomeNav>
+          </Button>
+          {userLoggedIn ? <Button component={NavLink} to="/" underline="none">Decks</Button> : null}
+        </Box>
+        {userLoggedIn ? searchBar() : null}
+        {userLoggedIn ? logoutButton() : null}
+      </>
+    );
+  }
+
+  /**
+   * Creates a navigation bar for xs and down.
+   * 
+   * @returns jsx of the navigation bar.
+   */
+  const xsNavbar = () => {
+    return (
+      <>
+        {userLoggedIn ?
+          <>
+            <Drawer anchor='left' open={state} onClose={toggleDrawer(false)}>{drawerItems()}</Drawer>
+            <IconButton onClick={toggleDrawer(true)} edge="start" color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+          </>
+          : null}
+        <Button component={NavLink} to="/" underline="none">
+          <StyledHomeNav>Oboe</StyledHomeNav>
+        </Button>
+        <Box flexGrow="1" />
+        {userLoggedIn ? searchBar() : null}
+      </>
+    );
+  }
 
   return (
-    <div className={classes.root}>
+    <nav role="navigation">
       <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            News
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Hidden xsDown>
+              {defaultNavbar()}
+            </Hidden>
+            <Hidden smUp>
+              {xsNavbar()}
+            </Hidden>
+          </Toolbar>
+        </Container>
       </AppBar>
-    </div>
+    </nav>
   );
 }
+
+/**
+ * Creates a log out button.
+ *
+ * @returns jsx of log out button to be rendered by React.
+ */
+const logoutButton = () => {
+  return (
+    <Button component={NavLink} to="/" >Log out</Button>
+  );
+};
+
+/**
+ * Creates a search bar.
+ *
+ * @returns jsx of search bar to be rendered by React.
+ */
+const searchBar = () => {
+  return (
+    <Box px={1}>
+      <SearchBar enableOnPaths={['/', '/deck-edit']} />
+    </Box>
+  );
+};
+
+/**
+ * List of drawer items.
+ * 
+ * @returns jsx of the drawer list.
+ */
+const drawerItems = () => {
+  return (
+    <StyledDrawerList>
+      <ListItem button component={NavLink} to="/">
+        <ListItemIcon><AppsIcon /></ListItemIcon>
+        <ListItemText primary="Decks" />
+      </ListItem>
+      <ListItem button component={NavLink} to="/about">
+        <ListItemIcon><InfoIcon /></ListItemIcon>
+        <ListItemText primary="About" />
+      </ListItem>
+      <ListItem button component={NavLink} to="/contact">
+        <ListItemIcon><EmailIcon /></ListItemIcon>
+        <ListItemText primary="Contact" />
+      </ListItem>
+      <Box pt={5} />
+      <ListItem button component={NavLink} to="/">
+        <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+        <ListItemText primary="Log out" />
+      </ListItem>
+    </StyledDrawerList>
+  );
+};

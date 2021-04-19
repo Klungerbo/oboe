@@ -10,7 +10,7 @@ let theme = createMuiTheme({
         secondary: {
             main: "#a6262c",
         },
-    }
+    },
 });
 
 theme = responsiveFontSizes(theme);
