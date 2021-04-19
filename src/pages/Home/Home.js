@@ -32,7 +32,7 @@ export default function Home() {
           <Grid item>
             <Box pb={3} display="flex" flexDirection="row">
               <Typography variant="h2">My decks</Typography>
-              <Box px={1} alignSelf="end">
+              <Box px={1} alignSelf="flex-end">
                 <Typography gutterBottom variant="body1" color="textSecondary">({userEmail})</Typography>
               </Box>
             </Box>
