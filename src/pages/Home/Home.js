@@ -88,10 +88,10 @@ export default function Home() {
   const cards = () => {
     return (
       <Box pt={4} >
-        <Grid container spacing={3} >
+        <Grid container spacing={4} >
           {decks.map(({id, title, colorId, description}) => {
             return (
-              <Grid key={id} item xs={12} sm={6} lg={4} >
+              <Grid key={id} item xs={12} sm={6} lg={4}>
                 <Deck description={description} title={title} color={colors[colorId - 1].color} />
               </Grid>
             );
