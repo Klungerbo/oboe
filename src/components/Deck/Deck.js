@@ -23,7 +23,7 @@ export default function Deck({ deck, color }) {
           <Button
             size="small"
             component={Link}
-            to={`/edit-deck/${deck.id}`}
+            to={`/edit/${deck.id}`}
             style={{ backgroundColor: `${color}` }}
             aria-label={`Edit the deck titled: ${deck.title}`}
           >
@@ -36,7 +36,7 @@ export default function Deck({ deck, color }) {
       <Card raised style={{ backgroundColor: `${color}`, height: "290px" }}>
         <StyledFullHeightCardActionArea
           component={Link}
-          to={`/review-deck/${deck.id}`}
+          to={`/review/${deck.id}`}
           aria-label={`Review the deck titled: ${deck.title}, and the description: ${deck.description}`}
         >
           <StyledFullHeightBox display="flex" flexDirection="column" >
