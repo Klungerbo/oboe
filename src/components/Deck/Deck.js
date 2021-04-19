@@ -33,7 +33,7 @@ export default function Deck({ deck, color }) {
           </Button>
         </Box>
       </Box>
-      <Card raised style={{ backgroundColor: `${color}`, height: "240px" }}>
+      <Card raised style={{ backgroundColor: `${color}`, height: "290px" }}>
         <StyledFullHeightCardActionArea
           component={Link}
           to={`/review-deck/${deck.id}`}
