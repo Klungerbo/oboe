@@ -5,6 +5,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 
+import Deck from '../../components/Deck/Deck';
+
 export default function Home() {
   const userLoggedIn = true;
   const userEmail = "email@email.com";
@@ -42,14 +44,26 @@ export default function Home() {
       id: 1,
       title: "English to Japanese verbs",
       description: "This deck contains the 200 most common Japanese verbs",
-      colorId: 2,
+      colorId: 1,
     },
     {
       id: 2,
       title: "Periodic table",
       description: "This deck contains all the elements of the periodic table",
-      colorId: 1,
-    }
+      colorId: 2,
+    },
+    {
+      id: 3,
+      title: "Title with max charactersTitle with max characters",
+      description: "Description with max charact ersabababa bababababab aba babababa babababa bababababababa bababab abababa bababababa babababa babababababa babababa bab",
+      colorId: 3,
+    },
+    {
+      id: 4,
+      title: "Periodic table",
+      description: "This deck contains all the elements of the periodic table",
+      colorId: 4,
+    },
   ];
 
   const useStyles = makeStyles({
@@ -73,39 +87,24 @@ export default function Home() {
 
   const cards = () => {
     return (
-      <React.Fragment >
-        {console.log(decks)}
-        {decks.map(item => {
-          <Grid item xs={12}>
-            <Card className={classes.root}>
-              <CardContent>
-                <Typography className={classes.title} color="textSecondary" gutterBottom>
-                  Word of the Day</Typography>
-                <Typography variant="h5" component="h2">
-                  be{bull}nev{bull}o{bull}lent</Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  adjective</Typography>
-                <Typography variant="body2" component="p">
-                  well meaning and kindly.
-                <br />
-                  {'"a benevolent smile"'}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
-
-            </Card>
-          </Grid>
-        })
-        }
-      </React.Fragment >
+      <Box pt={4} >
+        <Grid container spacing={3} >
+          {decks.map(({id, title, colorId, description}) => {
+            return (
+              <Grid key={id} item xs={12} sm={6} lg={4} >
+                <Deck description={description} title={title} color={colors[colorId - 1].color} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Box>
     );
-  }
+  };
+
 
   const userHome = () => {
     return (
-      <React.Fragment>
+      <>
         <Grid container>
           <Grid item>
             <Box display="flex" flexDirection="row">
@@ -117,7 +116,7 @@ export default function Home() {
           </Grid>
           {cards()}
         </Grid>
-      </React.Fragment>
+      </>
     );
   };
 
