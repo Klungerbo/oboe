@@ -126,7 +126,7 @@ const logoutButton = () => {
 const searchBar = () => {
   return (
     <Box px={1}>
-      <SearchBar enableOnPaths={['/', '/deck-edit']} />
+      <SearchBar enableOnPaths={['/', '/edit']} />
     </Box>
   );
 };
