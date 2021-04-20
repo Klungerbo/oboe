@@ -7,6 +7,7 @@ import Footer from '../components/Footer/Footer';
 import Home from './Home/Home';
 import About from './About/About';
 import Contact from './Contact/Contact';
+import Review from './Review/Review';
 
 import styled from 'styled-components';
 
@@ -22,6 +23,7 @@ export default function Pages() {
           <Route exact path="/" component={Home}/>
           <Route path='/about' component={About}/>
           <Route path='/contact' component={Contact}/>
+          <Route path='/review' component={Review}/>
         </Switch>
       </StyledMainContent>
 
