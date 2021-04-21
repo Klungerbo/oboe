@@ -1,0 +1,13 @@
+
+.homepage {
+  display: flex;
+  gap: 200px;
+}
+
+/* 960px is breakpoint for "sm" */
+@media screen and (max-width: 960px) {
+  .homepage {
+    flex-direction: column;
+    gap: 70px;
+  }
+}
