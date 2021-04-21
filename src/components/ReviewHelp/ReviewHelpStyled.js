@@ -1,15 +1,13 @@
-import { Card, Typography } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
 /**
  * The card itself, with background color and padding
  */
-export const StyledReviewHelp = styled(Card)`
+export const StyledReviewHelp = styled(Paper)`
   ${({ theme }) => `
     display: flex;
     flex-direction: column;
-    background-color: white;
-    color: #333;
     ${theme.breakpoints.down('xs')} {
       display: none;
     },
