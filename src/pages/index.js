@@ -23,7 +23,7 @@ export default function Pages() {
           <Route exact path="/" component={Home}/>
           <Route path='/about' component={About}/>
           <Route path='/contact' component={Contact}/>
-          <Route path='/review' component={Review}/>
+          <Route path='/review/:id' component={Review}/>
         </Switch>
       </StyledMainContent>
 
