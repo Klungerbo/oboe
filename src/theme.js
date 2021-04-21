@@ -60,7 +60,7 @@ let theme = createMuiTheme({
         blue: {
             main: "#1976d2",
             text: "white",
-            light: "#4791db",
+            light: "#3E6CB6",
             dark: "#115293"
         }
     }

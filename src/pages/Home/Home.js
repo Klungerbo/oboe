@@ -19,7 +19,7 @@ import colors from '../../data/colors';
  */
 export default function Home() {
   // TODO: remove test variables
-  const userLoggedIn = true;
+  const userLoggedIn = false;
   const userEmail = "email@email.com";
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
