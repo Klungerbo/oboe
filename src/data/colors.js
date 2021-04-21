@@ -2,12 +2,12 @@ const colors = [
   {
     id: 1,
     name: "tael",
-    color: "#009688",
+    color: "#00796b",
   },
   {
     id: 2,
     name: "red",
-    color: "#f44336",
+    color: "#d32f2f",
   },
   {
     id: 3,
@@ -17,7 +17,7 @@ const colors = [
   {
     id: 4,
     name: "blue",
-    color: "#2196f3",
+    color: "#0B75CB",
   },
   {
     id: 5,
