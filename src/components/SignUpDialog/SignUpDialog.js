@@ -1,14 +1,12 @@
-import { Dialog, FormGroup, CardContent, Grid, TextField, Button, Typography } from '@material-ui/core';
+import {
+  Dialog, FormGroup, CardContent,
+  Grid, TextField, Button
+} from '@material-ui/core';
 import React from 'react'
-import styled from "styled-components";
-
-const StyledDialogTitle = styled(Typography)`
-  ${({ theme }) => `
-    margin: ${theme.spacing(1,0,2,0)};
-  `}
-`;
+import { StyledDialogTitle } from "./SignupDialogStyled";
 
 /**
+ * Represents the sign up dialog that pops up when you click "Create new user" when not logged in
  * 
  * @param {Object} props: (open) Getter for the dialog open state
  *                        (onClose) Handler for closing the dialog i.e. set open state to false
@@ -26,7 +24,7 @@ export default function SignUpDialog({open, onClose}) {
               align="center"
             >
               <Grid item xs={12}>
-                <StyledDialogTitle id="dialog-title" variant="h3" component="h1" >Create New User</StyledDialogTitle>
+                <StyledDialogTitle id="dialog-title" variant="h3">Create New User</StyledDialogTitle>
               </Grid>
               <Grid item xs={12}>
                 <TextField id="newemail" fullWidth variant="outlined" label="E-mail" />
