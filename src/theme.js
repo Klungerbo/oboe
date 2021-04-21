@@ -46,7 +46,7 @@ let theme = createMuiTheme({
     palette: {
         type: "dark",
         primary: {
-            main: teal[400],
+            main: teal[700],
         },
         secondary: {
             main: "#a6262c",
@@ -58,10 +58,10 @@ let theme = createMuiTheme({
 {
     palette: {
         blue: {
-            main: "#2196f3",
+            main: "#1976d2",
             text: "white",
-            light: "#4dabf5",
-            dark: "#1769aa"
+            light: "#3E6CB6",
+            dark: "#115293"
         }
     }
 });
