@@ -11,7 +11,7 @@ import Deck from '../../components/Deck/Deck';
 import decks from '../../data/decks';
 import colors from '../../data/colors';
 
-import "./Home.css";
+import { StyledGuestLayout } from "../../components/GuestLayout/GuestLayoutStyled";
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,
@@ -58,7 +58,7 @@ export default function Home() {
     return (
       <>
         <Container>
-          <Box className="homepage">
+          <StyledGuestLayout>
             <Box flexGrow="1">
               <Typography variant="h1">Oboe</Typography>
               <Typography variant="h2">Decks and cards</Typography>
@@ -73,7 +73,7 @@ export default function Home() {
             <Box flexBasis={300} flexShrink={0}>
               <LoginForm onOpen={setIsSignupDialogOpen} />
             </Box>
-          </Box>
+          </StyledGuestLayout>
         </Container>
         <SignUpDialog open={isSignUpDialogOpen} onClose={setIsSignupDialogOpen} />
       </>

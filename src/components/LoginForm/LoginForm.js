@@ -1,11 +1,15 @@
 import React from 'react'
 import {
   CardContent, FormGroup, Grid,
-  TextField, Button, Divider
+  TextField, Button, Divider, useTheme
 } from "@material-ui/core";
-import { StyledLoginForm } from "./LoginFormStyled";
+import { StyledLoginForm, StyledSignUpButton } from "./LoginFormStyled";
 
 export default function LoginForm({ onOpen }) {
+
+  const theme = useTheme();
+  console.log(theme);
+
   return (
     <StyledLoginForm raised>
       <CardContent>
@@ -30,7 +34,7 @@ export default function LoginForm({ onOpen }) {
               <Divider variant="middle" />
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained" onClick={() => onOpen(true)}>Create new user</Button>
+              <StyledSignUpButton variant="contained" onClick={() => onOpen(true)}>Create new user</StyledSignUpButton>
             </Grid>
           </Grid>
         </FormGroup>
