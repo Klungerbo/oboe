@@ -1,13 +1,15 @@
 import React from 'react'
 import {
   CardContent, FormGroup, Grid,
-  TextField, Button, Divider
+  TextField, Button, Divider,
+  Card
 } from "@material-ui/core";
-import { StyledLoginForm } from "./LoginFormStyled";
+import { StyledSignUpButton } from "./LoginFormStyled";
 
 export default function LoginForm({ onOpen }) {
+
   return (
-    <StyledLoginForm raised>
+    <Card raised>
       <CardContent>
         <FormGroup>
           <Grid
@@ -30,11 +32,11 @@ export default function LoginForm({ onOpen }) {
               <Divider variant="middle" />
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained" onClick={() => onOpen(true)}>Create new user</Button>
+              <StyledSignUpButton variant="contained" onClick={() => onOpen(true)}>Create new user</StyledSignUpButton>
             </Grid>
           </Grid>
         </FormGroup>
       </CardContent>
-    </StyledLoginForm>
+    </Card>
   )
 }
