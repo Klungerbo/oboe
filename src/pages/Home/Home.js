@@ -1,8 +1,7 @@
 import React from 'react';
 import {
   Box, Container, Grid,
-  Hidden,
-  Typography
+  Hidden, Typography
 } from '@material-ui/core'
 
 import LoginForm from '../../components/LoginForm/LoginForm';
