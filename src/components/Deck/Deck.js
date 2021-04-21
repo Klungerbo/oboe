@@ -33,7 +33,7 @@ export default function Deck({ deck, color }) {
           </Button>
         </Box>
       </Box>
-      <Card raised style={{ backgroundColor: `${color}`, height: "290px" }}>
+      <Card raised style={{ backgroundColor: `${color}`, height: "320px" }}>
         <StyledFullHeightCardActionArea
           component={Link}
           to={`/review/${deck.id}`}
@@ -41,13 +41,13 @@ export default function Deck({ deck, color }) {
         >
           <StyledFullHeightBox display="flex" flexDirection="column" >
             <Box px={1.5} pt={2} pb={1} >
-              <Typography variant="h5">{deck.title}</Typography>
+              <Typography style={{fontSize: "1.5rem", fontFamily: "Bebas Neue"}}>{deck.title}</Typography>
             </Box>
             <Box px={1.5} flexGrow="1">
               <Typography variant="body2" color="textSecondary" component="p">{deck.description}</Typography>
             </Box>
             <Box pb={1.5}>
-              <Typography variant="h4" align="center">Review deck</Typography>
+              <Typography style={{fontSize: "1.8rem", fontFamily: "Thasadith"}} align="center">Review deck</Typography>
             </Box>
           </StyledFullHeightBox>
         </StyledFullHeightCardActionArea>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Box, Container, Grid,
+  Hidden,
   Typography
 } from '@material-ui/core'
 
@@ -11,8 +12,6 @@ import Deck from '../../components/Deck/Deck';
 import decks from '../../data/decks';
 import colors from '../../data/colors';
 
-import { StyledGuestLayout } from "../../components/GuestLayout/GuestLayoutStyled";
-
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,
  * it will show a login prompt.
@@ -21,9 +20,9 @@ import { StyledGuestLayout } from "../../components/GuestLayout/GuestLayoutStyle
  */
 export default function Home() {
   // TODO: remove test variables
-  const userLoggedIn = true;
+  const userLoggedIn = false;
   const userEmail = "email@email.com";
-  
+
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
 
   /**
@@ -58,22 +57,33 @@ export default function Home() {
     return (
       <>
         <Container>
-          <StyledGuestLayout>
-            <Box flexGrow="1">
+          <Grid container justify="space-between" spacing={4}>
+            <Grid item xs={12} sm={12} md={6}>
               <Typography variant="h1">Oboe</Typography>
+              <Box py={1} />
               <Typography variant="h2">Decks and cards</Typography>
               <Typography variant="body1">With Oboe, you can create, manage, and review decks of flashcards.
               Each card has a front and backside, where the front is the question to which the back holds the answer.
             </Typography>
+            <Box py={2} />
               <Typography variant="h2">Spaced repetition system</Typography>
               <Typography variant="body1">Oboe automatically balances the frequency of a card’s presence in a review.
               Cards that have been forgotten will show up more frequently than those that were remembered.
             </Typography>
-            </Box>
-            <Box flexBasis={300} flexShrink={0}>
-              <LoginForm onOpen={setIsSignupDialogOpen} />
-            </Box>
-          </StyledGuestLayout>
+            </Grid>
+            <Grid container justify="flex-end" alignItems="center" item xs={12} sm={12} md={6}>
+              <Hidden smDown >
+                <Box maxWidth={400} flexGrow={1}>
+                  <LoginForm onOpen={setIsSignupDialogOpen} />
+                </Box>
+              </Hidden>
+              <Hidden mdUp >
+                <Box maxWidth={400} pt={3} flexGrow={1} mx="auto">
+                  <LoginForm onOpen={setIsSignupDialogOpen} />
+                </Box>
+              </Hidden>
+            </Grid>
+          </Grid>
         </Container>
         <SignUpDialog open={isSignUpDialogOpen} onClose={setIsSignupDialogOpen} />
       </>

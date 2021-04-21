@@ -4,32 +4,39 @@ import { teal } from '@material-ui/core/colors';
 let theme = createMuiTheme({
     typography: {
         h1: {
-            fontFamily: "Bebas Neue"
+            fontFamily: "Bebas Neue",
+            fontSize: "4rem"
         },
         h2: {
             fontFamily: "Bebas Neue",
-            marginTop: "30px"
+            fontSize: "2.5rem"
         },
         h3: {
             fontFamily: "Bebas Neue",
+            fontSize: "2rem"
         },
         h4: {
-            fontFamily: "Thasadith",
+            fontFamily: "Bebas Neue",
+            fontSize: "1.8rem"
         },
         h5: {
             fontFamily: "Bebas Neue",
+            fontSize: "1.6rem"
         },
         h6: {
             fontFamily: "Bebas Neue",
+            fontSize: "1.2rem"
         },
         subtitle1: {
             fontFamily: "Bebas Neue"
         },
         body1: {
-            fontFamily: "Mada"
+            fontFamily: "Mada",
+            fontSize: "1rem"
         },
         body2: {
-            fontFamily: "Mada"
+            fontFamily: "Mada",
+            fontSize: "0.9rem"
         },
         button: {
             fontFamily: "Alatsi",
@@ -45,12 +52,14 @@ let theme = createMuiTheme({
             main: "#a6262c",
         },
 
+
     },
 },
 {
     palette: {
         blue: {
             main: "#2196f3",
+            text: "white",
             light: "#4dabf5",
             dark: "#1769aa"
         }

@@ -1,17 +1,15 @@
 import React from 'react'
 import {
   CardContent, FormGroup, Grid,
-  TextField, Button, Divider, useTheme
+  TextField, Button, Divider,
+  Card
 } from "@material-ui/core";
-import { StyledLoginForm, StyledSignUpButton } from "./LoginFormStyled";
+import { StyledSignUpButton } from "./LoginFormStyled";
 
 export default function LoginForm({ onOpen }) {
 
-  const theme = useTheme();
-  console.log(theme);
-
   return (
-    <StyledLoginForm raised>
+    <Card raised>
       <CardContent>
         <FormGroup>
           <Grid
@@ -39,6 +37,6 @@ export default function LoginForm({ onOpen }) {
           </Grid>
         </FormGroup>
       </CardContent>
-    </StyledLoginForm>
+    </Card>
   )
 }
