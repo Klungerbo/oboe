@@ -11,7 +11,7 @@ import { useHistory } from 'react-router';
 import flashcards from "../../data/flashcards";
 import decks from "../../data/decks";
 import colors from "../../data/colors";
-import { useSpring } from "react-spring";
+import { useSpring } from "@react-spring/web";
 
 export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStats, setReviewStats }) {
 
@@ -118,34 +118,23 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
     }
   }
 
-  function handlenan(opacity) {
-    const result = opacity - 1
-    if (result === NaN) {
-      console.log("not a number");
-      return 0;
-    }
-    else {
-      return result;
-    }
-  }
-
   function CardFront() {
     return (
-      <StyledFrontFace  style={{
-        opacity: handlenan(opacity),
-        transform
-      }} color={cardColor}>
-        <Box display="flex" flexDirection="column" height="100%">
-          <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
-            <Typography variant="h2">
-              {cardQueue && cardQueue[cardIndex].frontside}
-            </Typography>
-          </Box>
-          <Box py={3} align="center" style={{ backgroundColor: "rgba(0,0,0,0.3)", borderBottomLeftRadius: "5px", borderBottomRightRadius: "2%" }}>
-            <Typography>Flip</Typography>
-          </Box>
-        </Box>
-      </StyledFrontFace>
+<StyledFrontFace  style={{
+  opacity: opacity.to(o => 1 - o),
+  transform
+}} color={cardColor}>
+  <Box display="flex" flexDirection="column" height="100%">
+    <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
+      <Typography variant="h2">
+        {cardQueue && cardQueue[cardIndex].frontside}
+      </Typography>
+    </Box>
+    <Box py={3} align="center" style={{ backgroundColor: "rgba(0,0,0,0.3)", borderBottomLeftRadius: "5px", borderBottomRightRadius: "2%" }}>
+      <Typography>Flip</Typography>
+    </Box>
+  </Box>
+</StyledFrontFace>
     )
   }
 
