@@ -20,16 +20,11 @@ export const StyledFrontFace = styled(animated.div)`
   left: 0;
   height: 100%;
   width: 100%;
+  border-radius: 2%;
 `;
 
 /**
  * Applies to the text/button content inside the card
  */
-export const StyledBackFace = styled(animated.div)`
-  background-color: ${props => props.color};
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
+export const StyledBackFace = styled(StyledFrontFace)`
 `;

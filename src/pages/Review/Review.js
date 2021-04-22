@@ -1,20 +1,40 @@
+import React from "react";
 import {
-  Box,
+  Grid, Box, Hidden,
+  Dialog
 } from '@material-ui/core'
+import SendIcon from '@material-ui/icons/Send';
 import ReviewHelp from '../../components/ReviewHelp/ReviewHelp'
+import ReviewStats from '../../components/ReviewStats/ReviewStats'
 import ReviewCard from '../../components/ReviewCard/ReviewCard'
-import { useParams } from 'react-router-dom';
+import { ExitToDecksButton } from '../../components/ExitToDecksButton/ExitToDecksButtonStyled';
+import { useParams, Link } from 'react-router-dom';
 
 export default function Review() {
 
   let { id } = useParams();
+  const [color, setColor] = React.useState("");
+  const [reviewStats, setReviewStats] = React.useState({ correct: 0, incorrect: 0, cardsLeft: 0 });
 
   return (
-    <Box display="flex" justifyContent="space-between">
-      <ReviewHelp></ReviewHelp>
-      <ReviewCard deckid={id} />
-      <div></div>
-    </Box>
+    <Grid container>
+      <Hidden smDown>
+        <Grid item container md={2}>
+          <Box display="flex" alignSelf="flex-end">
+            <ReviewHelp></ReviewHelp>
+          </Box>
+        </Grid>
+      </Hidden>
+      <Grid container item direction="column" alignItems="center" justify="center" xs={12} md={8}>
+        <ReviewStats reviewStats={reviewStats} />
+        <ReviewCard deckid={id} cardColor={color} setCardColor={setColor} reviewStats={reviewStats} setReviewStats={setReviewStats} />
+        <Box py={8} />
+        <ExitToDecksButton component={Link} to="/" exitbuttoncolor={color} variant="contained" endIcon={<SendIcon />}>Wrap up session</ExitToDecksButton>
+      </Grid>
+      <Hidden>
+        <Grid item md={2}>
+        </Grid>
+      </Hidden>
+    </Grid>
   )
 }
-

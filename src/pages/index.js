@@ -53,4 +53,5 @@ const StyledHeader = styled.div`
 
 const StyledMainContent = styled.div`
   flex-grow: 1;
+  display: flex;
 `;
