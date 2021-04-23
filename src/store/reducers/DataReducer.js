@@ -9,6 +9,11 @@ function DataReducer(state = initialState, action) {
                 ...state,
                 searchTerm: action.searchTerm
             };
+        case "SET_USER":
+            return {
+                ...state,
+                user: action.user
+            };
 
         default:
             return state;

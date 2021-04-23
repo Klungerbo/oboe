@@ -6,3 +6,12 @@ export function setSearchTerm(searchTerm) {
         });
     };
 }
+
+export function setUser(user) {
+    return function (dispatch) {
+        dispatch({
+            type: "SET_USER",
+            user: user 
+        });
+    };
+}

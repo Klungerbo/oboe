@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import { StyledSignUpButton } from "./LoginFormStyled";
 
-export default function LoginForm({ onOpen }) {
+export default function LoginForm({ onOpen, email, password }) {
 
   return (
     <Card raised>
@@ -20,10 +20,10 @@ export default function LoginForm({ onOpen }) {
             spacing={2}
           >
             <Grid item xs={12}>
-              <TextField id="email" fullWidth variant="outlined" label="E-mail" />
+              <TextField id="email" value={email} fullWidth variant="outlined" label="E-mail" />
             </Grid>
             <Grid item xs={12}>
-              <TextField id="password" fullWidth variant="outlined" label="Password" type="password" />
+              <TextField id="password" value={password} fullWidth variant="outlined" label="Password" type="password" />
             </Grid>
             <Grid item xs={12}>
               <Button variant="contained" color="primary" fullWidth>Log in</Button>

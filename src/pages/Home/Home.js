@@ -23,6 +23,8 @@ export default function Home() {
   const userEmail = "email@email.com";
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   /**
    * Oboe home page for a user.
@@ -73,18 +75,18 @@ export default function Home() {
             <Grid container justify="flex-end" alignItems="center" item xs={12} sm={12} md={6}>
               <Hidden smDown >
                 <Box maxWidth={400} flexGrow={1}>
-                  <LoginForm onOpen={setIsSignupDialogOpen} />
+                  <LoginForm email={email} password={password} onOpen={setIsSignupDialogOpen} />
                 </Box>
               </Hidden>
               <Hidden mdUp >
                 <Box maxWidth={400} pt={3} flexGrow={1} mx="auto">
-                  <LoginForm onOpen={setIsSignupDialogOpen} />
+                  <LoginForm email={email} password={password} onOpen={setIsSignupDialogOpen} />
                 </Box>
               </Hidden>
             </Grid>
           </Grid>
         </Container>
-        <SignUpDialog open={isSignUpDialogOpen} onClose={setIsSignupDialogOpen} />
+        <SignUpDialog setEmail={setEmail} setPassword={setPassword} open={isSignUpDialogOpen} onClose={setIsSignupDialogOpen} />
       </>
     );
   }
