@@ -1,7 +1,4 @@
-import { Grid } from '@material-ui/core'
 import Box from '@material-ui/core/Box/Box'
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
 import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
@@ -13,24 +10,22 @@ export default function ReviewStats({reviewStats}) {
   const {correct, incorrect, cardsLeft} = reviewStats;
 
   return (
-    <Box display="flex" pb={4}>
+    <Box display="flex" justifyContent="space-between">
       <Box display="flex" alignItems="center" color="green" fontSize={32}>
         <ArrowUpwardRoundedIcon fontSize="large" />
-        <Typography style={{ fontSize: "1.8rem", fontFamily: "Thasadith" }}>
+        <Typography style={{ fontSize: "2.5rem", fontFamily: "Unica One" }}>
           {correct}
         </Typography>
       </Box>
-      <Box px={4}></Box>
       <Box display="flex" alignItems="center">
         <DashboardRoundedIcon fontSize="large" />
-        <Typography style={{ fontSize: "1.8rem", fontFamily: "Thasadith" }}>
+        <Typography style={{ fontSize: "2.5rem", fontFamily: "Unica One" }}>
           {cardsLeft}
         </Typography>
       </Box>
-      <Box px={4}></Box>
       <Box display="flex" alignItems="center" color="red">
         <ArrowDownwardRoundedIcon fontSize="large" />
-        <Typography style={{ fontSize: "1.8rem", fontFamily: "Thasadith" }}>
+        <Typography style={{ fontSize: "2.5rem", fontFamily: "Unica One" }}>
           {incorrect}
         </Typography>
       </Box>

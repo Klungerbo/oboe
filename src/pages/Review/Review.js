@@ -25,10 +25,10 @@ export default function Review() {
           </Box>
         </Grid>
       </Hidden>
-      <Grid container item direction="column" alignItems="center" justify="center" xs={12} md={8}>
-        <ReviewStats reviewStats={reviewStats} />
+          <Box width={280}>
         <ReviewCard deckid={id} cardColor={color} setCardColor={setColor} reviewStats={reviewStats} setReviewStats={setReviewStats} />
-        <Box py={8} />
+            <ReviewStats reviewStats={reviewStats} />
+          </Box>
         <ExitToDecksButton component={Link} to="/" exitbuttoncolor={color} variant="contained" endIcon={<SendIcon />}>Wrap up session</ExitToDecksButton>
       </Grid>
       <Hidden>
