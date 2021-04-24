@@ -2,7 +2,7 @@ import {
   Button, Grid, Box,
   Typography
 } from '@material-ui/core';
-import React from 'react'
+import React, { useRef } from 'react'
 import {
   StyledReviewCard, StyledFrontFace, StyledBackFace
 } from "./ReviewCardStyled";
@@ -19,13 +19,12 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
   const [cardIndex, setCardIndex] = React.useState(0);
   const [isFlipped, setIsFlipped] = React.useState(false);
   const history = useHistory();
+  const answerElement = useRef();
   const { transform, opacity } = useSpring({
     opacity: isFlipped ? 1 : 0,
     transform: `perspective(700px) rotateY(${isFlipped ? 180 : 0}deg)`,
     config: { mass: 3, tension: 1000, friction: 80 }
   })
-
-  console.log(transform, opacity)
 
   /**
    * Active on frontside. Flips the card to the backside
@@ -89,6 +88,7 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
 
   function flipCard() {
     setIsFlipped(!isFlipped);
+    answerElement.current.focus();
   }
 
   function handleCardProgression(didRemember) {
@@ -126,11 +126,11 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
 }} color={cardColor}>
   <Box display="flex" flexDirection="column" height="100%">
     <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
-      <Typography variant="h2">
+      <Typography tabIndex={0} variant="h2">
         {cardQueue && cardQueue[cardIndex].frontside}
       </Typography>
     </Box>
-    <Box py={3} align="center" style={{ backgroundColor: "rgba(0,0,0,0.3)", borderBottomLeftRadius: "5px", borderBottomRightRadius: "2%" }}>
+    <Box py={3} align="center" style={{ backgroundColor: "rgba(0,0,0,0.3)", borderBottomLeftRadius: "5px", borderBottomRightRadius: "5px" }}>
       <Typography>Flip</Typography>
     </Box>
   </Box>
@@ -148,18 +148,18 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
       }} color={cardColor}>
         <Box display="flex" flexDirection="column" justifyContent="center" p={1} height="100%">
           <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center">
-            <Typography variant="h3" align="center">
+            <Typography tabIndex={0} ref={answerElement} variant="h3" align="center">
               {cardQueue && cardQueue[cardIndex].backside}
             </Typography>
-            <Typography align="center">{cardQueue && cardQueue[cardIndex].description}</Typography>
+            <Typography tabIndex={0} align="center">{cardQueue && cardQueue[cardIndex].description}</Typography>
           </Box>
           <Box>
-            <Grid container spacing={1}>
+            <Grid container spacing={1} direction="row-reverse">
               <Grid item xs={6}>
-                <Button variant="contained" onClick={() => handleCardProgression(false)} color="secondary" fullWidth>Forgot</Button>
+                <Button tabIndex={isFlipped ? 0 : -1} variant="contained" onClick={() => handleCardProgression(true)} color="primary" fullWidth>Remembered</Button>
               </Grid>
               <Grid item xs={6}>
-                <Button variant="contained" onClick={() => handleCardProgression(true)} color="primary" fullWidth>Remembered</Button>
+                <Button tabIndex={isFlipped ? 0 : -1} variant="contained" onClick={() => handleCardProgression(false)} color="secondary" fullWidth>Forgot</Button>
               </Grid>
             </Grid>
           </Box>
