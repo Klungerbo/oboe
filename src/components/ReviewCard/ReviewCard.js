@@ -20,6 +20,7 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
   const [isFlipped, setIsFlipped] = React.useState(false);
   const history = useHistory();
   const answerElement = useRef();
+  const questionElement = useRef();
   const { transform, opacity } = useSpring({
     opacity: isFlipped ? 1 : 0,
     transform: `perspective(700px) rotateY(${isFlipped ? 180 : 0}deg)`,
@@ -85,10 +86,18 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
     setCardColor(colors[deck.colorId - 1].color);
   }, [])
 
+  React.useEffect(() => {
+    if (!isFlipped) {
+      // I have to use setTimeout because if I don't, the else code never runs. Really weird
+      setTimeout(() => questionElement.current.focus(), 0);
+    } else {
+      setTimeout(() => answerElement.current.focus(), 0);
+    }
+  }, [isFlipped])
+
 
   function flipCard() {
     setIsFlipped(!isFlipped);
-    answerElement.current.focus();
   }
 
   function handleCardProgression(didRemember) {
@@ -120,21 +129,26 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
 
   function CardFront() {
     return (
-<StyledFrontFace  style={{
-  opacity: opacity.to(o => 1 - o),
-  transform
-}} color={cardColor}>
-  <Box display="flex" flexDirection="column" height="100%">
-    <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
-      <Typography tabIndex={0} variant="h2">
-        {cardQueue && cardQueue[cardIndex].frontside}
-      </Typography>
-    </Box>
-    <Box py={3} align="center" style={{ backgroundColor: "rgba(0,0,0,0.3)", borderBottomLeftRadius: "5px", borderBottomRightRadius: "5px" }}>
-      <Typography>Flip</Typography>
-    </Box>
-  </Box>
-</StyledFrontFace>
+      <StyledFrontFace style={{
+        opacity: opacity.to(o => 1 - o),
+        transform
+      }} color={cardColor}>
+        <Box display="flex" flexDirection="column" height="100%">
+          <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
+            <Typography ref={questionElement} tabIndex={0} variant="h2">
+              {cardQueue && cardQueue[cardIndex].frontside}
+            </Typography>
+          </Box>
+          <Box py={3} align="center"
+            style={{
+              backgroundColor: "rgba(0,0,0,0.3)",
+              borderBottomLeftRadius: "5px",
+              borderBottomRightRadius: "5px"
+            }}>
+            <Typography>Flip</Typography>
+          </Box>
+        </Box>
+      </StyledFrontFace>
     )
   }
 
@@ -146,20 +160,29 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
           return `${t} rotateY(180deg)`
         })
       }} color={cardColor}>
-        <Box display="flex" flexDirection="column" justifyContent="center" p={1} height="100%">
+        <Box display="flex" flexDirection="column" justifyContent="center"
+          p={1} height="100%">
           <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center">
             <Typography tabIndex={0} ref={answerElement} variant="h3" align="center">
               {cardQueue && cardQueue[cardIndex].backside}
             </Typography>
-            <Typography tabIndex={0} align="center">{cardQueue && cardQueue[cardIndex].description}</Typography>
+            <Typography tabIndex={0} align="center">
+              {cardQueue && cardQueue[cardIndex].description}
+            </Typography>
           </Box>
           <Box>
             <Grid container spacing={1} direction="row-reverse">
               <Grid item xs={6}>
-                <Button tabIndex={isFlipped ? 0 : -1} variant="contained" onClick={() => handleCardProgression(true)} color="primary" fullWidth>Remembered</Button>
+                <Button tabIndex={isFlipped ? 0 : -1} variant="contained"
+                  onClick={() => handleCardProgression(true)} color="primary" fullWidth>
+                  Remembered
+                </Button>
               </Grid>
               <Grid item xs={6}>
-                <Button tabIndex={isFlipped ? 0 : -1} variant="contained" onClick={() => handleCardProgression(false)} color="secondary" fullWidth>Forgot</Button>
+                <Button tabIndex={isFlipped ? 0 : -1} variant="contained"
+                  onClick={() => handleCardProgression(false)} color="secondary" fullWidth>
+                  Forgot
+                </Button>
               </Grid>
             </Grid>
           </Box>
