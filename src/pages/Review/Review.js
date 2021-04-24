@@ -18,7 +18,7 @@ export default function Review() {
 
   return (
     <Container>
-      <Grid container style={{height: "100%"}}>
+      <Grid container style={{ height: "100%" }}>
         <Hidden smDown>
           <Grid item container md={4}>
             <Box display="flex" pl={2} alignSelf="flex-end">
@@ -26,9 +26,11 @@ export default function Review() {
             </Box>
           </Grid>
         </Hidden>
-        <Grid container item direction="column" alignItems="center" justify="center" xs={12} md={4}>
+        <Grid container item direction="column" alignItems="center"
+          justify="center" xs={12} md={4}>
           <Box width={280}>
-            <ReviewCard deckid={id} cardColor={color} setCardColor={setColor} reviewStats={reviewStats} setReviewStats={setReviewStats} />
+            <ReviewCard deckid={id} cardColor={color} setCardColor={setColor}
+              reviewStats={reviewStats} setReviewStats={setReviewStats} />
             <ReviewStats reviewStats={reviewStats} />
           </Box>
           <ExitToDecksButton component={Link} to="/" exitbuttoncolor={color} variant="contained" endIcon={<SendIcon />}>Wrap up session</ExitToDecksButton>
