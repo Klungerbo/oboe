@@ -5,7 +5,7 @@ import {
   TextField, Button, Divider,
 } from "@material-ui/core";
 import { StyledSignUpButton } from "./LoginFormStyled";
-import { setLoggedIn } from '../../store/actions/DataActions';
+import { setLoggedIn, setUser } from '../../store/actions/DataActions';
 
 export default function LoginForm({ onOpen, email, password }) {
   const [userInfo, setUserInfo] = React.useState({
@@ -13,7 +13,7 @@ export default function LoginForm({ onOpen, email, password }) {
     password: password ?? null
   })
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch();  
 
   const handleLogin = e => {
     e.preventDefault();
@@ -26,7 +26,13 @@ export default function LoginForm({ onOpen, email, password }) {
       body: userInfoJson
     }).then(response => {
       if (response.status === 200) {
-        dispatch(setLoggedIn(true));
+        response.json().then(jsonObject => {
+          const token = jsonObject.accessToken;
+          const email = jsonObject.email;
+          
+          dispatch(setLoggedIn(true));
+          dispatch(setUser({jwtToken: token, email: email}));
+        });
       }
     });
   }

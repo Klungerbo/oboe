@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
-  Box, Container, Grid,
+  Box, Button, Container, Grid,
   Hidden, Typography
 } from '@material-ui/core'
 
@@ -26,6 +26,73 @@ export default function Home() {
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const userInfo = useSelector(state => state.user)
+
+  const handleAddDeck = () => {
+    const newDeck = JSON.stringify({
+      name: "Deck",
+      description: "Desc",
+      colorId: 1
+    });
+
+    fetch("https://oboe.klungerbo.com/api/decks",
+      {
+        method: "post",
+        headers: {
+          "content-type": "application/json", 
+          "x-access-token": userInfo.jwtToken
+        },
+        body: newDeck
+      }).then(response => {
+
+        response.text().then(console.log);
+      }).catch(error => {
+        console.log(error);
+      });
+  };
+
+  const handleGetDecks = () => {
+    fetch("https://oboe.klungerbo.com/api/decks",
+      {
+        method: "get",
+        headers: {
+          "x-access-token": userInfo.jwtToken
+        },
+      }).then(response => {
+        console.log("Received decks");
+        response.text().then(console.log);
+      }).catch(error => {
+        console.log(error);
+      });
+  }
+
+  /**
+   * Maps Oboe decks.
+   * 
+   * @returns jsx of Oboe decks.
+   */
+  const mapDecks = () => {
+    return (
+      <Box pt={4} >
+        <Grid container spacing={4} >
+          <Grid key={"myId"} item xs={12} sm={6} lg={4}>
+            <Button variant="contained" color="primary" onClick={handleAddDeck} >ADD DECK </Button>
+          </Grid>
+          <Grid key={"idget"} item xs={12} sm={6} lg={4}>
+            <Button variant="contained" color="primary" onClick={handleGetDecks} >GET DECKS </Button>
+          </Grid>
+          {decks.map(deck => {
+            return (
+              <Grid key={deck.id} item xs={12} sm={6} lg={4}>
+                <Deck deck={deck} color={colors[deck.colorId - 1].color} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Box>
+    );
+  };
 
   /**
    * Oboe home page for a user.
@@ -67,7 +134,7 @@ export default function Home() {
               <Typography variant="body1">With Oboe, you can create, manage, and review decks of flashcards.
               Each card has a front and backside, where the front is the question to which the back holds the answer.
             </Typography>
-            <Box py={2} />
+              <Box py={2} />
               <Typography variant="h2">Spaced repetition system</Typography>
               <Typography variant="body1">Oboe automatically balances the frequency of a card’s presence in a review.
               Cards that have been forgotten will show up more frequently than those that were remembered.
@@ -99,24 +166,4 @@ export default function Home() {
   return homeGuest();
 }
 
-/**
- * Maps Oboe decks.
- * 
- * @returns jsx of Oboe decks.
- */
-const mapDecks = () => {
-  return (
-    <Box pt={4} >
-      <Grid container spacing={4} >
-        {decks.map(deck => {
-          return (
-            <Grid key={deck.id} item xs={12} sm={6} lg={4}>
-              <Deck deck={deck} color={colors[deck.colorId - 1].color} />
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Box>
-  );
-};
 
