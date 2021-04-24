@@ -2,7 +2,7 @@ import {
   Button, Grid, Box,
   Typography
 } from '@material-ui/core';
-import React, { useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   StyledReviewCard, StyledFrontFace, StyledBackFace
 } from "./ReviewCardStyled";
@@ -15,9 +15,9 @@ import { useSpring } from "@react-spring/web";
 
 export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStats, setReviewStats }) {
 
-  const [cardQueue, setCardQueue] = React.useState(null);
-  const [cardIndex, setCardIndex] = React.useState(0);
-  const [isFlipped, setIsFlipped] = React.useState(false);
+  const [cardQueue, setCardQueue] = useState(null);
+  const [cardIndex, setCardIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
   const history = useHistory();
   const answerElement = useRef();
   const questionElement = useRef();
@@ -70,7 +70,7 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
   })
 
 
-  React.useEffect(() => {
+  useEffect(() => {
     const deck = decks.find(item => item.id === parseInt(deckid));
     const cards = flashcards.filter(card => card.deck_id === parseInt(deck.id) && card.consecutive_correct < 5);
 
@@ -86,7 +86,7 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
     setCardColor(colors[deck.colorId - 1].color);
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isFlipped) {
       // I have to use setTimeout because if I don't, the else code never runs. Really weird
       setTimeout(() => questionElement.current.focus(), 0);
