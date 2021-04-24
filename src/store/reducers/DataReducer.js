@@ -1,5 +1,6 @@
 const initialState = {
-  searchTerm: ""
+  searchTerm: "",
+  loggedIn: false
 };
 
 function DataReducer(state = initialState, action) {
@@ -13,6 +14,11 @@ function DataReducer(state = initialState, action) {
             return {
                 ...state,
                 user: action.user
+            };
+        case "SET_LOGGED_IN":
+            return {
+                ...state,
+                loggedIn: action.loggedIn
             };
 
         default:

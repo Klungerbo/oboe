@@ -1,4 +1,6 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import {
   ListItem, Container, Box,
@@ -14,6 +16,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
 import SearchBar from './Searchbar';
+import { setLoggedIn } from '../../store/actions/DataActions';
 
 
 /**
@@ -23,8 +26,10 @@ import SearchBar from './Searchbar';
  * @returns jsx of navbar to be rendered by React.
  */
 export default function Navbar() {
+  const dispatch = useDispatch();
+  const history = useHistory();
   // TODO: Update when users are added.
-  const userLoggedIn = true;
+  const userLoggedIn = useSelector(state => state.loggedIn);
 
   const [state, setState] = React.useState(false);
 
@@ -42,6 +47,20 @@ export default function Navbar() {
     }
 
     setState(open);
+  };
+
+  /**
+   * Creates a log out button.
+   *
+   * @returns jsx of log out button to be rendered by React.
+   */
+  const logoutButton = () => {
+    return (
+      <Button onClick={() => {
+        dispatch(setLoggedIn(false));
+        history.push("/");
+      }}>Log out</Button>
+    );
   };
 
   /**
@@ -107,16 +126,6 @@ export default function Navbar() {
   );
 }
 
-/**
- * Creates a log out button.
- *
- * @returns jsx of log out button to be rendered by React.
- */
-const logoutButton = () => {
-  return (
-    <Button component={NavLink} to="/" >Log out</Button>
-  );
-};
 
 /**
  * Creates a search bar.

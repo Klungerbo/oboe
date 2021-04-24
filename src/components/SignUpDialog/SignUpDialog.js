@@ -65,7 +65,7 @@ export default function SignUpDialog({ open, onClose, setEmail, setPassword}) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                onChange={e => setNewUserInfo({ ...newUserInfo, ...{ email: e.target.value } })}
+                onChange={e => setNewUserInfo({ ...newUserInfo, email: e.target.value })}
                 error={emailTaken}
                 helperText={emailTaken ? "Email already in use" : ""}
                 required
@@ -76,7 +76,7 @@ export default function SignUpDialog({ open, onClose, setEmail, setPassword}) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                onChange={e => setNewUserInfo({ ...newUserInfo, ...{ password: e.target.value } })}
+                onChange={e => setNewUserInfo({ ...newUserInfo, password: e.target.value })}
                 required
                 fullWidth
                 variant="outlined"
@@ -86,7 +86,7 @@ export default function SignUpDialog({ open, onClose, setEmail, setPassword}) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                onChange={e => setNewUserInfo({ ...newUserInfo, ...{ confirmedPassword: e.target.value } })}
+                onChange={e => setNewUserInfo({ ...newUserInfo, confirmedPassword: e.target.value })}
                 required
                 fullWidth
                 error={!passwordMatching}

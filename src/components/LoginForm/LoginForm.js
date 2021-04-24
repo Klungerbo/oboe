@@ -1,17 +1,45 @@
-import React from 'react'
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import {
-  CardContent, FormGroup, Grid,
+  CardContent, Grid, Card,
   TextField, Button, Divider,
-  Card
 } from "@material-ui/core";
 import { StyledSignUpButton } from "./LoginFormStyled";
+import { setLoggedIn } from '../../store/actions/DataActions';
 
 export default function LoginForm({ onOpen, email, password }) {
+  const [userInfo, setUserInfo] = React.useState({
+    email: email ?? null,
+    password: password ?? null
+  })
+
+  const dispatch = useDispatch();
+
+  const handleLogin = e => {
+    e.preventDefault();
+
+    const userInfoJson = JSON.stringify(userInfo);
+    console.log("Sending: " + userInfoJson);
+    fetch(`https://oboe.klungerbo.com/api/auth/signin/`, {
+      method: "post",
+      headers: { "content-type": "application/json" },
+      body: userInfoJson
+    }).then(response => {
+      if (response.status === 200) {
+        dispatch(setLoggedIn(true));
+      }
+    });
+  }
+
+  React.useEffect(() => {
+    setUserInfo({ email: email, password: password })
+    console.log("Hello");
+  }, [email, password]);
 
   return (
     <Card raised>
       <CardContent>
-        <FormGroup>
+        <form onSubmit={handleLogin} >
           <Grid
             container
             direction="column"
@@ -20,13 +48,19 @@ export default function LoginForm({ onOpen, email, password }) {
             spacing={2}
           >
             <Grid item xs={12}>
-              <TextField id="email" value={email} fullWidth variant="outlined" label="E-mail" />
+              <TextField
+                onChange={e => setUserInfo({ ...userInfo, email: e.target.value })}
+                required id="email" fullWidth variant="outlined" label="E-mail" value={userInfo.email}
+              />
             </Grid>
             <Grid item xs={12}>
-              <TextField id="password" value={password} fullWidth variant="outlined" label="Password" type="password" />
+              <TextField
+                onChange={e => setUserInfo({ ...userInfo, password: e.target.value })}
+                required id="password" fullWidth variant="outlined" label="Password" type="password" value={userInfo.password}
+              />
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained" color="primary" fullWidth>Log in</Button>
+              <Button type="submit" variant="contained" color="primary" fullWidth>Log in</Button>
             </Grid>
             <Grid item xs={12}>
               <Divider variant="middle" />
@@ -35,7 +69,7 @@ export default function LoginForm({ onOpen, email, password }) {
               <StyledSignUpButton variant="contained" onClick={() => onOpen(true)}>Create new user</StyledSignUpButton>
             </Grid>
           </Grid>
-        </FormGroup>
+        </form>
       </CardContent>
     </Card>
   )

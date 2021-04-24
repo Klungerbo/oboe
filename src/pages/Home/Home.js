@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   Box, Container, Grid,
   Hidden, Typography
@@ -19,7 +20,7 @@ import colors from '../../data/colors';
  */
 export default function Home() {
   // TODO: remove test variables
-  const userLoggedIn = false;
+  const userLoggedIn = useSelector(state => state.loggedIn);
   const userEmail = "email@email.com";
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
