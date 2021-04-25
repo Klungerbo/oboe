@@ -76,7 +76,9 @@ export default function ReviewCard({ deckid }) {
     const deck = decks.find(item => item.id === parseInt(deckid));
     deck.cardColor = colors[deck.colorId - 1].color;
     dispatch(setCurrentDeck(deck));
-    const cards = flashcards.filter(card => card.deck_id === parseInt(deck.id) && card.consecutive_correct < 5);
+    const cards = flashcards.filter(card => {
+      return card.deck_id === parseInt(deck.id) && card.consecutive_correct < 5
+    });
 
     let finalConsecutive = [];
     for (let i = 0; i < 5; i++) {
@@ -140,7 +142,8 @@ export default function ReviewCard({ deckid }) {
         <Box display="flex" flexDirection="column" height="100%">
           <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
             <Typography ref={questionElement} tabIndex={0} variant="h2"
-              aria-label={cardQueue && cardQueue[cardIndex].frontside + ", frontside. Left or right arrow key to flip the card."}>
+              aria-label={cardQueue && cardQueue[cardIndex].frontside +
+                ", frontside. Left or right arrow key to flip the card."}>
               {cardQueue && cardQueue[cardIndex].frontside}
             </Typography>
           </Box>

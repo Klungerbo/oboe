@@ -2,7 +2,7 @@ import { animated } from "@react-spring/web";
 import styled from 'styled-components';
 
 /**
- * The card itself, with background color and padding
+ * A container for the card, not the frontface nor backface
  */
 export const StyledReviewCard = styled.div`
   ${({ theme }) => `

@@ -19,7 +19,7 @@ export default function Review() {
 
   return (
     <Container>
-      <Grid container style={{ height: "100%" }}>
+      <Grid container>
         <Hidden smDown>
           <Grid item container md={4}>
             <Box display="flex" pl={2} alignSelf="flex-end">
