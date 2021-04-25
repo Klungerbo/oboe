@@ -51,7 +51,6 @@ export default function ReviewCard({ deckid }) {
     if (!isFlipped) {
       return;
     }
-    // TODO: add logic
     flipCard();
     handleCardProgression(true);
   })
@@ -64,7 +63,6 @@ export default function ReviewCard({ deckid }) {
     if (!isFlipped) {
       return;
     }
-    // TODO: add logic
     flipCard();
     handleCardProgression(false);
   })
@@ -74,14 +72,10 @@ export default function ReviewCard({ deckid }) {
     setIsFlipped(false);
   })
 
-
   useEffect(() => {
     const deck = decks.find(item => item.id === parseInt(deckid));
     deck.cardColor = colors[deck.colorId - 1].color;
     dispatch(setCurrentDeck(deck));
-    // if (deck == null) {
-    //   return;
-    // }
     const cards = flashcards.filter(card => card.deck_id === parseInt(deck.id) && card.consecutive_correct < 5);
 
     let finalConsecutive = [];
@@ -91,8 +85,15 @@ export default function ReviewCard({ deckid }) {
       finalConsecutive = finalConsecutive.concat(n);
     }
 
+    dispatch(
+      setReviewStats({
+        incorrect: 0,
+        correct: 0,
+        cardsLeft: finalConsecutive.length
+      })
+    )
     setCardQueue(finalConsecutive);
-  }, [deckid]);
+  }, [deckid, dispatch])
 
   useEffect(() => {
     if (!isFlipped) {
@@ -101,21 +102,7 @@ export default function ReviewCard({ deckid }) {
     } else {
       setTimeout(() => answerElement.current.focus(), 0);
     }
-    
-    dispatch(
-      setReviewStats(
-        oldReviewStats => {
-          console.log("jwojifjewi")
-          const newReviewStats = {
-            ...oldReviewStats,
-            cardsLeft: "" + cardQueue.length.toString()
-          };
-          console.log(oldReviewStats, newReviewStats);
-          return newReviewStats;
-        })
-        )
-  }, [dispatch, isFlipped])
-
+  }, [isFlipped])
 
   function flipCard() {
     setIsFlipped(!isFlipped);
@@ -152,7 +139,8 @@ export default function ReviewCard({ deckid }) {
       }} color={currentDeck.cardColor}>
         <Box display="flex" flexDirection="column" height="100%">
           <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
-            <Typography ref={questionElement} tabIndex={0} variant="h2">
+            <Typography ref={questionElement} tabIndex={0} variant="h2"
+              aria-label={cardQueue && cardQueue[cardIndex].frontside + ", frontside. Left or right arrow key to flip the card."}>
               {cardQueue && cardQueue[cardIndex].frontside}
             </Typography>
           </Box>
@@ -180,7 +168,9 @@ export default function ReviewCard({ deckid }) {
         <Box display="flex" flexDirection="column" justifyContent="center"
           p={1} height="100%">
           <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center">
-            <Typography tabIndex={0} ref={answerElement} variant="h3" align="center">
+            <Typography tabIndex={0} ref={answerElement} variant="h3" align="center"
+              aria-label={cardQueue && cardQueue[cardIndex].backside +
+                ", backside. Up arrow key if remembered, down arrow key if forgotten."}>
               {cardQueue && cardQueue[cardIndex].backside}
             </Typography>
             <Typography tabIndex={0} align="center">
@@ -190,13 +180,13 @@ export default function ReviewCard({ deckid }) {
           <Box>
             <Grid container spacing={1} direction="row-reverse">
               <Grid item xs={6}>
-                <Button tabIndex={isFlipped ? 0 : -1} variant="contained"
+                <Button tabIndex={isFlipped ? 0 : -1} variant="contained" disabled={!isFlipped}
                   onClick={() => handleCardProgression(true)} color="primary" fullWidth>
                   Remembered
                 </Button>
               </Grid>
               <Grid item xs={6}>
-                <Button tabIndex={isFlipped ? 0 : -1} variant="contained"
+                <Button tabIndex={isFlipped ? 0 : -1} variant="contained" disabled={!isFlipped}
                   onClick={() => handleCardProgression(false)} color="secondary" fullWidth>
                   Forgot
                 </Button>

@@ -1,51 +1,29 @@
-import React, { useState } from 'react'
 import {
   Typography, Accordion,
   AccordionDetails, Box, Divider
 } from "@material-ui/core";
-import useKeyPress from "react-use-keypress";
 import { StyledHelpText, StyledAccordionSummary } from "./ReviewHelpStyled"
 import Keyboard from '@material-ui/icons/KeyboardOutlined';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { ExpandLessRounded } from "@material-ui/icons";
 
 export default function ReviewHelp() {
 
-  const [isExpanded, setIsExpanded] = useState(true);
-
-  useKeyPress("h", () => {
-    setIsExpanded(!isExpanded);
-  })
-
   return (
     <Box minWidth={250}>
-
-      <Accordion expanded={isExpanded}
-        style={{
-          transform: "rotateX(180deg)"
-        }}
-      >
+      <Accordion>
         <StyledAccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandLessRounded />}
           aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+          id="panel1a-header">
           <Box display="flex" alignItems="center"
-            style={{
-              transform: "rotateX(180deg)"
-            }}
             justifyContent="space-between">
-            <StyledHelpText>Keyboard shortcuts [H]</StyledHelpText>
+            <StyledHelpText>Keyboard shortcuts</StyledHelpText>
             <Box px={1}></Box>
             <Keyboard />
           </Box>
         </StyledAccordionSummary>
         <AccordionDetails>
-          <Box display="flex" flexDirection="column" width="100%"
-            style={{
-              transform: "rotateX(180deg)"
-            }}
-          >
-            <Divider />
+          <Box display="flex" flexDirection="column" width="100%">
             <Box py={1}>
               <Typography tabIndex={0}
                 aria-label="List of shortcut keys available before flipping the card"
@@ -107,7 +85,6 @@ export default function ReviewHelp() {
               <StyledHelpText>Back to decks</StyledHelpText>
             </Box>
           </Box>
-
         </AccordionDetails>
       </Accordion>
     </Box>

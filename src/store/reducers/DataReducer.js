@@ -1,7 +1,7 @@
 const initialState = {
-  searchTerm: "",
-  currentDeck: {cardColor: "#111"},
-  reviewStats: {correct: "", incorrect: "", cardsLeft: ""}
+    searchTerm: "",
+    currentDeck: { cardColor: "#111" },
+    reviewStats: { correct: 0, incorrect: 0, cardsLeft: 0 }
 };
 
 function DataReducer(state = initialState, action) {

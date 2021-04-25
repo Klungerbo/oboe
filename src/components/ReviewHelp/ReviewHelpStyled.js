@@ -11,5 +11,6 @@ export const StyledHelpText = styled(Typography)`
 export const StyledAccordionSummary = styled(AccordionSummary)`
   background: #111;
   box-shadow: 0 0 7px 1px rgba(30,30,30,0.4);
-  border-radius: 5px;
-  `;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+`;

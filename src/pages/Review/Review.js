@@ -1,7 +1,7 @@
 import React from "react";
 import {
   Grid, Box, Hidden,
-  Container
+  Container, useMediaQuery
 } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
 import ReviewHelp from '../../components/ReviewHelp/ReviewHelp'
@@ -15,9 +15,7 @@ export default function Review() {
 
   let { id } = useParams();
   const currentDeck = useSelector(state => state.currentDeck);
-  const [reviewStats, setReviewStats] = React.useState({
-    correct: 0, incorrect: 0, cardsLeft: 0
-  });
+  const verticalLimit = useMediaQuery("(max-height: 600px)");
 
   return (
     <Container>
@@ -35,7 +33,12 @@ export default function Review() {
             <ReviewCard deckid={id} />
             <ReviewStats />
           </Box>
-          <ExitToDecksButton component={Link} to="/" exitbuttoncolor={currentDeck.cardColor} variant="contained" endIcon={<SendIcon />}>Wrap up session</ExitToDecksButton>
+          {!verticalLimit && <Box pt={3} />}
+          <ExitToDecksButton component={Link} to="/"
+          exitbuttoncolor={currentDeck.cardColor} variant="contained"
+          endIcon={<SendIcon />}>
+            Wrap up session
+          </ExitToDecksButton>
         </Grid>
         <Hidden>
           <Grid item md={4}>

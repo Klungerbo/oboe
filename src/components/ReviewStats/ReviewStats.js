@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 export default function ReviewStats() {
 
-  const {correct, incorrect, cardsLeft} = useSelector(state => state.reviewStats);
+  const { correct, incorrect, cardsLeft } = useSelector(state => state.reviewStats);
 
   return (
     <Box display="flex" justifyContent="space-between">
