@@ -6,7 +6,7 @@ export default function About() {
   return (
     <Container maxWidth="lg">
       <Grid container>
-        <Grid item sm={12} md={6}>
+        <Grid item xs={12}>
           <Typography variant="h1">About</Typography>
           <Box ml={3}>
             <Typography variant="h2">School project</Typography>
@@ -15,28 +15,20 @@ export default function About() {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} md={6} />
-        <Grid item xs={12} md={6} >
+        <Grid item xs={12}>
           <Box ml={3}>
             <Typography variant="h2">The team</Typography>
             <Typography variant="body1" gutterBottom>The team consists of two developers, Tomas Klungerbo Olsen and Simen Nesse Wiik.</Typography>
-          </Box>
-        </Grid>
-        <Grid item container justify="flex-end" sm={12} md={6}>
-          <Box mr={3}>
-            <Grid item >
-              <PersonInfoCard name="Simen Nesse Wiik" />
-            </Grid>
-            <Box pt={1} />
-            <Grid item>
-              <PersonInfoCard name="Tomas Klungerbo Olsen" />
-            </Grid>
+
+            <Box display="flex" flexDirection="row" flexWrap="wrap">
+              <Box mb={2} mr={2}><PersonInfoCard avatar={"/assets/tko_avatar.jpg"} name="Simen Nesse Wiik" /></Box>
+              <Box mb={2}><PersonInfoCard avatar={"/assets/snw_avatar.jpg"} name="Tomas Klungerbo Olsen"/></Box>
+            </Box>
           </Box>
         </Grid>
 
-        <Box py={4} />
-
-        <Grid item xs={12} md={6} >
+        <Grid item xs={12}>
+          <Box py={4} />
           <Typography variant="h2">What is Oboe?</Typography>
           <Box ml={3}>
             <Typography variant="h3">Decks and cards</Typography>
@@ -84,9 +76,9 @@ const PersonInfoCard = ({ name, avatar }) => {
           <Grid item xs={12}>
             NTNU
           <CardMedia style={{ height: "40px", width: "40px" }}
-            image="/assets/tko_avatar.jpg"
-            title="Contemplative Reptile"
-          />
+              image={avatar}
+              title="Contemplative Reptile"
+            />
           </Grid>
         </Grid>
       </CardContent>
