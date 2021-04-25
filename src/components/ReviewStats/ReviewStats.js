@@ -12,7 +12,7 @@ export default function ReviewStats() {
 
   return (
     <Box display="flex" justifyContent="space-between">
-      <Box display="flex" alignItems="center" color="green" fontSize={32}>
+      <Box display="flex" alignItems="center" color="#00B800" fontSize={32}>
         <ArrowUpwardRoundedIcon fontSize="large" />
         <Typography style={{ fontSize: "2.5rem", fontFamily: "Unica One" }}>
           {correct}
