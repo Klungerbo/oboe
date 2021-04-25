@@ -12,7 +12,6 @@ import { useParams, Link } from 'react-router-dom';
 import { useSelector } from "react-redux";
 
 export default function Review() {
-
   let { id } = useParams();
   const currentDeck = useSelector(state => state.currentDeck);
   const verticalLimit = useMediaQuery("(max-height: 600px)");
@@ -23,7 +22,7 @@ export default function Review() {
         <Hidden smDown>
           <Grid item container md={4}>
             <Box display="flex" pl={2} alignSelf="flex-end">
-              <ReviewHelp></ReviewHelp>
+              <ReviewHelp />
             </Box>
           </Grid>
         </Hidden>

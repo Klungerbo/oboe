@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import { useSelector } from 'react-redux';
 
 export default function ReviewStats() {
-
   const { correct, incorrect, cardsLeft } = useSelector(state => state.reviewStats);
 
   return (

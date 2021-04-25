@@ -1,13 +1,12 @@
 import {
-  Typography, Accordion,
-  AccordionDetails, Box, Divider
+  Typography, Accordion, AccordionDetails,
+  Box, Divider
 } from "@material-ui/core";
 import { StyledHelpText, StyledAccordionSummary } from "./ReviewHelpStyled"
 import Keyboard from '@material-ui/icons/KeyboardOutlined';
 import { ExpandLessRounded } from "@material-ui/icons";
 
 export default function ReviewHelp() {
-
   return (
     <Box minWidth={250}>
       <Accordion>

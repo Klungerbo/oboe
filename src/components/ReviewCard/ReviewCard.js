@@ -3,7 +3,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { useState, useEffect, useRef } from 'react'
-import { StyledReviewCard, StyledFrontFace, StyledBackFace } from "./ReviewCardStyled";
+import { StyledReviewCard, StyledCardFace, StyledFlipOverlay } from "./ReviewCardStyled";
 import useKeyPress from "react-use-keypress";
 import { useHistory } from 'react-router';
 import flashcards from "../../data/flashcards";
@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDeck, setReviewStats } from '../../store/actions/DataActions';
 
 export default function ReviewCard({ deckid }) {
-
   const [cardQueue, setCardQueue] = useState(null);
   const [cardIndex, setCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -133,7 +132,7 @@ export default function ReviewCard({ deckid }) {
 
   function CardFront() {
     return (
-      <StyledFrontFace style={{
+      <StyledCardFace style={{
         opacity: opacity.to(o => 1 - o),
         transform
       }} color={currentDeck.cardColor}>
@@ -145,22 +144,17 @@ export default function ReviewCard({ deckid }) {
               {cardQueue && cardQueue[cardIndex].frontside}
             </Typography>
           </Box>
-          <Box py={3} align="center"
-            style={{
-              backgroundColor: "rgba(0,0,0,0.3)",
-              borderBottomLeftRadius: "5px",
-              borderBottomRightRadius: "5px"
-            }}>
+          <StyledFlipOverlay py={3} align="center">
             <Typography>Flip</Typography>
-          </Box>
+          </StyledFlipOverlay>
         </Box>
-      </StyledFrontFace>
+      </StyledCardFace>
     )
   }
 
   function CardBack() {
     return (
-      <StyledBackFace style={{
+      <StyledCardFace style={{
         opacity,
         transform: transform.to((t) => {
           return `${t} rotateY(180deg)`
@@ -196,7 +190,7 @@ export default function ReviewCard({ deckid }) {
           </Box>
         </Box>
 
-      </StyledBackFace>
+      </StyledCardFace>
     )
   }
 
