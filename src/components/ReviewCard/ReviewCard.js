@@ -3,9 +3,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { useState, useEffect, useRef } from 'react'
-import {
-  StyledReviewCard, StyledFrontFace, StyledBackFace
-} from "./ReviewCardStyled";
+import { StyledReviewCard, StyledFrontFace, StyledBackFace } from "./ReviewCardStyled";
 import useKeyPress from "react-use-keypress";
 import { useHistory } from 'react-router';
 import flashcards from "../../data/flashcards";
