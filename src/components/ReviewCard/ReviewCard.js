@@ -12,8 +12,10 @@ import flashcards from "../../data/flashcards";
 import decks from "../../data/decks";
 import colors from "../../data/colors";
 import { useSpring } from "@react-spring/web";
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentDeck, setReviewStats } from '../../store/actions/DataActions';
 
-export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStats, setReviewStats }) {
+export default function ReviewCard({ deckid }) {
 
   const [cardQueue, setCardQueue] = useState(null);
   const [cardIndex, setCardIndex] = useState(0);
@@ -21,6 +23,9 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
   const history = useHistory();
   const answerElement = useRef();
   const questionElement = useRef();
+  const dispatch = useDispatch();
+  const currentDeck = useSelector(state => state.currentDeck);
+  const reviewStats = useSelector(state => state.reviewStats);
   const { transform, opacity } = useSpring({
     opacity: isFlipped ? 1 : 0,
     transform: `perspective(700px) rotateY(${isFlipped ? 180 : 0}deg)`,
@@ -72,6 +77,11 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
 
   useEffect(() => {
     const deck = decks.find(item => item.id === parseInt(deckid));
+    deck.cardColor = colors[deck.colorId - 1].color;
+    dispatch(setCurrentDeck(deck));
+    // if (deck == null) {
+    //   return;
+    // }
     const cards = flashcards.filter(card => card.deck_id === parseInt(deck.id) && card.consecutive_correct < 5);
 
     let finalConsecutive = [];
@@ -82,9 +92,7 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
     }
 
     setCardQueue(finalConsecutive);
-    setReviewStats({ ...reviewStats, ...{ cardsLeft: finalConsecutive.length } })
-    setCardColor(colors[deck.colorId - 1].color);
-  }, [])
+  }, [deckid]);
 
   useEffect(() => {
     if (!isFlipped) {
@@ -93,7 +101,20 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
     } else {
       setTimeout(() => answerElement.current.focus(), 0);
     }
-  }, [isFlipped])
+    
+    dispatch(
+      setReviewStats(
+        oldReviewStats => {
+          console.log("jwojifjewi")
+          const newReviewStats = {
+            ...oldReviewStats,
+            cardsLeft: "" + cardQueue.length.toString()
+          };
+          console.log(oldReviewStats, newReviewStats);
+          return newReviewStats;
+        })
+        )
+  }, [dispatch, isFlipped])
 
 
   function flipCard() {
@@ -102,21 +123,17 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
 
   function handleCardProgression(didRemember) {
     if (didRemember) {
-      setReviewStats({
+      dispatch(setReviewStats({
         ...reviewStats,
-        ...{
-          correct: reviewStats.correct + 1,
-          cardsLeft: reviewStats.cardsLeft - 1
-        }
-      })
+        correct: reviewStats.correct + 1,
+        cardsLeft: reviewStats.cardsLeft - 1
+      }))
     } else {
-      setReviewStats({
+      dispatch(setReviewStats({
         ...reviewStats,
-        ...{
-          incorrect: reviewStats.incorrect + 1,
-          cardsLeft: reviewStats.cardsLeft - 1
-        }
-      })
+        incorrect: reviewStats.incorrect + 1,
+        cardsLeft: reviewStats.cardsLeft - 1
+      }))
     }
 
     if (cardIndex + 1 < cardQueue.length) {
@@ -132,7 +149,7 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
       <StyledFrontFace style={{
         opacity: opacity.to(o => 1 - o),
         transform
-      }} color={cardColor}>
+      }} color={currentDeck.cardColor}>
         <Box display="flex" flexDirection="column" height="100%">
           <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
             <Typography ref={questionElement} tabIndex={0} variant="h2">
@@ -159,7 +176,7 @@ export default function ReviewCard({ deckid, cardColor, setCardColor, reviewStat
         transform: transform.to((t) => {
           return `${t} rotateY(180deg)`
         })
-      }} color={cardColor}>
+      }} color={currentDeck.cardColor}>
         <Box display="flex" flexDirection="column" justifyContent="center"
           p={1} height="100%">
           <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center">

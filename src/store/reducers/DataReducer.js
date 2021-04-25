@@ -1,5 +1,7 @@
 const initialState = {
-  searchTerm: ""
+  searchTerm: "",
+  currentDeck: {cardColor: "#111"},
+  reviewStats: {correct: "", incorrect: "", cardsLeft: ""}
 };
 
 function DataReducer(state = initialState, action) {
@@ -8,6 +10,16 @@ function DataReducer(state = initialState, action) {
             return {
                 ...state,
                 searchTerm: action.searchTerm
+            };
+        case "SET_REVIEW_STATS":
+            return {
+                ...state,
+                reviewStats: action.reviewStats
+            };
+        case "SET_CURRENT_DECK":
+            return {
+                ...state,
+                currentDeck: action.currentDeck
             };
 
         default:

@@ -4,10 +4,11 @@ import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
 import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
 import React from 'react'
 import Typography from '@material-ui/core/Typography';
+import { useSelector } from 'react-redux';
 
-export default function ReviewStats({reviewStats}) {
+export default function ReviewStats() {
 
-  const {correct, incorrect, cardsLeft} = reviewStats;
+  const {correct, incorrect, cardsLeft} = useSelector(state => state.reviewStats);
 
   return (
     <Box display="flex" justifyContent="space-between">
