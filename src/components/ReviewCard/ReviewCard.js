@@ -97,9 +97,9 @@ export default function ReviewCard({ deckid }) {
   useEffect(() => {
     if (!isFlipped) {
       // I have to use setTimeout because if I don't, the else code never runs. Really weird
-      setTimeout(() => questionElement.current.focus(), 0);
+      setTimeout(() => questionElement.current && questionElement.current.focus(), 0);
     } else {
-      setTimeout(() => answerElement.current.focus(), 0);
+      setTimeout(() => answerElement.current && answerElement.current.focus(), 0);
     }
   }, [isFlipped])
 
@@ -138,14 +138,19 @@ export default function ReviewCard({ deckid }) {
       }} color={currentDeck.cardColor}>
         <Box display="flex" flexDirection="column" height="100%">
           <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
-            <Typography ref={questionElement} tabIndex={0} variant="h2"
+            <Typography align="center" ref={questionElement} tabIndex={isFlipped ? -1 : 0}
+              style={{
+                fontFamily: "Bebas Neue",
+                fontSize: "1.8rem"
+              }}
               aria-label={cardQueue && cardQueue[cardIndex].frontside +
                 ", frontside. Left or right arrow key to flip the card."}>
               {cardQueue && cardQueue[cardIndex].frontside}
             </Typography>
           </Box>
           <StyledFlipOverlay py={3} align="center">
-            <Typography>Flip</Typography>
+            <Typography tabIndex={isFlipped ? -1 : 0}
+            aria-label="Space, right arrow or left arrow key to flip the card.">Flip</Typography>
           </StyledFlipOverlay>
         </Box>
       </StyledCardFace>
@@ -163,12 +168,16 @@ export default function ReviewCard({ deckid }) {
         <Box display="flex" flexDirection="column" justifyContent="center"
           p={1} height="100%">
           <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center">
-            <Typography tabIndex={0} ref={answerElement} variant="h3" align="center"
+            <Typography tabIndex={isFlipped ? 0 : -1} ref={answerElement} align="center"
+              style={{
+                fontFamily: "Bebas Neue",
+                fontSize: "1.8rem"
+              }}
               aria-label={cardQueue && cardQueue[cardIndex].backside +
                 ", backside. Up arrow key if remembered, down arrow key if forgotten."}>
               {cardQueue && cardQueue[cardIndex].backside}
             </Typography>
-            <Typography tabIndex={0} align="center">
+            <Typography tabIndex={isFlipped && cardQueue[cardIndex].description ? 0 : -1} align="center" style={{fontFamily: "Mada"}}>
               {cardQueue && cardQueue[cardIndex].description}
             </Typography>
           </Box>

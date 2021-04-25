@@ -37,7 +37,7 @@ const data = [
   },
   {
     id: 5,
-    frontside: "To stand",
+    frontside: "To stand hello good bye smacked a small fly yesterday summer month of junefly yesterday ",
     backside: "立つ",
     description: null,
     last_reviewed_at: new Date("2019-11-20"),
