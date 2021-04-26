@@ -11,24 +11,26 @@ import About from './About/About';
 import Contact from './Contact/Contact';
 import Review from './Review/Review';
 
-import { API_DECKS } from '../data/config';
-import { setLoggedIn } from '../store/actions/DataActions';
+import { API_EMAIL } from '../data/config';
+import { setLoggedIn, setUserEmail } from '../store/actions/DataActions';
 
 export default function Pages() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch(API_DECKS, {
+    fetch(API_EMAIL, {
       method: "GET"
     }).then(response => {
-      if (response.status === 200) {
-        dispatch(setLoggedIn(true));
-      } else {
-        dispatch(setLoggedIn(false));
-      }
-    }).catch(error => {
-      console.log(error);
-    });
+      response.json().then(jsonObject => {
+        if (response.status === 200) {
+          dispatch(setLoggedIn(true));
+          dispatch(setUserEmail(jsonObject.email));
+        } else {
+          dispatch(setLoggedIn(false));
+          dispatch(setUserEmail(""));
+        }
+      }).catch(console.log);
+    }).catch(console.log);
   }, [])
 
   return (
@@ -39,10 +41,10 @@ export default function Pages() {
 
       <StyledMainContent>
         <Switch>
-          <Route exact path="/" component={Home}/>
-          <Route path='/about' component={About}/>
-          <Route path='/contact' component={Contact}/>
-          <Route path='/review/:id' component={Review}/>
+          <Route exact path="/" component={Home} />
+          <Route path='/about' component={About} />
+          <Route path='/contact' component={Contact} />
+          <Route path='/review/:id' component={Review} />
         </Switch>
       </StyledMainContent>
 

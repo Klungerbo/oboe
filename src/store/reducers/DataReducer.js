@@ -8,9 +8,6 @@ const initialState = {
     correct: 0,
     incorrect: 0,
     cardsLeft: 0
-  },
-  user: {
-    jwt: ""
   }
 };
 
@@ -31,10 +28,10 @@ function DataReducer(state = initialState, action) {
         ...state,
         currentDeck: action.currentDeck
       };
-    case "SET_USER":
+    case "SET_USER_EMAIL":
       return {
         ...state,
-        user: action.user
+        userEmail: action.userEmail
       };
     case "SET_LOGGED_IN":
       return {

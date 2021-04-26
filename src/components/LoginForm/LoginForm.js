@@ -5,23 +5,21 @@ import {
   TextField, Button, Divider,
 } from "@material-ui/core";
 
-import { setLoggedIn, setUser } from '../../store/actions/DataActions';
+import { setLoggedIn, setUserEmail } from '../../store/actions/DataActions';
 import { StyledSignUpButton } from "./LoginFormStyled";
 import { API_AUTH_SIGNIN } from '../../data/config';
 
-export default function LoginForm({ onOpen, email, password }) {
-  const [userInfo, setUserInfo] = React.useState({
-    email: email ?? null,
-    password: password ?? null
-  })
-
+export default function LoginForm({ onOpen }) {
   const dispatch = useDispatch();
+
+  const [userInfo, setUserInfo] = React.useState({});
+  const [invalidEmail, setInvalidEmail] = React.useState(false);
+  const [invalidPassword, setInvalidPassword] = React.useState(false);
 
   const handleLogin = e => {
     e.preventDefault();
 
     const userInfoJson = JSON.stringify(userInfo);
-    console.log("Sending: " + userInfoJson);
     fetch(API_AUTH_SIGNIN, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -29,20 +27,25 @@ export default function LoginForm({ onOpen, email, password }) {
     }).then(response => {
       if (response.status === 200) {
         response.json().then(jsonObject => {
-          const jwt = jsonObject.accessToken;
           const email = jsonObject.email;
 
           dispatch(setLoggedIn(true));
-          dispatch(setUser({ jwt: jwt, email: email }));
+          dispatch(setUserEmail(email));
+        });
+      } else if (response.status === 401) {
+        response.json().then(jsonObject => {
+          const type = jsonObject["type"];
+          if (type === "email") {
+            setInvalidEmail(true);
+            setInvalidPassword(false);
+          } else if (type === "password") {
+            setInvalidEmail(false);
+            setInvalidPassword(true);
+          }
         });
       }
-    });
+    }).catch(error => console.log("Hello" + error));
   }
-
-  React.useEffect(() => {
-    setUserInfo({ email: email, password: password })
-    console.log("Hello");
-  }, [email, password]);
 
   return (
     <Card raised>
@@ -58,13 +61,15 @@ export default function LoginForm({ onOpen, email, password }) {
             <Grid item xs={12}>
               <TextField
                 onChange={e => setUserInfo({ ...userInfo, email: e.target.value })}
-                required id="email" fullWidth variant="outlined" label="E-mail" value={userInfo.email}
+                required id="email" fullWidth variant="outlined" label="E-mail"
+                helperText={invalidEmail && "Email is not registered"} error={invalidEmail}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 onChange={e => setUserInfo({ ...userInfo, password: e.target.value })}
-                required id="password" fullWidth variant="outlined" label="Password" type="password" value={userInfo.password}
+                required id="password" fullWidth variant="outlined" label="Password" type="password" 
+                helperText={invalidPassword && "Password is incorrect"} error={invalidPassword}
               />
             </Grid>
             <Grid item xs={12}>

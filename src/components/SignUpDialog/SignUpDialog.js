@@ -1,10 +1,13 @@
+import React from 'react'
 import {
   Dialog, FormGroup, CardContent,
   Grid, TextField, Button
 } from '@material-ui/core';
-import React from 'react'
-import { API_AUTH_SIGNUP } from '../../data/config';
+import { useDispatch } from 'react-redux';
+
 import { StyledDialogTitle } from "./SignupDialogStyled";
+import { API_AUTH_SIGNUP, API_AUTH_SIGNIN } from '../../data/config';
+import { setLoggedIn, setUserEmail } from '../../store/actions/DataActions';
 
 /**
  * Represents the sign up dialog that pops up when you click "Create new user" when not logged in
@@ -13,7 +16,9 @@ import { StyledDialogTitle } from "./SignupDialogStyled";
  *                        (onClose) Handler for closing the dialog i.e. set open state to false
  * @returns Sign up dialog as JSX
  */
-export default function SignUpDialog({ open, onClose, setEmail, setPassword}) {
+export default function SignUpDialog({ open, onClose }) {
+  const dispatch = useDispatch();
+
   const [passwordMatching, setPasswordMatching] = React.useState(true);
   const [emailTaken, setEmailTaken] = React.useState(false);
 
@@ -43,8 +48,19 @@ export default function SignUpDialog({ open, onClose, setEmail, setPassword}) {
       } else if (response.status === 200) {
         setEmailTaken(false);
 
-        setEmail(newUserInfo.email);
-        setPassword(newUserInfo.password);
+        dispatch(setUserEmail(newUserInfo.email));
+
+        fetch(API_AUTH_SIGNIN, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: newUserInfoJson
+        }).then(response => {
+          if (response.status === 200) {
+            response.json().then(jsonObject => {
+              dispatch(setLoggedIn(true));
+            });
+          }
+        });
 
         onClose(false);
       }
@@ -91,7 +107,7 @@ export default function SignUpDialog({ open, onClose, setEmail, setPassword}) {
                 required
                 fullWidth
                 error={!passwordMatching}
-                helperText={!passwordMatching ? "Password does not match" : ""}
+                helperText={!passwordMatching ? "Passwords do not match" : ""}
                 variant="outlined"
                 label="Confirm password"
                 type="password"

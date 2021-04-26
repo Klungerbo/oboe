@@ -7,11 +7,11 @@ export function setSearchTerm(searchTerm) {
   };
 }
 
-export function setUser(user) {
+export function setUserEmail(userEmail) {
   return function (dispatch) {
     dispatch({
-      type: "SET_USER",
-      user: user
+      type: "SET_USER_EMAIL",
+      userEmail: userEmail
     });
   }
 }

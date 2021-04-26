@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Box, Button, Container, Grid,
-  Hidden, Typography
+  Hidden, Input, Typography
 } from '@material-ui/core'
 
 import LoginForm from '../../components/LoginForm/LoginForm';
 import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
 import Deck from '../../components/Deck/Deck';
 
-import decks from '../../data/decks';
 import colors from '../../data/colors';
 import { API_DECKS } from '../../data/config';
 
@@ -21,39 +20,49 @@ import { API_DECKS } from '../../data/config';
  */
 export default function Home() {
   const userLoggedIn = useSelector(state => state.loggedIn);
-  const userInfo = useSelector(state => state.user)
+  const userEmail = useSelector(state => state.userEmail);
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [decks, setDecks] = React.useState([]);
+
+  useEffect(() => {
+    handleGetDecks();
+  }, [])
 
   const handleAddDeck = () => {
-    const newDeck = JSON.stringify({
+    const newDeck = {
       name: "Deck",
       description: "Desc",
-      colorId: 1
-    });
+      colorId: Math.round(Math.random() * 4) + 1
+    };
 
     fetch(API_DECKS, {
       method: "POST",
-      headers: {},
-      body: newDeck
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(newDeck)
     }).then(response => {
-      response.text().then(console.log);
-    }).catch(error => {
-      console.log(error);
-    });
+      console.log(response);
+      if (response.status !== 200) 
+        return
+
+      response.json().then(({id}) => {
+        console.log(id);
+        const deckToAdd = {...newDeck, id};
+        console.log(deckToAdd);
+        setDecks([...decks, {...newDeck, id}]);
+      })
+    }).catch(error => { console.log(error); });
   };
 
   const handleGetDecks = () => {
     fetch(API_DECKS, {
       method: "GET",
     }).then(response => {
-      console.log("Received decks");
-      response.text().then(console.log);
-    }).catch(error => {
-      console.log(error);
-    });
+      response.json().then(jsonObject => {
+        console.log(jsonObject);
+        setDecks(jsonObject);
+      }).catch(console.log)
+    }).catch(console.log);
   }
 
   /**
@@ -68,10 +77,10 @@ export default function Home() {
           <Grid key={"myId"} item xs={12} sm={6} lg={4}>
             <Button variant="contained" color="primary" onClick={handleAddDeck} >ADD DECK </Button>
           </Grid>
-          <Grid key={"idget"} item xs={12} sm={6} lg={4}>
+          <Grid key={"idet"} item xs={12} sm={6} lg={4}>
             <Button variant="contained" color="primary" onClick={handleGetDecks} >GET DECKS </Button>
           </Grid>
-          {decks.map(deck => {
+          {decks && decks.map(deck => {
             return (
               <Grid key={deck.id} item xs={12} sm={6} lg={4}>
                 <Deck deck={deck} color={colors[deck.colorId - 1].color} />
@@ -96,7 +105,7 @@ export default function Home() {
             <Box pb={3} display="flex" flexDirection="row">
               <Typography variant="h1">My decks</Typography>
               <Box px={1} alignSelf="flex-end">
-                <Typography gutterBottom variant="body1" color="textSecondary">({userInfo?.email})</Typography>
+                <Typography gutterBottom variant="body1" color="textSecondary">({userEmail})</Typography>
               </Box>
             </Box>
           </Grid>
@@ -132,18 +141,18 @@ export default function Home() {
             <Grid container justify="flex-end" alignItems="center" item xs={12} sm={12} md={6}>
               <Hidden smDown >
                 <Box maxWidth={400} flexGrow={1}>
-                  <LoginForm email={email} password={password} onOpen={setIsSignupDialogOpen} />
+                  <LoginForm onOpen={setIsSignupDialogOpen} />
                 </Box>
               </Hidden>
               <Hidden mdUp >
                 <Box maxWidth={400} pt={3} flexGrow={1} mx="auto">
-                  <LoginForm email={email} password={password} onOpen={setIsSignupDialogOpen} />
+                  <LoginForm onOpen={setIsSignupDialogOpen} />
                 </Box>
               </Hidden>
             </Grid>
           </Grid>
         </Container>
-        <SignUpDialog setEmail={setEmail} setPassword={setPassword} open={isSignUpDialogOpen} onClose={setIsSignupDialogOpen} />
+        <SignUpDialog open={isSignUpDialogOpen} onClose={setIsSignupDialogOpen} />
       </>
     );
   }
