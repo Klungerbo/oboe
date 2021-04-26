@@ -3,6 +3,7 @@ import {
   Grid, TextField, Button
 } from '@material-ui/core';
 import React from 'react'
+import { API_AUTH_SIGNUP } from '../../data/config';
 import { StyledDialogTitle } from "./SignupDialogStyled";
 
 /**
@@ -32,8 +33,8 @@ export default function SignUpDialog({ open, onClose, setEmail, setPassword}) {
       return;
 
     const newUserInfoJson = JSON.stringify(newUserInfo);
-    fetch(`https://oboe.klungerbo.com/api/auth/signup/`, {
-      method: "post",
+    fetch(API_AUTH_SIGNUP, {
+      method: "POST",
       headers: { "content-type": "application/json" },
       body: newUserInfoJson
     }).then(response => {

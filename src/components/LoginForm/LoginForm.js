@@ -4,8 +4,10 @@ import {
   CardContent, Grid, Card,
   TextField, Button, Divider,
 } from "@material-ui/core";
-import { StyledSignUpButton } from "./LoginFormStyled";
+
 import { setLoggedIn, setUser } from '../../store/actions/DataActions';
+import { StyledSignUpButton } from "./LoginFormStyled";
+import { API_AUTH_SIGNIN } from '../../data/config';
 
 export default function LoginForm({ onOpen, email, password }) {
   const [userInfo, setUserInfo] = React.useState({
@@ -13,25 +15,25 @@ export default function LoginForm({ onOpen, email, password }) {
     password: password ?? null
   })
 
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
 
   const handleLogin = e => {
     e.preventDefault();
 
     const userInfoJson = JSON.stringify(userInfo);
     console.log("Sending: " + userInfoJson);
-    fetch(`https://oboe.klungerbo.com/api/auth/signin/`, {
-      method: "post",
+    fetch(API_AUTH_SIGNIN, {
+      method: "POST",
       headers: { "content-type": "application/json" },
       body: userInfoJson
     }).then(response => {
       if (response.status === 200) {
         response.json().then(jsonObject => {
-          const token = jsonObject.accessToken;
+          const jwt = jsonObject.accessToken;
           const email = jsonObject.email;
-          
+
           dispatch(setLoggedIn(true));
-          dispatch(setUser({jwtToken: token, email: email}));
+          dispatch(setUser({ jwt: jwt, email: email }));
         });
       }
     });

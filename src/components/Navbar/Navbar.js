@@ -17,6 +17,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
 import SearchBar from './Searchbar';
 import { setLoggedIn } from '../../store/actions/DataActions';
+import { API_AUTH_SIGNOUT } from '../../data/config';
 
 
 /**
@@ -41,7 +42,7 @@ export default function Navbar() {
    * 
    * @param {boolean} open - the open state of the drawer.
    */
-  const toggleDrawer = (open) => (event) => {
+  const toggleDrawer = open => event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -57,6 +58,12 @@ export default function Navbar() {
   const logoutButton = () => {
     return (
       <Button onClick={() => {
+        fetch(API_AUTH_SIGNOUT, {
+          method: "GET",
+        }).catch(error => {
+          console.log(error);
+        });
+
         dispatch(setLoggedIn(false));
         history.push("/");
       }}>Log out</Button>

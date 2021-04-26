@@ -8,6 +8,9 @@ const initialState = {
     correct: 0,
     incorrect: 0,
     cardsLeft: 0
+  },
+  user: {
+    jwt: ""
   }
 };
 
@@ -38,6 +41,7 @@ function DataReducer(state = initialState, action) {
         ...state,
         loggedIn: action.loggedIn
       };
+
     default:
       return state;
   }

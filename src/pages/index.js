@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router';
+import styled from 'styled-components';
 
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -9,9 +11,26 @@ import About from './About/About';
 import Contact from './Contact/Contact';
 import Review from './Review/Review';
 
-import styled from 'styled-components';
+import { API_DECKS } from '../data/config';
+import { setLoggedIn } from '../store/actions/DataActions';
 
 export default function Pages() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetch(API_DECKS, {
+      method: "GET"
+    }).then(response => {
+      if (response.status === 200) {
+        dispatch(setLoggedIn(true));
+      } else {
+        dispatch(setLoggedIn(false));
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+  }, [])
+
   return (
     <Body>
       <StyledHeader>

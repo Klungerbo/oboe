@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Box, Button, Container, Grid,
@@ -11,6 +11,7 @@ import Deck from '../../components/Deck/Deck';
 
 import decks from '../../data/decks';
 import colors from '../../data/colors';
+import { API_DECKS } from '../../data/config';
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,
@@ -19,15 +20,12 @@ import colors from '../../data/colors';
  * @returns JSX of guest/user home page
  */
 export default function Home() {
-  // TODO: remove test variables
   const userLoggedIn = useSelector(state => state.loggedIn);
-  const userEmail = "email@email.com";
+  const userInfo = useSelector(state => state.user)
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
-  const userInfo = useSelector(state => state.user)
 
   const handleAddDeck = () => {
     const newDeck = JSON.stringify({
@@ -36,35 +34,26 @@ export default function Home() {
       colorId: 1
     });
 
-    fetch("https://oboe.klungerbo.com/api/decks",
-      {
-        method: "post",
-        headers: {
-          "content-type": "application/json", 
-          "x-access-token": userInfo.jwtToken
-        },
-        body: newDeck
-      }).then(response => {
-
-        response.text().then(console.log);
-      }).catch(error => {
-        console.log(error);
-      });
+    fetch(API_DECKS, {
+      method: "POST",
+      headers: {},
+      body: newDeck
+    }).then(response => {
+      response.text().then(console.log);
+    }).catch(error => {
+      console.log(error);
+    });
   };
 
   const handleGetDecks = () => {
-    fetch("https://oboe.klungerbo.com/api/decks",
-      {
-        method: "get",
-        headers: {
-          "x-access-token": userInfo.jwtToken
-        },
-      }).then(response => {
-        console.log("Received decks");
-        response.text().then(console.log);
-      }).catch(error => {
-        console.log(error);
-      });
+    fetch(API_DECKS, {
+      method: "GET",
+    }).then(response => {
+      console.log("Received decks");
+      response.text().then(console.log);
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   /**
@@ -107,7 +96,7 @@ export default function Home() {
             <Box pb={3} display="flex" flexDirection="row">
               <Typography variant="h1">My decks</Typography>
               <Box px={1} alignSelf="flex-end">
-                <Typography gutterBottom variant="body1" color="textSecondary">({userEmail})</Typography>
+                <Typography gutterBottom variant="body1" color="textSecondary">({userInfo?.email})</Typography>
               </Box>
             </Box>
           </Grid>
