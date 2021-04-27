@@ -37,7 +37,11 @@ export default function SignUpDialog({ open, onClose }) {
     if (newUserInfo.password !== newUserInfo.confirmedPassword)
       return;
 
-    const newUserInfoJson = JSON.stringify(newUserInfo);
+    const newUserInfoJson = JSON.stringify({
+      email: newUserInfo.email,
+      password: newUserInfo.password
+    });
+
     fetch(API_AUTH_SIGNUP, {
       method: "POST",
       headers: { "content-type": "application/json" },
