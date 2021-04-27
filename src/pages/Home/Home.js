@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box, Button, Container, Grid,
   Hidden, Input, Typography
@@ -10,7 +10,9 @@ import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
 import Deck from '../../components/Deck/Deck';
 
 import colors from '../../data/colors';
-import { API_DECKS } from '../../data/config';
+import * as flashcards from '../../data/flashcards';
+import { API_DECKS, API_FLASHCARDS } from '../../data/config';
+import { setDecks } from '../../store/actions/DataActions';
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,
@@ -19,15 +21,43 @@ import { API_DECKS } from '../../data/config';
  * @returns JSX of guest/user home page
  */
 export default function Home() {
+  const dispatch = useDispatch();
+
   const userLoggedIn = useSelector(state => state.loggedIn);
   const userEmail = useSelector(state => state.userEmail);
+  const decks = useSelector(state => state.decks)
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
-  const [decks, setDecks] = React.useState([]);
 
   useEffect(() => {
     handleGetDecks();
-  }, [])
+  }, []);
+
+  const handleAddFlashcard = () => {
+    const newFlashcard = {
+      front: flashcards.front[Math.round(Math.random() * flashcards.front.length) - 1],
+      back: flashcards.back[Math.round(Math.random() * flashcards.back.length) - 1],
+      description: flashcards.description[Math.round(Math.random() * flashcards.description.length) - 1],
+      lastReviewedAt: new Date("2019-04-20"),
+      consecutiveCorrect: Math.round(Math.random() * 5),
+      deckId: Math.floor(Math.random() * decks.length)  + 1
+    };
+
+    fetch(API_FLASHCARDS, {
+      method: "POST",
+      headers: { "content-type": "application/json"},
+      body: JSON.stringify(newFlashcard)
+    }).then(res => {
+      if (res.status !== 200)
+        return;
+
+      res.json().then(({id}) => {
+        newFlashcard.id = id;
+        console.log("Final flashcard");
+        console.log(newFlashcard);
+      }).catch(console.log);
+    }).catch(console.log);
+  };
 
   const handleAddDeck = () => {
     const newDeck = {
@@ -42,14 +72,14 @@ export default function Home() {
       body: JSON.stringify(newDeck)
     }).then(response => {
       console.log(response);
-      if (response.status !== 200) 
+      if (response.status !== 200)
         return
 
-      response.json().then(({id}) => {
+      response.json().then(({ id }) => {
         console.log(id);
-        const deckToAdd = {...newDeck, id};
+        const deckToAdd = { ...newDeck, id };
         console.log(deckToAdd);
-        setDecks([...decks, {...newDeck, id}]);
+        dispatch(setDecks([...decks, { ...newDeck, id }]));
       })
     }).catch(error => { console.log(error); });
   };
@@ -60,7 +90,7 @@ export default function Home() {
     }).then(response => {
       response.json().then(jsonObject => {
         console.log(jsonObject);
-        setDecks(jsonObject);
+        dispatch(setDecks(jsonObject));
       }).catch(console.log)
     }).catch(console.log);
   }
@@ -74,11 +104,14 @@ export default function Home() {
     return (
       <Box pt={4} >
         <Grid container spacing={4} >
-          <Grid key={"myId"} item xs={12} sm={6} lg={4}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Button variant="contained" color="primary" onClick={handleAddDeck} >ADD DECK </Button>
           </Grid>
-          <Grid key={"idet"} item xs={12} sm={6} lg={4}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Button variant="contained" color="primary" onClick={handleGetDecks} >GET DECKS </Button>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <Button variant="contained" color="primary" onClick={handleAddFlashcard} >ADD FLASHCARD</Button>
           </Grid>
           {decks && decks.map(deck => {
             return (
@@ -130,7 +163,7 @@ export default function Home() {
               <Box py={1} />
               <Typography variant="h2">Decks and cards</Typography>
               <Typography variant="body1">With Oboe, you can create, manage, and review decks of flashcards.
-              Each card has a front and backside, where the front is the question to which the back holds the answer.
+              Each card has a front and back, where the front is the question to which the back holds the answer.
             </Typography>
               <Box py={2} />
               <Typography variant="h2">Spaced repetition system</Typography>
@@ -163,5 +196,3 @@ export default function Home() {
 
   return homeGuest();
 }
-
-

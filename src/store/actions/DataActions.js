@@ -42,3 +42,12 @@ export function setCurrentDeck(currentDeck) {
     });
   };
 }
+
+export function setDecks(decks) {
+  return function (dispatch) {
+    dispatch({
+      type: "SET_DECKS",
+      decks: decks 
+    });
+  };
+}

@@ -23,6 +23,11 @@ function DataReducer(state = initialState, action) {
         ...state,
         reviewStats: action.reviewStats
       };
+    case "SET_DECKS":
+      return {
+        ...state,
+        decks: action.decks
+      };
     case "SET_CURRENT_DECK":
       return {
         ...state,
