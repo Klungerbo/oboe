@@ -1,4 +1,7 @@
-export const API = `/api`;
+const developMode = true;
+
+export const URL = developMode ? "https://oboe.klungerbo.com" : "";
+export const API = URL + "/api";
 export const API_DECKS = `${API}/decks`;
 export const API_EMAIL = `${API}/email`;
 export const API_FLASHCARDS = `${API}/flashcards`;

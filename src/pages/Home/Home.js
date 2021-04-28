@@ -113,7 +113,7 @@ export default function Home() {
           <Grid item xs={12} sm={6} lg={4}>
             <Button variant="contained" color="primary" onClick={handleAddFlashcard} >ADD FLASHCARD</Button>
           </Grid>
-          {decks && decks.map(deck => {
+          {decks && decks.length > 0 && decks.map(deck => {
             return (
               <Grid key={deck.id} item xs={12} sm={6} lg={4}>
                 <Deck deck={deck} color={colors[deck.colorId - 1].color} />
