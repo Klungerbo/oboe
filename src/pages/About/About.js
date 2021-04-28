@@ -77,16 +77,15 @@ export default function About() {
 
             <Typography variant="h3">Spaced repetition system</Typography>
             <Typography variant="body1" gutterBottom>
-              Oboe uses deck review sessions and spaced repetition to aid 
-              in more efficient memorization. Review sessions present the 
-              flashcards in a queue where the hardest to remember is placed 
-              first in line. Spaced repetition is a technique where the item to 
-              memorize is visited multiple times with a period of time 
-              in-between each repetition. The more difficult to remember items 
-              are visited more frequently than those that were easy to 
-              recollect. Oboe automatically balances its spaced repetition 
-              review queue, leaving more time for fun and less time planning a 
-              review session. 
+              Oboe uses review sessions and spaced repetition to aid in more 
+              efficient memorization. Review sessions present the flashcards in 
+              a queue where the hardest to remember is placed first in line. 
+              Spaced repetition is a technique where the item to memorize is 
+              visited multiple times with a period of time in-between each 
+              repetition. An item that is hard to remember is visited more 
+              frequently in review sessions. Oboe automatically balances its 
+              spaced repetition review queue, leaving more time for fun and less 
+              time planning a review session. 
             </Typography>
           </Box>
         </Grid>
