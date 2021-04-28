@@ -1,16 +1,9 @@
 import {
   Box, Container, Grid,
-  Link, Paper, Typography
+  Typography
 } from '@material-ui/core';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import EmailIcon from '@material-ui/icons/Email';
-import styled from 'styled-components';
 
-import { Icon } from '@iconify/react';
-import soundcloudIcon from '@iconify-icons/zmdi/soundcloud';
-import discordIcon from '@iconify-icons/bi/discord';
-
-
+import PersonInfoCard from '../../components/PersonInfoCard/PersonInfoCard';
 
 export default function About() {
   return (
@@ -93,88 +86,3 @@ export default function About() {
     </Container>
   );
 }
-
-const PersonInfoCard = ({ name, avatar, github, mail, soundcloud, discord }) => {
-  return (
-    <StyledCard>
-      <Box
-        style={{height: "100%", flexShrink: 1}} flexBasis={323} p={1.5} 
-        display="flex" flexDirection="column" 
-      >
-        <Box>
-          <Typography gutterBottom style={{ fontSize: "1.5rem", fontFamily: "Bebas Neue" }}>
-            {name}
-          </Typography>
-        </Box>
-        <StyledMediaContainer flexBasis={100} flexGrow="0" display="flex" direction="row" flexWrap="wrap">
-          <Box flexGrow="1" pb={1.5}>
-            {github && github.link && github.name &&
-              <Typography variant="body2" style={{fontSize: "1rem"}}>
-                <GitHubIcon fontSize="inherit" /> GitHub:
-                <Link style={{ color: "#00D1B9" }} href={github.link}> {github.name}</Link>
-              </Typography>
-            }
-            {mail && mail.link && mail.name &&
-              <Typography variant="body2" style={{fontSize: "1rem"}}><EmailIcon fontSize="inherit" /> Mail:
-                <Link style={{ color: "#00D1B9" }} href={mail.link}> {mail.name}</Link>
-              </Typography>
-            }
-            {soundcloud?.link && soundcloud?.name &&
-              <Typography variant="body2" style={{fontSize: "1rem"}}><Icon icon={soundcloudIcon} fontSize="inherit" /> Soundcloud:
-                <Link style={{ color: "#00D1B9" }} href={soundcloud.link}> {soundcloud.name}</Link>
-              </Typography>
-            }
-            {discord?.name &&
-              <Typography variant="body2" style={{fontSize: "1rem"}}><Icon icon={discordIcon} fontSize="inherit" /> Discord: {discord.name}
-              </Typography>
-            }
-          </Box>
-          <StyledAvatar src={avatar} />
-        </StyledMediaContainer>
-        <Box flexGrow="1"/>
-        <Box display="flex" pt={1}>
-          <StyledLogo src="/assets/ntnu-logo.png" />
-        </Box>
-      </Box>
-    </StyledCard>
-  );
-}
-
-const StyledMediaContainer = styled(Box)`
-  ${({ theme }) => `
-    flex-direction: row;
-
-    ${theme.breakpoints.down('xs')} {
-      flex-direction: column;
-    }
-  `}
-`;
-
-const StyledAvatar = styled.img`
-  ${({ theme }) => `
-    width: 10vw;
-    max-width: 120px;
-    min-width: 100px;
-
-    ${theme.breakpoints.up('xs')} {
-      width: 25vw;
-      min-width: 70px;
-    }
-    ${theme.breakpoints.up('sm')} {
-      min-width: 100px;
-    }
-    ${theme.breakpoints.up('md')} {
-      min-width: 120px;
-    }
-  `}
-`;
-
-const StyledLogo = styled.img`
-  width: 40%;
-  flex-basis: 400px;
-  flex-shrink: 1;
-`;
-
-const StyledCard = styled(Paper)`
-  max-width: 425px;
-`;
