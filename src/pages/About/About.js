@@ -1,14 +1,12 @@
 import {
-  Box, Button, Card, CardContent,
-  CardMedia, Container, Divider, Grid,
-  GridListTileBar,
-  Hidden, Link, Paper, Typography
+  Box, Container, Grid,
+  Link, Paper, Typography
 } from '@material-ui/core';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import EmailIcon from '@material-ui/icons/Email';
 import styled from 'styled-components';
 
-import { Icon, InlineIcon } from '@iconify/react';
+import { Icon } from '@iconify/react';
 import soundcloudIcon from '@iconify-icons/zmdi/soundcloud';
 import discordIcon from '@iconify-icons/bi/discord';
 
@@ -21,21 +19,27 @@ export default function About() {
         <Grid item xs={12}>
           <Typography variant="h1">About</Typography>
           <Box mx={3}>
+
             <Typography variant="h2">School project</Typography>
             <Typography variant="body1" gutterBottom>
-              Oboe resulted from a mandatory activity at NTNU IDATA2301 Webteknologi (2021),
-              where the task was to create a dynamic web page.
+              Oboe resulted from a mandatory activity at NTNU IDATA2301 
+              Webteknologi (2021), where the task was to create a dynamic web 
+              page.
             </Typography>
+
           </Box>
         </Grid>
         <Grid item xs={12}>
           <Box mx={3}>
+
             <Typography variant="h2">The team</Typography>
             <Typography variant="body1" gutterBottom>
-              The team consists of two developers, Tomas Klungerbo Olsen and Simen Nesse Wiik.
-            </Typography>
+              The team consists of two developers, Tomas Klungerbo Olsen and 
+              Simen Nesse Wiik.
+            </Typography> 
+
             <Grid container spacing={2} style={{maxWidth: "max-content"}}>
-              <Grid item container xs={12} sm={6} >
+              <Grid item container xs={12} sm={12} md={6}>
                 <PersonInfoCard
                   avatar={"/assets/snw_avatar.jpg"}
                   name="Simen Nesse Wiik"
@@ -44,7 +48,7 @@ export default function About() {
                   discord={{name: "Revolution#1234"}}
                 />
               </Grid>
-              <Grid item container xs={12} sm={6} >
+              <Grid item container xs={12} sm={12} md={6} >
                 <PersonInfoCard
                   avatar={"/assets/tko_avatar.jpg"}
                   name="Tomas Klungerbo Olsen"
@@ -57,18 +61,32 @@ export default function About() {
         </Grid>
         <Grid item xs={12}>
           <Box py={4} />
+          
           <Typography variant="h2">What is Oboe?</Typography>
           <Box mx={3}>
+
             <Typography variant="h3">Decks and cards</Typography>
             <Typography variant="body1" gutterBottom>
-              With Oboe, you can create, manage, and review decks of flashcards.
-              Each flashcard has a front and a back, where the front side is the question to which the back holds the answer.
+              Oboe is a tool that can assist in memorization through decks of 
+              flashcards. A deck of flashcards can be created for each subject 
+              to be memorized. As with physical flashcards, which consist of a 
+              front and backside, the same is true for the flashcards in Oboe. 
+              The front side contains a hint for the backside, which holds the 
+              item to memorize. 
             </Typography>
+
             <Typography variant="h3">Spaced repetition system</Typography>
             <Typography variant="body1" gutterBottom>
-              Oboe automatically balances the review frequency of flashcards through a spaced repetition system (SRS).
-              Remembering a flashcard decreases the appearance in a review session, while forgetting it increases the frequency.
-              The SRS removes a flashcard from review sessions after enough consecutive recognitions.
+              Oboe uses deck review sessions and spaced repetition to aid 
+              in more efficient memorization. Review sessions present the 
+              flashcards in a queue where the hardest to remember is placed 
+              first in line. Spaced repetition is a technique where the item to 
+              memorize is visited multiple times with a period of time 
+              in-between each repetition. The more difficult to remember items 
+              are visited more frequently than those that were easy to 
+              recollect. Oboe automatically balances its spaced repetition 
+              review queue, leaving more time for fun and less time planning a 
+              review session. 
             </Typography>
           </Box>
         </Grid>
@@ -135,46 +153,29 @@ const StyledMediaContainer = styled(Box)`
 
 const StyledAvatar = styled.img`
   ${({ theme }) => `
+    width: 10vw;
+    max-width: 120px;
+    min-width: 100px;
+
     ${theme.breakpoints.up('xs')} {
       width: 25vw;
-      height: 25vw;
+      min-width: 70px;
     }
     ${theme.breakpoints.up('sm')} {
-      width: 11vw;
-      height: 11vw;
+      min-width: 100px;
     }
     ${theme.breakpoints.up('md')} {
-      width: 10vw;
-      height: 10vw;
-    }
-    ${theme.breakpoints.up('lg')} {
-      width: 10vw;
-      height: 10vw;
-    }
-    ${theme.breakpoints.up('xl')} {
-      width: 7vw;
-      height: 7vw;
+      min-width: 120px;
     }
   `}
 `;
 
 const StyledLogo = styled.img`
-  ${({ theme }) => `
-    width: 40%;
-    flex-basis: 400px;
-    flex-shrink: 1;
-
-    ${theme.breakpoints.down('xs')} {
-    }
-  `}
+  width: 40%;
+  flex-basis: 400px;
+  flex-shrink: 1;
 `;
 
 const StyledCard = styled(Paper)`
-  ${({ theme }) => `
-    height: 100%;
-    max-width: 425px;
-
-    ${theme.breakpoints.down('xs')} {
-    }
-  `}
+  max-width: 425px;
 `;
