@@ -40,3 +40,9 @@ export const StyledLogo = styled.img`
 export const StyledCard = styled(Paper)`
   max-width: 425px;
 `;
+
+export const StyledCardContainer = styled(Box)`
+  height: "100%";
+  flex-shrink: 1; 
+  flex-basis: 323px; 
+`
