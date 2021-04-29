@@ -30,8 +30,10 @@ export default function Home() {
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
 
   useEffect(() => {
-    handleGetDecks();
-  }, []);
+    if (userLoggedIn) {
+      handleGetDecks();
+    }
+  }, [userLoggedIn]);
 
   const handleAddFlashcard = () => {
     const newFlashcard = {
@@ -69,17 +71,20 @@ export default function Home() {
     fetch(API_DECKS, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(newDeck)
+      body: JSON.stringify(newDeck),
+      credentials: "include"
     }).then(response => {
       console.log(response);
       if (response.status !== 200)
         return
 
       response.json().then(({ id }) => {
-        console.log(id);
         const deckToAdd = { ...newDeck, id };
-        console.log(deckToAdd);
-        dispatch(setDecks([...decks, { ...newDeck, id }]));
+        if (decks.length > 0) {
+          dispatch(setDecks([...decks, deckToAdd]));
+        } else {
+          dispatch(setDecks([deckToAdd]));
+        }
       })
     }).catch(error => { console.log(error); });
   };

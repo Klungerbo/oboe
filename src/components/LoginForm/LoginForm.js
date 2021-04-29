@@ -9,15 +9,26 @@ import { setLoggedIn, setUserEmail } from '../../store/actions/DataActions';
 import { StyledSignUpButton } from "./LoginFormStyled";
 import { API_AUTH_SIGNIN } from '../../data/config';
 
+import validateEmail from '../../utils/emailValidator';
+
 export default function LoginForm({ onOpen }) {
   const dispatch = useDispatch();
 
   const [userInfo, setUserInfo] = React.useState({});
-  const [invalidEmail, setInvalidEmail] = React.useState(false);
+  const [emailNotRegistered, setEmailNotRegistered] = React.useState(false);
+  const [isEmail, setIsEmail] = React.useState(true);
   const [invalidPassword, setInvalidPassword] = React.useState(false);
+
 
   const handleLogin = e => {
     e.preventDefault();
+
+    if (!validateEmail(userInfo.email)) {
+      setIsEmail(false);
+      return;
+    } else {
+      setIsEmail(true);
+    }
 
     const userInfoJson = JSON.stringify(userInfo);
     fetch(API_AUTH_SIGNIN, {
@@ -36,10 +47,10 @@ export default function LoginForm({ onOpen }) {
         response.json().then(jsonObject => {
           const type = jsonObject["type"];
           if (type === "email") {
-            setInvalidEmail(true);
+            setEmailNotRegistered(true);
             setInvalidPassword(false);
           } else if (type === "password") {
-            setInvalidEmail(false);
+            setEmailNotRegistered(false);
             setInvalidPassword(true);
           }
         });
@@ -62,7 +73,9 @@ export default function LoginForm({ onOpen }) {
               <TextField
                 onChange={e => setUserInfo({ ...userInfo, email: e.target.value })}
                 required id="email" fullWidth variant="outlined" label="E-mail"
-                helperText={invalidEmail && "Email is not registered"} error={invalidEmail}
+                helperText={(emailNotRegistered && "Email is not registered") || 
+                !isEmail && "Provide a valid email"} 
+                error={emailNotRegistered || !isEmail} 
               />
             </Grid>
             <Grid item xs={12}>

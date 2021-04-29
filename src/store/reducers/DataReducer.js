@@ -8,7 +8,9 @@ const initialState = {
     correct: 0,
     incorrect: 0,
     cardsLeft: 0
-  }
+  },
+  // Array of deck objects
+  decks: []
 };
 
 function DataReducer(state = initialState, action) {

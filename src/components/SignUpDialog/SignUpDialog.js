@@ -9,6 +9,8 @@ import { StyledDialogTitle } from "./SignupDialogStyled";
 import { API_AUTH_SIGNUP, API_AUTH_SIGNIN } from '../../data/config';
 import { setLoggedIn, setUserEmail } from '../../store/actions/DataActions';
 
+import validateEmail from '../../utils/emailValidator';
+
 /**
  * Represents the sign up dialog that pops up when you click "Create new user" when not logged in
  * 
@@ -21,6 +23,7 @@ export default function SignUpDialog({ open, onClose }) {
 
   const [passwordMatching, setPasswordMatching] = React.useState(true);
   const [emailTaken, setEmailTaken] = React.useState(false);
+  const [isEmail, setIsEmail] = React.useState(true);
 
   // TODO REMOVE ROLES FROM CLIENT SIDE
   const [newUserInfo, setNewUserInfo] = React.useState({
@@ -32,6 +35,13 @@ export default function SignUpDialog({ open, onClose }) {
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    if (!validateEmail(newUserInfo.email)) {
+      setIsEmail(false);
+      return;
+    } else {
+      setIsEmail(true);
+    }
 
     setPasswordMatching(newUserInfo.password === newUserInfo.confirmedPassword);
     if (newUserInfo.password !== newUserInfo.confirmedPassword)
@@ -87,8 +97,9 @@ export default function SignUpDialog({ open, onClose }) {
             <Grid item xs={12}>
               <TextField
                 onChange={e => setNewUserInfo({ ...newUserInfo, email: e.target.value })}
-                error={emailTaken}
-                helperText={emailTaken ? "Email already in use" : ""}
+                error={emailTaken || !isEmail}
+                helperText={(emailTaken && "Email already in use") || 
+                (!isEmail && "Provide a valid email")}
                 required
                 fullWidth
                 variant="outlined"

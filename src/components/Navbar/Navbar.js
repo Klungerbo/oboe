@@ -16,7 +16,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
 import SearchBar from './Searchbar';
-import { setLoggedIn } from '../../store/actions/DataActions';
+import { setDecks, setLoggedIn } from '../../store/actions/DataActions';
 import { API_AUTH_SIGNOUT } from '../../data/config';
 
 
@@ -65,6 +65,7 @@ export default function Navbar() {
         });
 
         dispatch(setLoggedIn(false));
+        dispatch(setDecks([]));
         history.push("/");
       }}>Log out</Button>
     );
