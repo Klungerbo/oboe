@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Box, Button, Container, Grid,
-  Hidden, Input, Typography
+  Hidden, Typography
 } from '@material-ui/core'
 
 import LoginForm from '../../components/LoginForm/LoginForm';
@@ -29,20 +29,20 @@ export default function Home() {
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
 
-  useEffect(() => {
-    if (userLoggedIn) {
-      handleGetDecks();
-    }
-  }, [userLoggedIn]);
-
   const handleAddFlashcard = () => {
+    if (decks.length === 0)
+      return;
+
+    console.log("Decks");
+    console.log(decks);
+
     const newFlashcard = {
-      front: flashcards.front[Math.round(Math.random() * flashcards.front.length) - 1],
-      back: flashcards.back[Math.round(Math.random() * flashcards.back.length) - 1],
-      description: flashcards.description[Math.round(Math.random() * flashcards.description.length) - 1],
+      front: flashcards.front[Math.floor(Math.random() * flashcards.front.length)],
+      back: flashcards.back[Math.floor(Math.random() * flashcards.back.length)],
+      description: flashcards.description[Math.floor(Math.random() * flashcards.description.length)],
       lastReviewedAt: new Date("2019-04-20"),
       consecutiveCorrect: Math.round(Math.random() * 5),
-      deckId: Math.floor(Math.random() * decks.length)  + 1
+      deckId: decks[Math.floor(Math.random() * decks.length)].id
     };
 
     fetch(API_FLASHCARDS, {
@@ -89,7 +89,8 @@ export default function Home() {
     }).catch(error => { console.log(error); });
   };
 
-  const handleGetDecks = () => {
+
+  const handleGetDecks = useCallback( () => {
     fetch(API_DECKS, {
       method: "GET",
     }).then(response => {
@@ -98,7 +99,7 @@ export default function Home() {
         dispatch(setDecks(jsonObject));
       }).catch(console.log)
     }).catch(console.log);
-  }
+  }, [dispatch]);
 
   /**
    * Maps Oboe decks.
@@ -129,6 +130,12 @@ export default function Home() {
       </Box>
     );
   };
+
+  useEffect(() => {
+    if (userLoggedIn) {
+        handleGetDecks();
+    }
+  }, [userLoggedIn, handleGetDecks]);
 
   /**
    * Oboe home page for a user.

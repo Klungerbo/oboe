@@ -17,28 +17,21 @@ export default function Review() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const currentDeck = useSelector(state => state.currentDeck);
   const decks = useSelector(state => state.decks)
-
   const verticalLimit = useMediaQuery("(max-height: 600px)");
 
   useEffect(() => {
     const deck = decks.find(item => item.id === parseInt(id));
-
     if (!deck)
       return;
 
-    console.log("Deck");
-    console.log(deck);
-    if (deck) {
-      deck.cardColor = colors[deck.colorId - 1].color;
-      dispatch(setCurrentDeck(deck));
-    }
-  }, [])
+    deck.cardColor = colors[deck.colorId - 1].color;
+    dispatch(setCurrentDeck(deck));
+  }, [decks, dispatch, id])
 
   return (
     <Container>
-      <Grid container style={{height: "100%"}}>
+      <Grid container style={{ height: "100%" }}>
         <Hidden smDown>
           <Grid item container md={4}>
             <Box display="flex" pl={2} alignSelf="flex-end">

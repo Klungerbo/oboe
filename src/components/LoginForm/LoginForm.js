@@ -8,7 +8,6 @@ import {
 import { setLoggedIn, setUserEmail } from '../../store/actions/DataActions';
 import { StyledSignUpButton } from "./LoginFormStyled";
 import { API_AUTH_SIGNIN } from '../../data/config';
-
 import validateEmail from '../../utils/emailValidator';
 
 export default function LoginForm({ onOpen }) {
@@ -74,7 +73,7 @@ export default function LoginForm({ onOpen }) {
                 onChange={e => setUserInfo({ ...userInfo, email: e.target.value })}
                 required id="email" fullWidth variant="outlined" label="E-mail"
                 helperText={(emailNotRegistered && "Email is not registered") || 
-                !isEmail && "Provide a valid email"} 
+                (!isEmail && "Provide a valid email")} 
                 error={emailNotRegistered || !isEmail} 
               />
             </Grid>

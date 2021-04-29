@@ -31,7 +31,7 @@ export default function Pages() {
         }
       }).catch(console.log);
     }).catch(console.log);
-  }, [])
+  }, [dispatch])
 
   return (
     <Body>
