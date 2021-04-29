@@ -191,7 +191,7 @@ export default function ReviewCard() {
                 ", back. Up arrow key if remembered, down arrow key if forgotten."}>
               {cardQueue && cardQueue.length && cardQueue[cardIndex].back}
             </Typography>
-            <Typography tabIndex={isFlipped && cardQueue && cardQueue[cardIndex].description ? 0 : -1}
+            <Typography tabIndex={isFlipped && cardQueue && cardQueue[cardIndex] &&cardQueue[cardIndex].description ? 0 : -1}
               align="center" style={{ fontFamily: "Mada" }}>
               {cardQueue && cardQueue.length && cardQueue[cardIndex].description}
             </Typography>
