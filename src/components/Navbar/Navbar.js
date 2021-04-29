@@ -60,9 +60,7 @@ export default function Navbar() {
       <Button onClick={() => {
         fetch(API_AUTH_SIGNOUT, {
           method: "GET",
-        }).catch(error => {
-          console.log(error);
-        });
+        }).catch(console.log);
 
         dispatch(setLoggedIn(false));
         dispatch(setDecks([]));

@@ -33,9 +33,6 @@ export default function Home() {
     if (decks.length === 0)
       return;
 
-    console.log("Decks");
-    console.log(decks);
-
     const newFlashcard = {
       front: flashcards.front[Math.floor(Math.random() * flashcards.front.length)],
       back: flashcards.back[Math.floor(Math.random() * flashcards.back.length)],
@@ -55,8 +52,6 @@ export default function Home() {
 
       res.json().then(({id}) => {
         newFlashcard.id = id;
-        console.log("Final flashcard");
-        console.log(newFlashcard);
       }).catch(console.log);
     }).catch(console.log);
   };
@@ -74,7 +69,6 @@ export default function Home() {
       body: JSON.stringify(newDeck),
       credentials: "include"
     }).then(response => {
-      console.log(response);
       if (response.status !== 200)
         return
 
@@ -86,7 +80,7 @@ export default function Home() {
           dispatch(setDecks([deckToAdd]));
         }
       })
-    }).catch(error => { console.log(error); });
+    }).catch(console.log);
   };
 
 
@@ -95,7 +89,6 @@ export default function Home() {
       method: "GET",
     }).then(response => {
       response.json().then(jsonObject => {
-        console.log(jsonObject);
         dispatch(setDecks(jsonObject));
       }).catch(console.log)
     }).catch(console.log);

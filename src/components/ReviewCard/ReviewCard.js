@@ -72,18 +72,11 @@ export default function ReviewCard() {
   })
 
   useEffect(() => {
-    console.log(currentDeck);
     fetch(`${API_FLASHCARDS}/${currentDeck.id}`, {
       method: "GET",
     }).then(response => {
       response.json().then(flashcards => {
-        console.log("GET Flashcards");
-        console.log(flashcards);
-
         const cards = flashcards.filter(card => card.consecutiveCorrect < 5);
-        console.log("Flashcards after filter");
-        console.log(cards);
-
 
         let finalConsecutive = [];
         for (let i = 0; i < 5; i++) {
@@ -91,9 +84,6 @@ export default function ReviewCard() {
           n.sort((card1, card2) => card1.lastReviewedAt - card2.lastReviewedAt);
           finalConsecutive = finalConsecutive.concat(n);
         }
-
-        console.log("Final consecutive");
-        console.log(finalConsecutive);
 
         setCardQueue(finalConsecutive);
         dispatch(setReviewStats({

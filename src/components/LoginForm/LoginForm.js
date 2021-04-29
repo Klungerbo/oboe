@@ -54,7 +54,7 @@ export default function LoginForm({ onOpen }) {
           }
         });
       }
-    }).catch(error => console.log("Hello" + error));
+    }).catch(console.log);
   }
 
   return (
