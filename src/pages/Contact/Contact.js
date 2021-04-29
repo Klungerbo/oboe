@@ -1,9 +1,10 @@
-import { Container, Grid } from "@material-ui/core";
+import { Container, Grid, Typography } from "@material-ui/core";
 import PersonInfoCard from "../../components/PersonInfoCard/PersonInfoCard";
 
 export default function Contact() {
   return (
     <Container maxWidth="lg">
+      <Typography variant="h1">Contact</Typography>
       <Grid container spacing={2} style={{maxWidth: "max-content"}}>
               <Grid item container xs={12} sm={12} md={6}>
                 <PersonInfoCard
