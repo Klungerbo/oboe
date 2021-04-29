@@ -1,6 +1,12 @@
 const initialState = {
   searchTerm: "",
-  currentDeck: { cardColor: "#111" },
+  currentDeck: {
+    id: -1,
+    title: "",
+    description: "",
+    cardColor: "#111",
+    colorId: -1
+  },
   reviewStats: { correct: 0, incorrect: 0, cardsLeft: 0 }
 };
 

@@ -1,7 +1,7 @@
 const colors = [
   {
     id: 1,
-    name: "tael",
+    name: "teal",
     color: "#00796b",
   },
   {
@@ -25,5 +25,23 @@ const colors = [
     color: "#357a38",
   }
 ];
+
+export const colorPalette =
+{
+  teal: "#00796b",
+  red: "#d32f2f",
+  indigo: "#3f51b5",
+  blue: "#0B75CB",
+  green: "#357a38",
+}
+
+export const colorToId = {
+  teal: 1,
+  red: 2,
+  indigo: 3,
+  blue: 4,
+  green: 5
+}
+
 
 export default colors;
