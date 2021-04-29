@@ -42,7 +42,7 @@ export default function Review() {
         <Grid container item direction="column" alignItems="center"
           justify="center" xs={12} md={4}>
           <Box width={280}>
-            <ReviewCard />
+            <ReviewCard deckId={id} />
             <ReviewStats />
           </Box>
           {!verticalLimit && <Box pt={3} />}

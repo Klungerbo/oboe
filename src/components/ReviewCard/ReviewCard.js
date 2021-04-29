@@ -8,10 +8,10 @@ import useKeyPress from "react-use-keypress";
 import { useHistory } from 'react-router';
 import { useSpring } from "@react-spring/web";
 import { useDispatch, useSelector } from 'react-redux';
-import { setReviewStats } from '../../store/actions/DataActions';
-import { API_FLASHCARDS } from '../../data/config';
+import { setCurrentDeck, setReviewStats, setDecks } from '../../store/actions/DataActions';
+import { API_FLASHCARDS, API_DECKS } from '../../data/config';
 
-export default function ReviewCard() {
+export default function ReviewCard({deckId}) {
   const history = useHistory();
 
   const [cardQueue, setCardQueue] = useState(null);
@@ -72,8 +72,25 @@ export default function ReviewCard() {
   })
 
   useEffect(() => {
-    fetch(`${API_FLASHCARDS}/${currentDeck.id}`, {
-      method: "GET",
+    fetch(API_DECKS, {
+      method: "GET"
+    }).then(response => {
+      response.json().then(jsonObject => {
+        
+        const receivedDecks = jsonObject;
+        dispatch(setDecks(receivedDecks));
+
+        const currentDeck = receivedDecks.find(e => e.id === parseInt(deckId));
+        if (currentDeck) {
+          dispatch(setCurrentDeck(currentDeck));
+        }
+      }).catch(console.log)
+    }).catch(console.log);
+  }, [dispatch, deckId]);
+
+  useEffect(() => {
+    fetch(`${API_FLASHCARDS}/${deckId}`, {
+      method: "GET"
     }).then(response => {
       response.json().then(flashcards => {
         const cards = flashcards.filter(card => card.consecutiveCorrect < 5);
@@ -93,7 +110,7 @@ export default function ReviewCard() {
         }));
       }).catch(console.log)
     }).catch(console.log);
-  }, [dispatch, currentDeck])
+  }, [dispatch, currentDeck, deckId])
 
   useEffect(() => {
     if (!isFlipped) {

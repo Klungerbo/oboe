@@ -66,8 +66,7 @@ export default function Home() {
     fetch(API_DECKS, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(newDeck),
-      credentials: "include"
+      body: JSON.stringify(newDeck)
     }).then(response => {
       if (response.status !== 200)
         return
@@ -82,17 +81,6 @@ export default function Home() {
       })
     }).catch(console.log);
   };
-
-
-  const handleGetDecks = useCallback( () => {
-    fetch(API_DECKS, {
-      method: "GET",
-    }).then(response => {
-      response.json().then(jsonObject => {
-        dispatch(setDecks(jsonObject));
-      }).catch(console.log)
-    }).catch(console.log);
-  }, [dispatch]);
 
   /**
    * Maps Oboe decks.
@@ -124,9 +112,19 @@ export default function Home() {
     );
   };
 
+  const handleGetDecks = useCallback(() => {
+    fetch(API_DECKS, {
+      method: "GET"
+    }).then(response => {
+      response.json().then(jsonObject => {
+        dispatch(setDecks(jsonObject));
+      }).catch(console.log)
+    }).catch(console.log);
+  }, [dispatch]);
+
   useEffect(() => {
     if (userLoggedIn) {
-        handleGetDecks();
+      handleGetDecks();
     }
   }, [userLoggedIn, handleGetDecks]);
 

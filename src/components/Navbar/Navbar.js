@@ -59,7 +59,7 @@ export default function Navbar() {
     return (
       <Button onClick={() => {
         fetch(API_AUTH_SIGNOUT, {
-          method: "GET",
+          method: "GET"
         }).catch(console.log);
 
         dispatch(setLoggedIn(false));
