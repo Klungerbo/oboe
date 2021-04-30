@@ -40,7 +40,7 @@ let theme = createMuiTheme({
         },
         button: {
             fontFamily: "Alatsi",
-        }
+        },
     },
 
     palette: {

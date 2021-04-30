@@ -1,6 +1,4 @@
-const developMode = true;
-
-export const URL = developMode ? "http://localhost:8081" : "https://oboe.klungerbo.com";
+export const URL = "http://127.0.0.1:8080";
 export const API = URL + "/api";
 export const API_DECKS = `${API}/decks`;
 export const API_EMAIL = `${API}/email`;

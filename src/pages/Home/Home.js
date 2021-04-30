@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box, Container, Grid,
-  Hidden, Typography
+  Box, Button, Container, 
+  Grid, Hidden, Typography
 } from '@material-ui/core'
 
 import LoginForm from '../../components/LoginForm/LoginForm';
 import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
 import Deck from '../../components/Deck/Deck';
 
-import decks from '../../data/decks';
 import colors from '../../data/colors';
+import * as flashcards from '../../data/flashcards';
+import { API_DECKS, API_FLASHCARDS } from '../../data/config';
+import { setDecks } from '../../store/actions/DataActions';
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,
@@ -18,11 +21,112 @@ import colors from '../../data/colors';
  * @returns JSX of guest/user home page
  */
 export default function Home() {
-  // TODO: remove test variables
-  const userLoggedIn = true;
-  const userEmail = "email@email.com";
+  const dispatch = useDispatch();
+
+  const userLoggedIn = useSelector(state => state.loggedIn);
+  const userEmail = useSelector(state => state.userEmail);
+  const decks = useSelector(state => state.decks)
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
+
+  const handleAddFlashcard = () => {
+    if (decks.length === 0)
+      return;
+
+    const newFlashcard = {
+      front: flashcards.front[Math.floor(Math.random() * flashcards.front.length)],
+      back: flashcards.back[Math.floor(Math.random() * flashcards.back.length)],
+      description: flashcards.description[Math.floor(Math.random() * flashcards.description.length)],
+      lastReviewedAt: new Date("2019-04-20"),
+      consecutiveCorrect: Math.round(Math.random() * 5),
+      deckId: decks[Math.floor(Math.random() * decks.length)].id
+    };
+
+    fetch(API_FLASHCARDS, {
+      method: "POST",
+      headers: { "content-type": "application/json"},
+      body: JSON.stringify(newFlashcard)
+    }).then(res => {
+      if (res.status !== 200)
+        return;
+
+      res.json().then(({id}) => {
+        newFlashcard.id = id;
+      }).catch(console.log);
+    }).catch(console.log);
+  };
+
+  const handleAddDeck = () => {
+    const newDeck = {
+      name: "Deck",
+      description: "Desc",
+      colorId: Math.round(Math.random() * 4) + 1
+    };
+
+    fetch(API_DECKS, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(newDeck)
+    }).then(response => {
+      if (response.status !== 200)
+        return
+
+      response.json().then(({ id }) => {
+        const deckToAdd = { ...newDeck, id };
+        if (decks.length > 0) {
+          dispatch(setDecks([...decks, deckToAdd]));
+        } else {
+          dispatch(setDecks([deckToAdd]));
+        }
+      })
+    }).catch(console.log);
+  };
+
+  /**
+   * Maps Oboe decks.
+   * 
+   * @returns jsx of Oboe decks.
+   */
+  const mapDecks = () => {
+    return (
+      <Box pt={4} >
+        <Grid container spacing={4} >
+          <Grid item xs={12} sm={6} lg={4}>
+            <Button variant="contained" color="primary" onClick={handleAddDeck} >ADD DECK </Button>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <Button variant="contained" color="primary" onClick={handleGetDecks} >GET DECKS </Button>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <Button variant="contained" color="primary" onClick={handleAddFlashcard} >ADD FLASHCARD</Button>
+          </Grid>
+          {decks && decks.length > 0 && decks.map(deck => {
+            return (
+              <Grid key={deck.id} item xs={12} sm={6} lg={4}>
+                <Deck deck={deck} color={colors[deck.colorId - 1].color} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Box>
+    );
+  };
+
+  const handleGetDecks = useCallback(() => {
+    fetch(API_DECKS, {
+      method: "GET"
+    }).then(response => {
+      response.json().then(jsonObject => {
+        dispatch(setDecks(jsonObject));
+      }).catch(console.log)
+    }).catch(console.log);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (userLoggedIn) {
+      handleGetDecks();
+    }
+  }, [userLoggedIn, handleGetDecks]);
 
   /**
    * Oboe home page for a user.
@@ -62,9 +166,9 @@ export default function Home() {
               <Box py={1} />
               <Typography variant="h2">Decks and cards</Typography>
               <Typography variant="body1">With Oboe, you can create, manage, and review decks of flashcards.
-              Each card has a front and backside, where the front is the question to which the back holds the answer.
+              Each card has a front and back, where the front is the question to which the back holds the answer.
             </Typography>
-            <Box py={2} />
+              <Box py={2} />
               <Typography variant="h2">Spaced repetition system</Typography>
               <Typography variant="body1">Oboe automatically balances the frequency of a card’s presence in a review.
               Cards that have been forgotten will show up more frequently than those that were remembered.
@@ -95,25 +199,3 @@ export default function Home() {
 
   return homeGuest();
 }
-
-/**
- * Maps Oboe decks.
- * 
- * @returns jsx of Oboe decks.
- */
-const mapDecks = () => {
-  return (
-    <Box pt={4} >
-      <Grid container spacing={4} >
-        {decks.map(deck => {
-          return (
-            <Grid key={deck.id} item xs={12} sm={6} lg={4}>
-              <Deck deck={deck} color={colors[deck.colorId - 1].color} />
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Box>
-  );
-};
-

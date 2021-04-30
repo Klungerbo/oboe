@@ -6,23 +6,25 @@ import { useState, useEffect, useRef } from 'react'
 import { StyledReviewCard, StyledCardFace, StyledFlipOverlay } from "./ReviewCardStyled";
 import useKeyPress from "react-use-keypress";
 import { useHistory } from 'react-router';
-import flashcards from "../../data/flashcards";
-import decks from "../../data/decks";
-import colors from "../../data/colors";
 import { useSpring } from "@react-spring/web";
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentDeck, setReviewStats } from '../../store/actions/DataActions';
+import { setCurrentDeck, setReviewStats, setDecks } from '../../store/actions/DataActions';
+import { API_FLASHCARDS, API_DECKS } from '../../data/config';
 
-export default function ReviewCard({ deckid }) {
+export default function ReviewCard({deckId}) {
+  const history = useHistory();
+
   const [cardQueue, setCardQueue] = useState(null);
   const [cardIndex, setCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const history = useHistory();
+
   const answerElement = useRef();
   const questionElement = useRef();
   const dispatch = useDispatch();
+
   const currentDeck = useSelector(state => state.currentDeck);
   const reviewStats = useSelector(state => state.reviewStats);
+
   const { transform, opacity } = useSpring({
     opacity: isFlipped ? 1 : 0,
     transform: `perspective(700px) rotateY(${isFlipped ? 180 : 0}deg)`,
@@ -30,10 +32,10 @@ export default function ReviewCard({ deckid }) {
   })
 
   /**
-   * Active on frontside. Flips the card to the backside
+   * Active on front. Flips the card to the back
    */
   useKeyPress(["ArrowLeft", "ArrowRight", " "], () => {
-    // Deactivated on backside
+    // Deactivated on back
     if (isFlipped) {
       return;
     }
@@ -41,10 +43,10 @@ export default function ReviewCard({ deckid }) {
   })
 
   /**
-   * Active on backside. User remembers the card.
+   * Active on back. User remembers the card.
    */
   useKeyPress(["ArrowUp"], () => {
-    // Deactivated on the frontside
+    // Deactivated on the front
     if (!isFlipped) {
       return;
     }
@@ -53,10 +55,10 @@ export default function ReviewCard({ deckid }) {
   })
 
   /**
-   * Active on backside. User does not remember the card.
+   * Active on back. User does not remember the card.
    */
   useKeyPress(["ArrowDown"], () => {
-    // Deactivated on the frontside
+    // Deactivated on the front
     if (!isFlipped) {
       return;
     }
@@ -70,29 +72,45 @@ export default function ReviewCard({ deckid }) {
   })
 
   useEffect(() => {
-    const deck = decks.find(item => item.id === parseInt(deckid));
-    deck.cardColor = colors[deck.colorId - 1].color;
-    dispatch(setCurrentDeck(deck));
-    const cards = flashcards.filter(card => {
-      return card.deck_id === parseInt(deck.id) && card.consecutive_correct < 5
-    });
+    fetch(API_DECKS, {
+      method: "GET"
+    }).then(response => {
+      response.json().then(jsonObject => {
+        
+        const receivedDecks = jsonObject;
+        dispatch(setDecks(receivedDecks));
 
-    let finalConsecutive = [];
-    for (let i = 0; i < 5; i++) {
-      let n = cards.filter(card => card.consecutive_correct === i);
-      n.sort((card1, card2) => card1.last_reviewed_at - card2.last_reviewed_at);
-      finalConsecutive = finalConsecutive.concat(n);
-    }
+        const currentDeck = receivedDecks.find(e => e.id === parseInt(deckId));
+        if (currentDeck) {
+          dispatch(setCurrentDeck(currentDeck));
+        }
+      }).catch(console.log)
+    }).catch(console.log);
+  }, [dispatch, deckId]);
 
-    dispatch(
-      setReviewStats({
-        incorrect: 0,
-        correct: 0,
-        cardsLeft: finalConsecutive.length
-      })
-    )
-    setCardQueue(finalConsecutive);
-  }, [deckid, dispatch])
+  useEffect(() => {
+    fetch(`${API_FLASHCARDS}/${deckId}`, {
+      method: "GET"
+    }).then(response => {
+      response.json().then(flashcards => {
+        const cards = flashcards.filter(card => card.consecutiveCorrect < 5);
+
+        let finalConsecutive = [];
+        for (let i = 0; i < 5; i++) {
+          let n = cards.filter(card => card.consecutiveCorrect === i);
+          n.sort((card1, card2) => card1.lastReviewedAt - card2.lastReviewedAt);
+          finalConsecutive = finalConsecutive.concat(n);
+        }
+
+        setCardQueue(finalConsecutive);
+        dispatch(setReviewStats({
+          incorrect: 0,
+          correct: 0,
+          cardsLeft: finalConsecutive.length
+        }));
+      }).catch(console.log)
+    }).catch(console.log);
+  }, [dispatch, currentDeck, deckId])
 
   useEffect(() => {
     if (!isFlipped) {
@@ -108,6 +126,9 @@ export default function ReviewCard({ deckid }) {
   }
 
   function handleCardProgression(didRemember) {
+    if (!cardQueue)
+      return;
+
     if (didRemember) {
       dispatch(setReviewStats({
         ...reviewStats,
@@ -143,14 +164,14 @@ export default function ReviewCard({ deckid }) {
                 fontFamily: "Bebas Neue",
                 fontSize: "1.8rem"
               }}
-              aria-label={cardQueue && cardQueue[cardIndex].frontside +
-                ", frontside. Left or right arrow key to flip the card."}>
-              {cardQueue && cardQueue[cardIndex].frontside}
+              aria-label={cardQueue && cardQueue.length > 0 && cardQueue[cardIndex].front +
+                ", front. Left or right arrow key to flip the card."}>
+              {cardQueue && cardQueue.length && cardQueue[cardIndex].front}
             </Typography>
           </Box>
           <StyledFlipOverlay py={3} align="center">
             <Typography tabIndex={isFlipped ? -1 : 0}
-            aria-label="Space, right arrow or left arrow key to flip the card.">Flip</Typography>
+              aria-label="Space, right arrow or left arrow key to flip the card.">Flip</Typography>
           </StyledFlipOverlay>
         </Box>
       </StyledCardFace>
@@ -173,12 +194,13 @@ export default function ReviewCard({ deckid }) {
                 fontFamily: "Bebas Neue",
                 fontSize: "1.8rem"
               }}
-              aria-label={cardQueue && cardQueue[cardIndex].backside +
-                ", backside. Up arrow key if remembered, down arrow key if forgotten."}>
-              {cardQueue && cardQueue[cardIndex].backside}
+              aria-label={cardQueue && cardQueue.length && cardQueue[cardIndex].back +
+                ", back. Up arrow key if remembered, down arrow key if forgotten."}>
+              {cardQueue && cardQueue.length && cardQueue[cardIndex].back}
             </Typography>
-            <Typography tabIndex={isFlipped && cardQueue[cardIndex].description ? 0 : -1} align="center" style={{fontFamily: "Mada"}}>
-              {cardQueue && cardQueue[cardIndex].description}
+            <Typography tabIndex={isFlipped && cardQueue && cardQueue[cardIndex] &&cardQueue[cardIndex].description ? 0 : -1}
+              align="center" style={{ fontFamily: "Mada" }}>
+              {cardQueue && cardQueue.length && cardQueue[cardIndex].description}
             </Typography>
           </Box>
           <Box>

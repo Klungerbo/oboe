@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router';
+import styled from 'styled-components';
 
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -10,9 +12,28 @@ import Contact from './Contact/Contact';
 import Review from './Review/Review';
 import Edit from './Edit/Edit';
 
-import styled from 'styled-components';
+import { API_EMAIL } from '../data/config';
+import { setLoggedIn, setUserEmail } from '../store/actions/DataActions';
 
 export default function Pages() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetch(API_EMAIL, {
+      method: "GET"
+    }).then(response => {
+      response.json().then(jsonObject => {
+        if (response.status === 200) {
+          dispatch(setLoggedIn(true));
+          dispatch(setUserEmail(jsonObject.email));
+        } else {
+          dispatch(setLoggedIn(false));
+          dispatch(setUserEmail(""));
+        }
+      }).catch(console.log);
+    }).catch(console.log);
+  }, [dispatch])
+
   return (
     <Body>
       <StyledHeader>
