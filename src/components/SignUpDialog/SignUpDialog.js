@@ -25,12 +25,10 @@ export default function SignUpDialog({ open, onClose }) {
   const [emailTaken, setEmailTaken] = React.useState(false);
   const [isEmail, setIsEmail] = React.useState(true);
 
-  // TODO REMOVE ROLES FROM CLIENT SIDE
   const [newUserInfo, setNewUserInfo] = React.useState({
     email: "",
     password: "",
-    confirmedPassword: "",
-    roles: ["user"]
+    confirmedPassword: ""
   });
 
   const handleSubmit = e => {

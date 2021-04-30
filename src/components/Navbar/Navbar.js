@@ -29,7 +29,6 @@ import { API_AUTH_SIGNOUT } from '../../data/config';
 export default function Navbar() {
   const dispatch = useDispatch();
   const history = useHistory();
-  // TODO: Update when users are added.
   const userLoggedIn = useSelector(state => state.loggedIn);
 
   const [state, setState] = React.useState(false);
