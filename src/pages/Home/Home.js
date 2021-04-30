@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box, Button, Container, Grid,
-  Hidden, Typography
+  Box, Button, Container, 
+  Grid, Hidden, Typography
 } from '@material-ui/core'
 
 import LoginForm from '../../components/LoginForm/LoginForm';
