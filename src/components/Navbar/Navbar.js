@@ -1,4 +1,6 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import {
   ListItem, Container, Box,
@@ -14,6 +16,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
 import SearchBar from './Searchbar';
+import { setDecks, setLoggedIn } from '../../store/actions/DataActions';
+import { API_AUTH_SIGNOUT } from '../../data/config';
 
 
 /**
@@ -23,8 +27,10 @@ import SearchBar from './Searchbar';
  * @returns jsx of navbar to be rendered by React.
  */
 export default function Navbar() {
+  const dispatch = useDispatch();
+  const history = useHistory();
   // TODO: Update when users are added.
-  const userLoggedIn = true;
+  const userLoggedIn = useSelector(state => state.loggedIn);
 
   const [state, setState] = React.useState(false);
 
@@ -36,12 +42,31 @@ export default function Navbar() {
    * 
    * @param {boolean} open - the open state of the drawer.
    */
-  const toggleDrawer = (open) => (event) => {
+  const toggleDrawer = open => event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
     setState(open);
+  };
+
+  /**
+   * Creates a log out button.
+   *
+   * @returns jsx of log out button to be rendered by React.
+   */
+  const logoutButton = () => {
+    return (
+      <Button onClick={() => {
+        fetch(API_AUTH_SIGNOUT, {
+          method: "GET"
+        }).catch(console.log);
+
+        dispatch(setLoggedIn(false));
+        dispatch(setDecks([]));
+        history.push("/");
+      }}>Log out</Button>
+    );
   };
 
   /**
@@ -107,16 +132,6 @@ export default function Navbar() {
   );
 }
 
-/**
- * Creates a log out button.
- *
- * @returns jsx of log out button to be rendered by React.
- */
-const logoutButton = () => {
-  return (
-    <Button component={NavLink} to="/" >Log out</Button>
-  );
-};
 
 /**
  * Creates a search bar.
