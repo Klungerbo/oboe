@@ -10,8 +10,7 @@ import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
 import Deck from '../../components/Deck/Deck';
 
 import colors from '../../data/colors';
-import * as flashcards from '../../data/flashcards';
-import { API_DECKS, API_FLASHCARDS } from '../../data/config';
+import { API_DECKS } from '../../data/config';
 import { setDecks } from '../../store/actions/DataActions';
 
 /**
@@ -28,33 +27,6 @@ export default function Home() {
   const decks = useSelector(state => state.decks)
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
-
-  const handleAddFlashcard = () => {
-    if (decks.length === 0)
-      return;
-
-    const newFlashcard = {
-      front: flashcards.front[Math.floor(Math.random() * flashcards.front.length)],
-      back: flashcards.back[Math.floor(Math.random() * flashcards.back.length)],
-      description: flashcards.description[Math.floor(Math.random() * flashcards.description.length)],
-      lastReviewedAt: new Date("2019-04-20"),
-      consecutiveCorrect: Math.round(Math.random() * 5),
-      deckId: decks[Math.floor(Math.random() * decks.length)].id
-    };
-
-    fetch(API_FLASHCARDS, {
-      method: "POST",
-      headers: { "content-type": "application/json"},
-      body: JSON.stringify(newFlashcard)
-    }).then(res => {
-      if (res.status !== 200)
-        return;
-
-      res.json().then(({id}) => {
-        newFlashcard.id = id;
-      }).catch(console.log);
-    }).catch(console.log);
-  };
 
   const handleAddDeck = () => {
     const newDeck = {
@@ -96,9 +68,6 @@ export default function Home() {
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
             <Button variant="contained" color="primary" onClick={handleGetDecks} >GET DECKS </Button>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <Button variant="contained" color="primary" onClick={handleAddFlashcard} >ADD FLASHCARD</Button>
           </Grid>
           {decks && decks.length > 0 && decks.map(deck => {
             return (

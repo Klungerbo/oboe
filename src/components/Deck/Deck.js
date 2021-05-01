@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Box, Button, fade } from '@material-ui/core';
+import { Box, Button, fade } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 
@@ -24,8 +24,7 @@ export default function Deck({ deck, color }) {
             size="large"
             component={Link}
             to={`/edit/${deck.id}`}
-            style={{ backgroundColor: `${color}`, height: 60 }}
-            style={{backgroundColor: `${fade(color, 0.8)}`}}
+            style={{backgroundColor: `${fade(color, 0.8)}`, height: 60 }}
             aria-label={`Edit the deck titled: ${deck.title}`}
           >
             Configure deck

@@ -1,7 +1,7 @@
 import { Button, Grid, TextField } from '@material-ui/core'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
-import flashcards from "../../data/flashcards" 
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { setCurrentDeck } from '../../store/actions/DataActions';
 
 const MAX_FRONT_LENGTH = 100;
@@ -10,7 +10,9 @@ const MAX_CARD_DESCRIPTION_LENGTH = 100;
 
 export default function DeckCardList() {
   const [isEditing, setIsEditing] = useState(0);
+  const currentDeck = useSelector(state => state.currentDeck);
   const dispatch = useDispatch();
+  const {id} = useParams();
 
   const maybeDisable = card => {
     setTimeout(() => {
@@ -28,15 +30,20 @@ export default function DeckCardList() {
   }
 
   const deleteCard = card => {
-    dispatch(setCurrentDeck(flashcards.filter(currentCard => currentCard.id !== card.id)));
+    // TODO - fix
+    fetch()
+    dispatch(setCurrentDeck(currentDeck.filter(currentCard => currentCard.id !== card.id)));
   }
 
+  useEffect(() => {
+    console.log(currentDeck);
+  }, [])
   
 
   return (
 
     <>
-      {flashcards.map(card => (
+      {currentDeck.map(card => (
         <Grid key={card.id} container spacing={3}>
           <Grid item xs={2}>
             <TextField className={"card" + card.id} variant="outlined"

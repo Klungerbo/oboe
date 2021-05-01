@@ -1,4 +1,4 @@
-import { Box, Card, CardActionArea, Paper } from '@material-ui/core';
+import { Box, Card, CardActionArea } from '@material-ui/core';
 import styled from 'styled-components';
 
 export const StyledFullHeightBox = styled(Box)`

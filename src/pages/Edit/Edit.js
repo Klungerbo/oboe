@@ -6,107 +6,104 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDeck } from '../../store/actions/DataActions'
-import flashcards from '../../data/flashcards'
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { DeckDescription } from "../../components/DeckEditInput/DeckDescription"
 import DeckTitle from '../../components/DeckEditInput/DeckTitle';
 import DeckColorPalette from '../../components/DeckEditInput/DeckColorPalette';
 import DeckCardList from '../../components/DeckEditInput/DeckCardList';
 import "../../data/config"
-import { API_AUTH_SIGNIN, API_AUTH_SIGNUP, API_DECKS, API_FLASHCARDS } from '../../data/config';
+import { API_DECKS, API_FLASHCARDS } from '../../data/config';
 
 const MAX_FRONT_LENGTH = 100;
 const MAX_BACK_LENGTH = 100;
 const MAX_CARD_DESCRIPTION_LENGTH = 100;
 
-const actions = async () => {
-  
-
-  return 10;
-}
-
 export default function Edit() {
 
-  const { id } = useParams();
+  const { id: deckId } = useParams();
+  const history = useHistory();
   const currentDeck = useSelector(state => state.currentDeck);
+  const decks = useSelector(state => state.decks);
   const dispatch = useDispatch();
 
   const [cardDescriptionText, setCardDescriptionText] = useState("")
   const [cardFrontText, setCardFrontText] = useState("")
   const [cardBackText, setCardBackText] = useState("")
 
-  console.log(currentDeck)
+  const handleAddFlashcard = () => {
 
-  const addCard = () => {
-    dispatch(setCurrentDeck({
-      ...currentDeck,
-      a: {
-        a: ""
-      }
-    }))
-  }
+    const newFlashcard = {
+      front: cardFrontText,
+      back: cardBackText,
+      description: cardDescriptionText,
+      consecutiveCorrect: 0,
+      lastReviewedAt: Date.now(),
+      deckId: deckId
+    }
+
+    // const newFlashcard = {
+    //   front: flashcards.front[Math.floor(Math.random() * flashcards.front.length)],
+    //   back: flashcards.back[Math.floor(Math.random() * flashcards.back.length)],
+    //   description: flashcards.description[Math.floor(Math.random() * flashcards.description.length)],
+    //   lastReviewedAt: new Date("2019-04-20"),
+    //   consecutiveCorrect: Math.round(Math.random() * 5),
+    //   deckId: decks[Math.floor(Math.random() * decks.length)].id
+    // };
+
+    fetch(API_FLASHCARDS, {
+      credentials: "include",
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(newFlashcard)
+    }).then(res => {
+      if (res.status !== 200)
+        return;
+
+      res.json().then(({ id }) => {
+        newFlashcard.id = id;
+        currentDeck[id] = newFlashcard;
+        dispatch(setCurrentDeck(currentDeck));
+        console.log(currentDeck)
+      }).catch(console.log);
+    }).catch(console.log);
+  };
+
+
+
 
   useEffect(() => {
-    // TODO: setCurrentDeck the actual selected deck
-    dispatch(setCurrentDeck(flashcards))
+    if (decks.length === 0) {
+      fetch(API_DECKS, {
+        credentials: "include"
+      }).then(response => {
+        response.json().then(response => {
+          const _currentDeck = response.find(deck => deck.id === parseInt(deckId))
+          if (!_currentDeck) {
+            history.push("/");
+            return;
+          }
+          dispatch(setCurrentDeck(_currentDeck));
+          console.log(_currentDeck);
+        })
+      })
+    } else {
+      const _currentDeck = decks.find(deck => deck.id === parseInt(deckId))
+      if (!_currentDeck) {
+        history.push("/");
+        return;
+      }
 
-    const cardJson = {
-      front: "testing",
-      back: "testing even more",
-      description: "very nice",
-      last_reviewed_at: Date.now(),
-      consecutive_correct: 3
+      dispatch(setCurrentDeck(_currentDeck));
+      console.log(_currentDeck)
     }
-  
-    const deckJson = {
-      title: "nice",
-      description: "desc",
-      cardColor: "#FF0000",
-      colorId: 1
-    }
-  
-    const userJson = {
-      email: "a@a.com",
-      password: "123"
-    }
-  
-    // 1. CREATE USER
-    console.log("USER DATA")
-    fetch(API_AUTH_SIGNUP, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-custom": "true" },
-      credentials: "include",
-      body: JSON.stringify(userJson)
-    }).then(res => res.json().then(console.log));
-  
-    // 2. LOG IN
-    console.log("LOGIN DATA")
-    fetch(API_AUTH_SIGNIN, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(userJson)
-    }).then(res => res.json().then(console.log));
-  
-    // 3. MAKE DECK
-    console.log("DECK DATA")
-    fetch(API_DECKS, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(deckJson)
-    }).then(res => res.json().then(console.log));
-  
-    // 4. MAKE FLASHCARD
-    console.log("CARD DATA")
-    fetch(API_FLASHCARDS, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(cardJson)
-    }).then(res => res.json().then(console.log));
 
-    console.log("running ")
+    fetch(`${API_FLASHCARDS}/${deckId}`, {
+      credentials: "include"
+    }).then(response => {
+      response.json().then(res => {
+        dispatch(setCurrentDeck({ ...currentDeck, ...res }))
+      })
+    })
   }, [])
 
   return (
@@ -128,8 +125,8 @@ export default function Edit() {
           </Grid>
           <Grid item xs={4}>
             <Box height={1}>
-              <Paper style={{ height: "100%", backgroundColor: currentDeck.cardColor }}>
-                <Box display="flex" flexDirection="column" flexDirection="column"
+              <Paper style={{ height: "100%", backgroundColor: currentDeck && currentDeck.cardColor }}>
+                <Box display="flex" flexDirection="column"
                   alignItems="center" justifyContent="center" style={{ height: "100%" }}>
                   <Typography variant="h2">{cardFrontText}</Typography>
                 </Box>
@@ -138,8 +135,8 @@ export default function Edit() {
           </Grid>
           <Grid item xs={4}>
             <Box height={1}>
-              <Paper style={{ height: "100%", backgroundColor: currentDeck.cardColor }}>
-                <Box p={3} display="flex" flexDirection="column" flexDirection="column"
+              <Paper style={{ height: "100%", backgroundColor: currentDeck && currentDeck.cardColor }}>
+                <Box p={3} display="flex" flexDirection="column"
                   alignItems="center" justifyContent="center" style={{ height: "100%" }}>
                   <Typography variant="h2">{cardBackText}</Typography>
                   <Typography variant="body2">{cardDescriptionText}</Typography>
@@ -165,7 +162,7 @@ export default function Edit() {
         </Grid>
         <Grid item xs={3}>
           <Button color="primary" variant="contained"
-            onClick={() => addCard()}>
+            onClick={() => handleAddFlashcard()}>
             Add card
             </Button>
         </Grid>

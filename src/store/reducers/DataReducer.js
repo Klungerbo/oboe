@@ -7,7 +7,6 @@ const initialState = {
     cardColor: "#111",
     colorId: -1
   },
-  reviewStats: { correct: 0, incorrect: 0, cardsLeft: 0 },
   loggedIn: false,
   reviewStats: {
     correct: 0,
