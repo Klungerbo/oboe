@@ -15,7 +15,6 @@ import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
-import SearchBar from './Searchbar';
 import { setDecks, setLoggedIn } from '../../store/actions/DataActions';
 import { API_AUTH_SIGNOUT } from '../../data/config';
 
@@ -80,10 +79,9 @@ export default function Navbar() {
           <Button component={NavLink} to="/" underline="none">
             <StyledHomeNav variant="h4" aria-label="home">Oboe</StyledHomeNav>
           </Button>
-          {userLoggedIn ? <Button component={NavLink} to="/" underline="none">Decks</Button> : null}
+          {userLoggedIn && <Button component={NavLink} to="/" underline="none">Decks</Button>}
         </Box>
-        {userLoggedIn ? searchBar() : null}
-        {userLoggedIn ? logoutButton() : null}
+        {userLoggedIn && logoutButton()}
       </>
     );
   }
@@ -96,19 +94,17 @@ export default function Navbar() {
   const xsNavbar = () => {
     return (
       <>
-        {userLoggedIn ?
+        {userLoggedIn &&
           <>
             <Drawer anchor='left' open={state} onClose={toggleDrawer(false)}>{drawerItems()}</Drawer>
             <IconButton onClick={toggleDrawer(true)} edge="start" color="inherit" aria-label="menu">
               <MenuIcon />
             </IconButton>
           </>
-          : null}
+        }
         <Button component={NavLink} to="/" underline="none">
           <StyledHomeNav>Oboe</StyledHomeNav>
         </Button>
-        <Box flexGrow="1" />
-        {userLoggedIn ? searchBar() : null}
       </>
     );
   }
@@ -130,20 +126,6 @@ export default function Navbar() {
     </nav>
   );
 }
-
-
-/**
- * Creates a search bar.
- *
- * @returns jsx of search bar to be rendered by React.
- */
-const searchBar = () => {
-  return (
-    <Box px={1}>
-      <SearchBar enableOnPaths={['/', '/edit']} />
-    </Box>
-  );
-};
 
 /**
  * List of drawer items.
