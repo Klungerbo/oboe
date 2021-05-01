@@ -115,7 +115,6 @@ export default function SignUpDialog({ open, onClose }) {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: newUserInfoJson,
-      credentials: "include"
     }).then(response => {
       if (response.status === 400) {
         setEmailTaken(true);
