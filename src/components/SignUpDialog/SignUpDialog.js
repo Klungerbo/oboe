@@ -1,12 +1,13 @@
 import React from 'react'
 import {
-  Dialog, CardContent, Grid, 
-  TextField, Button
+  Dialog, CardContent, Grid,
+  TextField, Button, Typography,
+  Box,
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
 import { StyledDialogTitle } from "./SignupDialogStyled";
-import { API_AUTH_SIGNUP, API_AUTH_SIGNIN } from '../../data/config';
+import { API_AUTH_SIGNUP, API_AUTH_SIGNIN, API_AUTH_SIGNUP_VERIFY } from '../../data/config';
 import { setLoggedIn, setUserEmail } from '../../store/actions/DataActions';
 
 import validateEmail from '../../utils/emailValidator';
@@ -24,6 +25,8 @@ export default function SignUpDialog({ open, onClose }) {
   const [passwordMatching, setPasswordMatching] = React.useState(true);
   const [emailTaken, setEmailTaken] = React.useState(false);
   const [isEmail, setIsEmail] = React.useState(true);
+  const [verifyCodePhase, setVerifyCodePhase] = React.useState(false);
+  const [incorrectVerifyCode, setIncorrectVerifyCode] = React.useState(false);
 
   const [newUserInfo, setNewUserInfo] = React.useState({
     email: "",
@@ -34,6 +37,64 @@ export default function SignUpDialog({ open, onClose }) {
   const handleSubmit = e => {
     e.preventDefault();
 
+    if (!verifyCodePhase) {
+      handleNewSignup(e);
+    } else {
+      handleVerifySignup(e);
+    }
+  }
+
+  const handleClose = e => {
+    setPasswordMatching(true);
+    setEmailTaken(false);
+    setIsEmail(true);
+    setVerifyCodePhase(false);
+    setIncorrectVerifyCode(false);
+    setNewUserInfo({});
+    onClose(false);
+  }
+
+  const handleVerifySignup = e => {
+    const newUserInfoJson = JSON.stringify({
+      email: newUserInfo.email,
+      password: newUserInfo.password,
+      registrationCode: newUserInfo.registrationCode
+    });
+
+    fetch(API_AUTH_SIGNUP_VERIFY, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: newUserInfoJson
+    }).then(response => {
+      if (response.status === 400) {
+        setEmailTaken(true);
+      } else if (response.status === 401) {
+        setIncorrectVerifyCode(true);
+      } else if (response.status === 200) {
+        setEmailTaken(false);
+        setVerifyCodePhase(false);
+        setIncorrectVerifyCode(false);
+
+        dispatch(setUserEmail(newUserInfo.email));
+
+        fetch(API_AUTH_SIGNIN, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: newUserInfoJson
+        }).then(response => {
+          if (response.status === 200) {
+            response.json().then(() => {
+              dispatch(setLoggedIn(true));
+            });
+          }
+        });
+
+        handleClose();
+      }
+    }).catch(console.log);
+  }
+
+  const handleNewSignup = e => {
     if (!validateEmail(newUserInfo.email)) {
       setIsEmail(false);
       return;
@@ -53,37 +114,23 @@ export default function SignUpDialog({ open, onClose }) {
     fetch(API_AUTH_SIGNUP, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: newUserInfoJson
+      body: newUserInfoJson,
+      credentials: "include"
     }).then(response => {
       if (response.status === 400) {
         setEmailTaken(true);
       } else if (response.status === 200) {
         setEmailTaken(false);
-
-        dispatch(setUserEmail(newUserInfo.email));
-
-        fetch(API_AUTH_SIGNIN, {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: newUserInfoJson
-        }).then(response => {
-          if (response.status === 200) {
-            response.json().then(jsonObject => {
-              dispatch(setLoggedIn(true));
-            });
-          }
-        });
-
-        onClose(false);
+        setVerifyCodePhase(true);
       }
     });
   }
 
   return (
-    <Dialog open={open} maxWidth="xs" onClose={() => onClose(false)} aria-labelledby="dialog-title">
+    <Dialog open={open} maxWidth="xs" onClose={handleClose} aria-labelledby="dialog-title">
       <CardContent>
         <form onSubmit={handleSubmit}>
-          <Grid
+          <Grid 
             container
             spacing={2}
             justify="flex-start"
@@ -96,9 +143,10 @@ export default function SignUpDialog({ open, onClose }) {
               <TextField
                 onChange={e => setNewUserInfo({ ...newUserInfo, email: e.target.value })}
                 error={emailTaken || !isEmail}
-                helperText={(emailTaken && "Email already in use") || 
-                (!isEmail && "Provide a valid email")}
+                helperText={(emailTaken && "Email already in use") ||
+                  (!isEmail && "Provide a valid email")}
                 required
+                disabled={verifyCodePhase}
                 fullWidth
                 variant="outlined"
                 label="E-mail"
@@ -108,6 +156,7 @@ export default function SignUpDialog({ open, onClose }) {
               <TextField
                 onChange={e => setNewUserInfo({ ...newUserInfo, password: e.target.value })}
                 required
+                disabled={verifyCodePhase}
                 fullWidth
                 variant="outlined"
                 label="Password"
@@ -118,6 +167,7 @@ export default function SignUpDialog({ open, onClose }) {
               <TextField
                 onChange={e => setNewUserInfo({ ...newUserInfo, confirmedPassword: e.target.value })}
                 required
+                disabled={verifyCodePhase}
                 fullWidth
                 error={!passwordMatching}
                 helperText={!passwordMatching ? "Passwords do not match" : ""}
@@ -125,9 +175,29 @@ export default function SignUpDialog({ open, onClose }) {
                 label="Confirm password"
                 type="password"
               />
+              {
+                verifyCodePhase &&
+                <Grid item xs={12}>
+                  <Box pt={2} pb={1}>
+                    <Typography align="left">
+                      A six digit verification code is being sent to you email.
+                      To complete your registration, please insert that code into the box bellow.
+                  </Typography>
+                  </Box>
+                  <TextField
+                    onChange={e => setNewUserInfo({ ...newUserInfo, registrationCode: e.target.value })}
+                    helperText={incorrectVerifyCode && `Code does not match the one sent to the email ${newUserInfo.email}`}
+                    error={incorrectVerifyCode}
+                    required
+                    fullWidth
+                    variant="outlined"
+                    label="Code"
+                  />
+                </Grid>
+              }
             </Grid>
             <Grid item xs={6}>
-              <Button variant="contained" onClick={() => onClose(false)} color="secondary" fullWidth>Cancel</Button>
+              <Button variant="contained" onClick={handleClose} color="secondary" fullWidth>Cancel</Button>
             </Grid>
             <Grid item xs={6}>
               <Button
@@ -136,7 +206,7 @@ export default function SignUpDialog({ open, onClose }) {
                 fullWidth
                 type="submit"
               >
-                Sign up
+                {verifyCodePhase ? "Confirm" : "Sign up"}
               </Button>
             </Grid>
           </Grid>
