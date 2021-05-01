@@ -126,17 +126,17 @@ export default function SignUpDialog({ open, onClose }) {
   }
 
   return (
-    <Dialog open={open} maxWidth="xs" onClose={handleClose} aria-labelledby="dialog-title">
+    <Dialog open={open} maxWidth="xs" onClose={handleClose} aria-label="Create new user form">
       <CardContent>
         <form onSubmit={handleSubmit}>
-          <Grid 
+          <Grid
             container
             spacing={2}
             justify="flex-start"
             align="center"
           >
             <Grid item xs={12}>
-              <StyledDialogTitle id="dialog-title" variant="h3">Create New User</StyledDialogTitle>
+              <StyledDialogTitle variant="h3">Create New User</StyledDialogTitle>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -147,8 +147,9 @@ export default function SignUpDialog({ open, onClose }) {
                 required
                 disabled={verifyCodePhase}
                 fullWidth
+                autoFocus
                 variant="outlined"
-                label="E-mail"
+                label="E-mail" type="email"
               />
             </Grid>
             <Grid item xs={12}>
@@ -191,6 +192,8 @@ export default function SignUpDialog({ open, onClose }) {
                     fullWidth
                     variant="outlined"
                     label="Code"
+                    id="verify-code"
+                    autoFocus 
                   />
                 </Grid>
               }

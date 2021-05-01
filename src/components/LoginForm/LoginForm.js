@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
   CardContent, Grid, Card,
-  TextField, Button, Divider,
+  TextField, Button, Divider, 
 } from "@material-ui/core";
 
 import { setLoggedIn, setUserEmail } from '../../store/actions/DataActions';
@@ -58,7 +58,7 @@ export default function LoginForm({ onOpen }) {
   }
 
   return (
-    <Card raised>
+    <Card raised id="login-form" aria-label="Login form">
       <CardContent>
         <form onSubmit={handleLogin} >
           <Grid
@@ -75,6 +75,8 @@ export default function LoginForm({ onOpen }) {
                 helperText={(emailNotRegistered && "Email is not registered") || 
                 (!isEmail && "Provide a valid email")} 
                 error={emailNotRegistered || !isEmail} 
+                aria-labelledby="login-form" 
+                tabIndex={0}
               />
             </Grid>
             <Grid item xs={12}>
