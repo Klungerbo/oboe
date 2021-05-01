@@ -1,5 +1,4 @@
 const initialState = {
-  searchTerm: "",
   loggedIn: false,
   currentDeck: {
     cardColor: "#111"
@@ -15,11 +14,6 @@ const initialState = {
 
 function DataReducer(state = initialState, action) {
   switch (action.type) {
-    case "SET_SEARCH_TERM":
-      return {
-        ...state,
-        searchTerm: action.searchTerm
-      };
     case "SET_REVIEW_STATS":
       return {
         ...state,
