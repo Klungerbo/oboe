@@ -1,12 +1,7 @@
-import { Container, Link, Typography } from '@material-ui/core'
-import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
-import styled from 'styled-components';
-
-const StyledLink = styled(Link)`
-  color: #00D1B9;
-  text-decoration: none;
-`;
+import { Container, Typography } from '@material-ui/core';
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { StyledLink } from './PrivacyPolicyStyled';
 
 /**
  * Generated and adapted from:
