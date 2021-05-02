@@ -12,11 +12,14 @@ import Contact from './Contact/Contact';
 import Review from './Review/Review';
 
 import { API_EMAIL } from '../data/config';
-import { setLoggedIn, setUserEmail } from '../store/actions/DataActions';
+import { setAcceptedCookies, setLoggedIn, setOpenVerifyCookies, setUserEmail } from '../store/actions/DataActions';
 import CookiesAcceptModal from '../components/CookiesAcceptModal/CookiesAcceptModal';
+import { ACCEPTED_COOKIES } from '../data/localStorageVariables';
 
 export default function Pages() {
   const dispatch = useDispatch();
+  //localStorage.setItem(ACCEPTED_COOKIES, "RUE");
+  const initAcceptedCookies = window.localStorage.getItem(ACCEPTED_COOKIES);
 
   useEffect(() => {
     fetch(API_EMAIL, {
@@ -32,7 +35,12 @@ export default function Pages() {
         }
       }).catch(console.log);
     }).catch(console.log);
-  }, [dispatch])
+
+    if (initAcceptedCookies === "TRUE") {
+      dispatch(setAcceptedCookies(true));
+      dispatch(setOpenVerifyCookies(false));
+    }
+  }, [dispatch, initAcceptedCookies])
 
   return (
     <Body>
@@ -40,7 +48,10 @@ export default function Pages() {
         <Navbar />
       </StyledHeader>
 
-      <CookiesAcceptModal />
+      {
+        (window.localStorage.getItem(ACCEPTED_COOKIES) !== "TRUE") &&
+        <CookiesAcceptModal />
+      }
 
       <StyledMainContent>
         <Switch>

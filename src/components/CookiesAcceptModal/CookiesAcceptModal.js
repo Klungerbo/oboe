@@ -1,33 +1,33 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Box, Button, Slide,
   Typography
 } from '@material-ui/core';
 import { StyledModalContent, StyledModal } from './StyledCookiesAcceptModal';
+import { ACCEPTED_COOKIES } from '../../data/localStorageVariables';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAcceptedCookies, setOpenVerifyCookies } from '../../store/actions/DataActions';
 
 
 export default function CookiesAcceptModal() {
-  const MADE_COOKIE_DECISION = "madeCookieDecision";
-  const ACCEPTED_COOKIES = "acceptedCookies";
-
   const localStorage = window.localStorage;
-  const madeCookieDecision = localStorage.getItem(MADE_COOKIE_DECISION);
 
-  const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const openVerifyCookies = useSelector(state => state.openVerifyCookies)
 
   const handleClose = () => {
-    setOpen(false);
+    dispatch(setOpenVerifyCookies(false));
   };
 
   const handleAccept = () => {
-    localStorage.setItem(ACCEPTED_COOKIES, "RUE");
-    localStorage.setItem(MADE_COOKIE_DECISION, "RUE")
+    localStorage.setItem(ACCEPTED_COOKIES, "TRUE");
+    dispatch(setAcceptedCookies(true));
 
     handleClose();
   }
 
   const modalContent = (
-    <Slide direction="up" in={open}>
+    <Slide direction="up" in={openVerifyCookies}>
       <StyledModalContent>
         <Typography
           variant="h1"
@@ -55,18 +55,10 @@ export default function CookiesAcceptModal() {
     </Slide>
   );
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (madeCookieDecision !== "TRUE") {
-        setOpen(true);
-      }
-    }, 500);
-  }, [madeCookieDecision])
-
   return (
     <>
       <StyledModal
-        open={open}
+        open={openVerifyCookies}
         onClose={handleClose}
         aria-labelledby="cookies-notify-modal-title"
         aria-describedby="cookies-notify-modal"
