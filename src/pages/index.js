@@ -13,6 +13,7 @@ import Review from './Review/Review';
 
 import { API_EMAIL } from '../data/config';
 import { setLoggedIn, setUserEmail } from '../store/actions/DataActions';
+import CookiesAcceptModal from '../components/CookiesAcceptModal/CookiesAcceptModal';
 
 export default function Pages() {
   const dispatch = useDispatch();
@@ -38,6 +39,8 @@ export default function Pages() {
       <StyledHeader>
         <Navbar />
       </StyledHeader>
+
+      <CookiesAcceptModal />
 
       <StyledMainContent>
         <Switch>
