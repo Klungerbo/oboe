@@ -32,8 +32,8 @@ export default function PersonInfoCard({ name, avatar, github, mail, soundcloud,
             {github?.link && github?.name &&
               <Typography variant="body2" style={{ fontSize: "1rem" }}
               >
-                <GitHubIcon fontSize="inherit" /> GitHub:
-                <Link aria-label={`Github account for ${github.name}`}
+                <GitHubIcon fontSize="inherit" /> GitHub: <Link 
+                  aria-label={`Github account for ${github.name}`}
                   style={{ color: "#00D1B9" }} href={github.link}
                 >
                   {github.name}
@@ -42,8 +42,8 @@ export default function PersonInfoCard({ name, avatar, github, mail, soundcloud,
             }
             {mail?.link && mail?.name &&
               <Typography variant="body2" style={{ fontSize: "1rem" }}>
-                <EmailIcon fontSize="inherit" /> Mail:
-                <Link aria-label={`Email for ${mail.name}`}
+                <EmailIcon fontSize="inherit" /> Mail: <Link 
+                  aria-label={`Email for ${mail.name}`}
                   style={{ color: "#00D1B9" }} href={mail.link}
                 >
                   {mail.name}
@@ -52,19 +52,19 @@ export default function PersonInfoCard({ name, avatar, github, mail, soundcloud,
             }
             {soundcloud?.link && soundcloud?.name &&
               <Typography variant="body2" style={{ fontSize: "1rem" }}>
-                <Icon icon={soundcloudIcon} fontSize="inherit" />
-                Soundcloud:
-                <Link aria-label={`Soundcloud account for ${soundcloud.name}`}
-                  style={{ color: "#00D1B9" }} href={soundcloud.link}
-                >
-                  {soundcloud.name}
+                <Icon 
+                  icon={soundcloudIcon} 
+                  fontSize="inherit" /> Soundcloud: <Link 
+                    aria-label={`Soundcloud account for ${soundcloud.name}`}
+                    style={{ color: "#00D1B9" }} href={soundcloud.link}
+                  >
+                    {soundcloud.name}
                 </Link>
               </Typography>
             }
             {discord?.name &&
               <Typography variant="body2" style={{ fontSize: "1rem" }}>
-                <Icon icon={discordIcon} fontSize="inherit" />
-                Discord: {discord.name}
+                <Icon icon={discordIcon} fontSize="inherit" /> Discord: {discord.name}
               </Typography>
             }
           </Box>
