@@ -12,13 +12,15 @@ import Contact from './Contact/Contact';
 import Review from './Review/Review';
 
 import { API_EMAIL } from '../data/config';
-import { setAcceptedCookies, setLoggedIn, setOpenVerifyCookies, setUserEmail } from '../store/actions/DataActions';
+import {
+  setAcceptedCookies, setLoggedIn, setOpenVerifyCookies,
+  setUserEmail
+} from '../store/actions/DataActions';
 import CookiesAcceptModal from '../components/CookiesAcceptModal/CookiesAcceptModal';
 import { ACCEPTED_COOKIES } from '../data/localStorageVariables';
 
 export default function Pages() {
   const dispatch = useDispatch();
-  //localStorage.setItem(ACCEPTED_COOKIES, "RUE");
   const initAcceptedCookies = window.localStorage.getItem(ACCEPTED_COOKIES);
 
   useEffect(() => {
