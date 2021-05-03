@@ -9,7 +9,6 @@ import LoginForm from '../../components/LoginForm/LoginForm';
 import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
 import Deck from '../../components/Deck/Deck';
 
-import colors from '../../data/colors';
 import { API_DECKS } from '../../data/config';
 import { setDecks } from '../../store/actions/DataActions';
 
@@ -30,9 +29,9 @@ export default function Home() {
 
   const handleAddDeck = () => {
     const newDeck = {
-      name: "Deck",
-      description: "Desc",
-      colorId: Math.round(Math.random() * 4) + 1
+      name: "Deck title",
+      description: "Deck description",
+      hexColor: "#333"
     };
 
     fetch(API_DECKS, {
@@ -66,13 +65,10 @@ export default function Home() {
           <Grid item xs={12} sm={6} lg={4}>
             <Button variant="contained" color="primary" onClick={handleAddDeck} >ADD DECK </Button>
           </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <Button variant="contained" color="primary" onClick={handleGetDecks} >GET DECKS </Button>
-          </Grid>
           {decks && decks.length > 0 && decks.map(deck => {
             return (
               <Grid key={deck.id} item xs={12} sm={6} lg={4}>
-                <Deck deck={deck} color={colors[deck.colorId - 1].color} />
+                <Deck deck={deck} color={deck.hexColor} />
               </Grid>
             );
           })}
@@ -114,8 +110,8 @@ export default function Home() {
               </Box>
             </Box>
           </Grid>
-          {mapDecks()}
         </Grid>
+          {mapDecks()}
       </Container>
     );
   }

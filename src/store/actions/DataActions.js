@@ -34,6 +34,15 @@ export function setCurrentDeck(currentDeck) {
   };
 }
 
+export function setCurrentCards(currentCards) {
+  return function (dispatch) {
+    dispatch({
+      type: "SET_CURRENT_CARDS",
+      currentCards: currentCards
+    });
+  };
+}
+
 export function setDecks(decks) {
   return function (dispatch) {
     dispatch({

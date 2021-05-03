@@ -1,25 +1,34 @@
-// import React, { useEffect, useState } from 'react'
-// import { ColorPalette } from "material-ui-color";
-// import { colorPalette } from '../../data/colors'
-// import { useDispatch, useSelector } from 'react-redux';
-// import { setCurrentDeck } from '../../store/actions/DataActions';
-import { Typography } from '@material-ui/core';
+import React from 'react'
+import { ColorPalette } from "material-ui-color";
+import { colorPalette } from '../../data/colors'
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentDeck } from '../../store/actions/DataActions';
+import { API_DECKS } from '../../data/config';
+import { useParams } from 'react-router';
 
 export default function DeckColorPalette() {
+  const currentDeck = useSelector(state => state.currentDeck);
+  const dispatch = useDispatch();
+  const {id} = useParams();
 
-  // const [deckColor, setDeckColor] = useState("");
-  // const currentDeck = useSelector(state => state.currentDeck);
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const colorCode = colorPalette[deckColor];
-  //   dispatch(setCurrentDeck({ ...currentDeck, cardColor: colorCode }))
-  // }, [deckColor])
+  const handleUpdateColor = e => {
+    const paletteColor = colorPalette[e];
+    fetch(API_DECKS, {
+      method: "PUT",
+      credentials: "include",
+      headers: {"content-type": "application/json"},
+      body: JSON.stringify({
+        id: id,
+        hexColor: paletteColor
+      })
+    }).then(() => {
+      dispatch(setCurrentDeck({ ...currentDeck, hexColor: paletteColor }))
+    })
+  }
 
   return (
     <>
-      <Typography>nice</Typography>
-      {/* <ColorPalette onSelect={e => setDeckColor(e)} palette={colorPalette} /> */}
+      <ColorPalette onSelect={e => handleUpdateColor(e)} palette={colorPalette} />
     </>
   )
 }

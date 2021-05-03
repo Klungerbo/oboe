@@ -2,19 +2,18 @@ const initialState = {
   loggedIn: false,
   currentDeck: {
     id: -1,
-    title: "",
+    name: "",
     description: "",
-    cardColor: "#111",
-    colorId: -1
+    hexColor: "#111"
   },
-  loggedIn: false,
   reviewStats: {
     correct: 0,
     incorrect: 0,
     cardsLeft: 0
   },
   // Array of deck objects
-  decks: []
+  decks: [],
+  currentCards: []
 };
 
 function DataReducer(state = initialState, action) {
@@ -33,6 +32,11 @@ function DataReducer(state = initialState, action) {
       return {
         ...state,
         currentDeck: action.currentDeck
+      };
+    case "SET_CURRENT_CARDS":
+      return {
+        ...state,
+        currentCards: action.currentCards
       };
     case "SET_USER_EMAIL":
       return {
