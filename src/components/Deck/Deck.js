@@ -25,7 +25,7 @@ export default function Deck({ deck, color }) {
             component={Link}
             to={`/edit/${deck.id}`}
             style={{backgroundColor: `${fade(color, 0.8)}`, height: 60 }}
-            aria-label={`Edit the deck titled: ${deck.title}`}
+            aria-label={`Edit the deck titled: ${deck.name}`}
           >
             Configure deck
             <Box pr={0.5} />
@@ -37,18 +37,18 @@ export default function Deck({ deck, color }) {
         <StyledFullHeightCardActionArea
           component={Link}
           to={`/review/${deck.id}`}
-          aria-label={`Review the deck titled: ${deck.title}, and the description: ${deck.description}`}
+          aria-label={`Review the deck titled: ${deck.name}, and the description: ${deck.description}`}
         >
           <StyledFullHeightBox display="flex" flexDirection="column" >
             <Box px={1.5} pt={2} pb={1} >
-              <Typography style={{ fontSize: "1.5rem", fontFamily: "Bebas Neue" }}>{deck.title}</Typography>
+              <Typography style={{ fontSize: "1.5rem", fontFamily: "Bebas Neue" }}>{deck.name}</Typography>
             </Box>
             <Box px={1.5} flexGrow="1">
               <Typography variant="body2" color="textSecondary" component="p">{deck.description}</Typography>
             </Box>
             <Box pb={4} display="flex" justifyContent="center">
               <Button style={{backgroundColor: `${fade(color, 0.5)}`}} variant="contained">
-                <Typography style={{ fontSize: "1.8rem", fontFamily: "Alatsi" }} align="center">Review deck</Typography>
+                <Typography style={{ fontSize: "1.8rem", color: "white", fontFamily: "Alatsi" }} align="center">Review deck</Typography>
               </Button>
             </Box>
           </StyledFullHeightBox>

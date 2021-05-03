@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import {
   ListItem, Container, Box,
@@ -27,10 +26,39 @@ import { API_AUTH_SIGNOUT } from '../../data/config';
  */
 export default function Navbar() {
   const dispatch = useDispatch();
-  const history = useHistory();
   const userLoggedIn = useSelector(state => state.loggedIn);
 
   const [state, setState] = React.useState(false);
+
+  /**
+   * List of drawer items.
+   * 
+   * @returns jsx of the drawer list.
+   */
+  const drawerItems = () => {
+    return (
+      <StyledDrawerList>
+        <ListItem button onClick={showDrawer(false)} component={NavLink} to="/">
+          <ListItemIcon><AppsIcon /></ListItemIcon>
+          <ListItemText primary="Decks" />
+        </ListItem>
+        <ListItem button onClick={showDrawer(false)} component={NavLink} to="/about">
+          <ListItemIcon><InfoIcon /></ListItemIcon>
+          <ListItemText primary="About" />
+        </ListItem>
+        <ListItem button onClick={showDrawer(false)} component={NavLink} to="/contact">
+          <ListItemIcon><EmailIcon /></ListItemIcon>
+          <ListItemText primary="Contact" />
+        </ListItem>
+        <Box pt={5} />
+        <ListItem button onClick={() => { handleLogout(); showDrawer(false) }}
+          component={NavLink} to="/">
+          <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+          <ListItemText primary="Log out" />
+        </ListItem>
+      </StyledDrawerList>
+    );
+  };
 
   /**
    * Toggle left side drawer.
@@ -38,34 +66,25 @@ export default function Navbar() {
    * Adapted from:
    * https://material-ui.com/components/drawers/#drawer
    * 
-   * @param {boolean} open - the open state of the drawer.
+   * @param {boolean} newState - the open state of the drawer.
    */
-  const toggleDrawer = open => event => {
+  const showDrawer = newState => event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
-    setState(open);
+    setState(newState);
   };
 
-  /**
-   * Creates a log out button.
-   *
-   * @returns jsx of log out button to be rendered by React.
-   */
-  const logoutButton = () => {
-    return (
-      <Button onClick={() => {
-        fetch(API_AUTH_SIGNOUT, {
-          method: "GET"
-        }).catch(console.log);
-
-        dispatch(setLoggedIn(false));
-        dispatch(setDecks([]));
-        history.push("/");
-      }}>Log out</Button>
-    );
-  };
+  const handleLogout = () => {
+    fetch(API_AUTH_SIGNOUT, {
+      method: "GET",
+      credentials: "include"
+    }).then(() => {
+      dispatch(setLoggedIn(false));
+      dispatch(setDecks([]));
+    }).catch(console.log);
+  }
 
   /**
    * Creates a default navigation bar for sm and up.
@@ -81,7 +100,7 @@ export default function Navbar() {
           </Button>
           {userLoggedIn && <Button component={NavLink} to="/" underline="none">Decks</Button>}
         </Box>
-        {userLoggedIn && logoutButton()}
+        {userLoggedIn && <Button onClick={handleLogout} component={NavLink} to="/">Log out</Button>}
       </>
     );
   }
@@ -96,8 +115,8 @@ export default function Navbar() {
       <>
         {userLoggedIn &&
           <>
-            <Drawer anchor='left' open={state} onClose={toggleDrawer(false)}>{drawerItems()}</Drawer>
-            <IconButton onClick={toggleDrawer(true)} edge="start" color="inherit" aria-label="menu">
+            <Drawer anchor='left' open={state} onClose={showDrawer(false)}>{drawerItems()}</Drawer>
+            <IconButton onClick={showDrawer(true)} edge="start" color="inherit" aria-label="menu">
               <MenuIcon />
             </IconButton>
           </>
@@ -126,32 +145,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
-/**
- * List of drawer items.
- * 
- * @returns jsx of the drawer list.
- */
-const drawerItems = () => {
-  return (
-    <StyledDrawerList>
-      <ListItem button component={NavLink} to="/">
-        <ListItemIcon><AppsIcon /></ListItemIcon>
-        <ListItemText primary="Decks" />
-      </ListItem>
-      <ListItem button component={NavLink} to="/about">
-        <ListItemIcon><InfoIcon /></ListItemIcon>
-        <ListItemText primary="About" />
-      </ListItem>
-      <ListItem button component={NavLink} to="/contact">
-        <ListItemIcon><EmailIcon /></ListItemIcon>
-        <ListItemText primary="Contact" />
-      </ListItem>
-      <Box pt={5} />
-      <ListItem button component={NavLink} to="/">
-        <ListItemIcon><ExitToAppIcon /></ListItemIcon>
-        <ListItemText primary="Log out" />
-      </ListItem>
-    </StyledDrawerList>
-  );
-};
