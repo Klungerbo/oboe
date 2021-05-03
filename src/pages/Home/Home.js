@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box, Button, Container, 
+  Box, Button, Container,
   Grid, Hidden, Typography
 } from '@material-ui/core'
 
@@ -163,16 +163,38 @@ export default function Home() {
           <Grid container justify="space-between" spacing={4}>
             <Grid item xs={12} sm={12} md={6}>
               <Typography variant="h1">Oboe</Typography>
-              <Box py={1} />
-              <Typography variant="h2">Decks and cards</Typography>
-              <Typography variant="body1">With Oboe, you can create, manage, and review decks of flashcards.
-              Each card has a front and back, where the front is the question to which the back holds the answer.
-            </Typography>
-              <Box py={2} />
-              <Typography variant="h2">Spaced repetition system</Typography>
-              <Typography variant="body1">Oboe automatically balances the frequency of a card’s presence in a review.
-              Cards that have been forgotten will show up more frequently than those that were remembered.
-            </Typography>
+
+              <Box mx={3}>
+                <Typography variant="h2">Important!</Typography>
+                <Typography variant="body1">
+                  Before you start getting invested in Oboe, you should know that
+                  this is a school project and that we do not intend to keep this
+                  website maintained and running forever.
+              </Typography>
+                <Box py={1} />
+                <Typography variant="h2">Decks and cards</Typography>
+                <Typography variant="body1">
+                  Oboe is a tool that can assist in memorization through decks of
+                  flashcards. A deck of flashcards can be created for each subject
+                  to be memorized. As with physical flashcards, which consist of a
+                  front and backside, the same is true for the flashcards in Oboe.
+                  The front side contains a hint for the backside, which holds the
+                  item to memorize.
+              </Typography>
+                <Box py={2} />
+                <Typography variant="h2">Spaced repetition system</Typography>
+                <Typography variant="body1">
+                  Oboe uses review sessions and spaced repetition to aid in more
+                  efficient memorization. Review sessions present the flashcards in
+                  a queue where the hardest to remember is placed first in line.
+                  Spaced repetition is a technique where the item to memorize is
+                  visited multiple times with a period of time in-between each
+                  repetition. An item that is hard to remember is visited more
+                  frequently in review sessions. Oboe automatically balances its
+                  spaced repetition review queue, leaving more time for fun and less
+                  time planning a review session.
+              </Typography>
+              </Box>
             </Grid>
             <Grid container justify="flex-end" alignItems="center" item xs={12} sm={12} md={6}>
               <Hidden smDown >
