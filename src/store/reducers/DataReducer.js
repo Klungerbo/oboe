@@ -13,7 +13,9 @@ const initialState = {
   },
   // Array of deck objects
   decks: [],
-  currentCards: []
+  currentCards: [],
+  acceptedCookies: false,
+  openVerifyCookies: true 
 };
 
 function DataReducer(state = initialState, action) {
@@ -48,6 +50,17 @@ function DataReducer(state = initialState, action) {
         ...state,
         loggedIn: action.loggedIn
       };
+    
+    case "SET_OPEN_VERIFY_COOKIES":
+      return {
+        ...state,
+        openVerifyCookies: action.openVerifyCookies
+      }
+    case "SET_ACCEPTED_COOKIES":
+      return {
+        ...state,
+        acceptedCookies: action.acceptedCookies
+      }
 
     default:
       return state;

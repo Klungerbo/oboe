@@ -10,6 +10,7 @@ export default function Contact() {
           <PersonInfoCard
             avatar={"/assets/snw_avatar.jpg"}
             name="Simen Nesse Wiik"
+            mail={{ link: "mailto:simenwii@stud.ntnu.no", name: "simenwii@stud.ntnu.no" }}
             github={{ link: "https://github.com/revosw", name: "revosw" }}
             soundcloud={{ link: "https://soundcloud.com/simenwiik", name: "simenwiik" }}
             discord={{ name: "Revolution#1234" }}
@@ -19,6 +20,7 @@ export default function Contact() {
           <PersonInfoCard
             avatar={"/assets/tko_avatar.jpg"}
             name="Tomas Klungerbo Olsen"
+            mail={{ link: "mailto:tomaskol@stud.ntnu.no", name: "tomaskol@stud.ntnu.no" }}
             github={{ link: "https://github.com/Klungerbo", name: "Klungerbo" }}
             discord={{ name: "Nopsa#6931" }}
           />
