@@ -20,26 +20,9 @@ export default function TermsAndConditions() {
       </Typography>
 
       <Typography paragraph>
-        By accessing this website we assume you accept these terms and 
+        By accessing this website, we assume you accept these terms and 
         conditions. Do not continue to use Oboe if you do not agree to take 
         all of the terms and conditions stated on this page.
-      </Typography>
-
-      <Typography paragraph>
-        The following terminology applies to these Terms and Conditions, 
-        Privacy Statement and Disclaimer Notice and all Agreements: "Client", 
-        "You" and "Your" refers to you, the person log on this website and 
-        compliant to the Company’s terms and conditions. "The Company", 
-        "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", 
-        "Parties", or "Us", refers to both the Client and ourselves. 
-        All terms refer to the offer, acceptance and consideration of payment 
-        necessary to undertake the process of our assistance to the Client in 
-        the most appropriate manner for the express purpose of meeting the 
-        Client’s needs in respect of provision of the Company’s stated services, 
-        in accordance with and subject to, prevailing law of Netherlands. 
-        Any use of the above terminology or other words in the singular, plural, 
-        capitalization and/or he/she or they, are taken as interchangeable and 
-        therefore as referring to same.
       </Typography>
 
       <Typography variant="h2">Cookies</Typography>
@@ -50,7 +33,7 @@ export default function TermsAndConditions() {
       </Typography>
 
       <Typography paragraph>
-        Most interactive websites use cookies to let us retrieve the user’s ,
+        Most interactive websites use cookies to let us retrieve the user’s 
         details for each visit. Cookies are used by our website to enable the 
         functionality of certain areas to make it easier for people visiting 
         our website. 
@@ -89,7 +72,7 @@ export default function TermsAndConditions() {
 
       <Typography variant="h2">Content Liability</Typography>
       <Typography paragraph>
-        We shall not be hold responsible for any content that appears on your 
+        We shall not be held responsible for any content that appears on your 
         Website. You agree to protect and defend us against all claims that is 
         rising on your Website. No link(s) should appear on any Website that 
         may be interpreted as libelous, obscene or criminal, or which infringes, 
@@ -134,7 +117,7 @@ export default function TermsAndConditions() {
 
       <Typography paragraph>
         Through this website you are able to link to other websites which are 
-        not under the control of [business name]. We have no control over the 
+        not under the control of Oboe. We have no control over the 
         nature, content and availability of those sites. The inclusion of any 
         links does not necessarily imply a recommendation or endorse the views 
         expressed within them.
@@ -142,7 +125,7 @@ export default function TermsAndConditions() {
 
        <Typography paragraph>
          Every effort is made to keep the website up and running smoothly. 
-         However, [business name] takes no responsibility for, and will not be 
+         However, Oboe takes no responsibility for, and will not be 
          liable for, the website being temporarily unavailable due to technical 
          issues beyond our control.
       </Typography>
