@@ -1,9 +1,7 @@
 import {
   Container, Typography, Box,
-  TextField, Grid, Paper,
-  Button,
-  Dialog,
-  CardContent
+  TextField, Grid, Button,
+  Dialog, CardContent
 } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +16,7 @@ import "../../data/config"
 import { API_DECKS, API_FLASHCARDS } from '../../data/config';
 import { StyledFlashcardInfo } from '../../components/DeckEditInput/FlashcardInfoStyled';
 import { StyledAddButton, StyledAddButtonContainer } from '../../components/DeckEditInput/AddButtonStyled';
-import { Add, AddBox, AddBoxOutlined, Delete } from '@material-ui/icons';
+import { Add, Delete } from '@material-ui/icons';
 import { StyledFlashcardPaper } from '../../components/DeckEditInput/FlashcardPaperStyled';
 import { StyledDialogTitle } from '../../components/SignUpDialog/SignupDialogStyled';
 
@@ -35,13 +33,32 @@ export default function Edit() {
   const currentCards = useSelector(state => state.currentCards);
   const dispatch = useDispatch();
 
-  const [cardFrontText, setCardFrontText] = useState("Front")
-  const [cardBackText, setCardBackText] = useState("Back")
-  const [cardDescriptionText, setCardDescriptionText] = useState("Description")
+  const [cardFrontText, setCardFrontText] = useState("")
+  const [cardBackText, setCardBackText] = useState("")
+  const [cardDescriptionText, setCardDescriptionText] = useState("")
+
+  const [inputFrontError, setinputFrontError] = useState(false)
+  const [inputBackError, setinputBackError] = useState(false)
 
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
 
   const handleAddFlashcard = () => {
+    
+    if (!cardFrontText.trim()) {
+      setinputFrontError(true)
+    } else {
+      setinputFrontError(false)
+    }
+    
+    if (!cardBackText.trim()) {
+      setinputBackError(true)
+    } else {
+      setinputBackError(false)
+    }
+    
+    if (!cardFrontText.trim() || !cardBackText.trim()) {
+      return;
+    }
 
     const newFlashcard = {
       front: cardFrontText,
@@ -64,6 +81,9 @@ export default function Edit() {
       res.json().then(({ id }) => {
         newFlashcard.id = id;
         dispatch(setCurrentCards([...currentCards, newFlashcard]));
+        setCardFrontText("");
+        setCardBackText("");
+        setCardDescriptionText("");
       }).catch(console.log);
     }).catch(console.log);
   };
@@ -102,7 +122,7 @@ export default function Edit() {
         dispatch(setCurrentCards(res))
       })
     })
-  }, [])
+  }, [deckId, decks, dispatch, history])
 
   const showCardsIfPresent = () => {
     if (currentCards.length !== 0) {
@@ -154,21 +174,21 @@ export default function Edit() {
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <Box height={1}>
-                <StyledFlashcardPaper bgColor={currentDeck?.hexColor}>
+                <StyledFlashcardPaper bgcolor={currentDeck?.hexColor}>
                   <Box p={3} display="flex" flexDirection="column"
                     alignItems="center" justifyContent="center" style={{ height: "100%" }}>
-                    <Typography variant="h2">{cardFrontText}</Typography>
+                    <Typography variant="h2">{cardFrontText || "Front"}</Typography>
                   </Box>
                 </StyledFlashcardPaper>
               </Box>
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <Box height={1}>
-                <StyledFlashcardPaper bgColor={currentDeck?.hexColor}>
+                <StyledFlashcardPaper bgcolor={currentDeck?.hexColor}>
                   <Box p={3} display="flex" flexDirection="column"
                     alignItems="center" justifyContent="center" style={{ height: "100%" }}>
-                    <Typography variant="h2">{cardBackText}</Typography>
-                    <Typography variant="body2">{cardDescriptionText}</Typography>
+                    <Typography variant="h2">{cardBackText || "Back"}</Typography>
+                    <Typography variant="body2">{cardDescriptionText || "Description"}</Typography>
                   </Box>
                 </StyledFlashcardPaper>
               </Box>
@@ -188,7 +208,11 @@ export default function Edit() {
                   label="Front"
                   fullWidth
                   value={cardFrontText}
-                  inputProps={{ maxLength: MAX_FRONT_LENGTH }} />
+                  error={inputFrontError}
+                  inputProps={{
+                    maxLength: MAX_FRONT_LENGTH,
+                    "aria-label": "Text on frontside of flashcard"
+                  }} />
               </Grid>
               <Grid item xs={12} md={6} lg={3}>
                 <TextField onChange={e => setCardBackText(e.target.value)}
@@ -196,15 +220,22 @@ export default function Edit() {
                   label="Back"
                   fullWidth
                   value={cardBackText}
-                  inputProps={{ maxLength: MAX_BACK_LENGTH }} />
+                  error={inputBackError}
+                  inputProps={{
+                    maxLength: MAX_BACK_LENGTH,
+                    "aria-label": "Text on backside of flashcard"
+                  }} />
               </Grid>
               <Grid item xs={12} lg={6}>
                 <TextField onChange={e => setCardDescriptionText(e.target.value)}
                   variant="outlined"
-                  label="Description"
+                  label="Description (optional)"
                   fullWidth
                   value={cardDescriptionText}
-                  inputProps={{ maxLength: MAX_CARD_DESCRIPTION_LENGTH }} />
+                  inputProps={{
+                    maxLength: MAX_CARD_DESCRIPTION_LENGTH,
+                    "aria-label": "Description on backside of flashcard"
+                  }} />
               </Grid>
             </Grid>
           </Box>
@@ -212,9 +243,9 @@ export default function Edit() {
           <StyledAddButtonContainer>
             <StyledAddButton color="primary" variant="contained" fullWidth
               onClick={() => handleAddFlashcard()}>
-              <Add fontSize="medium" />
+              <Add />
               Add card
-                </StyledAddButton>
+            </StyledAddButton>
           </StyledAddButtonContainer>
         </StyledFlashcardInfo>
         <Box pb={1} pt={3}>

@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { StyledFlashcardInfo } from './FlashcardInfoStyled';
 import { StyledDialogTitle } from '../SignUpDialog/SignupDialogStyled';
+import { Save } from '@material-ui/icons';
 
 const MAX_FRONT_LENGTH = 100;
 const MAX_BACK_LENGTH = 100;
@@ -91,69 +92,106 @@ export default function DeckCardList() {
     })
   }
 
-
   return (
     <>
       <Box display="flex" gridRowGap={20} flexDirection="column">
         {currentCards.slice(0).reverse().map(card => (
-          <>
-            <StyledFlashcardInfo display="flex" key={card.id}>
-              <Box flexGrow={1}>
-                <Grid container spacing={1}>
-                  <Grid item xs={12} md={6} lg={3}>
-                    <TextField className={"card" + card.id} variant="outlined"
-                      onBlur={() => maybeDisable(card)} aria-label="Front" fullWidth
-                      disabled={isEditing !== card.id} defaultValue={card.front}
-                      inputProps={{ maxLength: MAX_FRONT_LENGTH, "aria-label": "Front of the card" }}
-                      onChange={e => setFront(e.target.value)}
-                      style={{ height: "100%" }} />
-                  </Grid>
-                  <Grid item xs={12} md={6} lg={3}>
-                    <TextField className={"card" + card.id} variant="outlined"
-                      onBlur={() => maybeDisable(card)} aria-label="Front" fullWidth
-                      disabled={isEditing !== card.id} defaultValue={card.back}
-                      inputProps={{ maxLength: MAX_BACK_LENGTH, "aria-label": "Back of the card" }}
-                      onChange={e => setBack(e.target.value)}
-                      style={{ height: "100%" }} />
-                  </Grid>
-                  <Grid item xs={12} lg={6}>
-                    <TextField className={"card" + card.id} variant="outlined"
-                      onBlur={() => maybeDisable(card)} aria-label="Description" fullWidth
-                      disabled={isEditing !== card.id} defaultValue={card.description}
-                      inputProps={{ maxLength: MAX_CARD_DESCRIPTION_LENGTH, "aria-label": "Description of the card" }}
-                      onChange={e => setDescription(e.target.value)}
-                      style={{ height: "100%" }} />
-                  </Grid>
+          <StyledFlashcardInfo display="flex" key={card.id}>
+            <Box flexGrow={1}>
+              <Grid container spacing={1}>
+                <Grid item xs={12} md={6} lg={3}>
+                  <TextField className={"card" + card.id}
+                    variant="outlined"
+                    onBlur={() => maybeDisable(card)}
+                    aria-label="Front"
+                    fullWidth
+                    disabled={isEditing !== card.id}
+                    defaultValue={card.front}
+                    inputProps={{
+                      maxLength: MAX_FRONT_LENGTH,
+                      "aria-label": "Front of the card"
+                    }}
+                    onChange={e => setFront(e.target.value)}
+                    style={{ height: "100%" }} />
                 </Grid>
-              </Box>
-              <Box p={1} />
-              <Box display="flex">
-                <StyledEditDeleteContainer container spacing={1}>
-                  <Grid item xs={6} sm={12} md={6}>
-                    <StyledEditButton startIcon={<EditIcon />} variant="contained" fullWidth
+                <Grid item xs={12} md={6} lg={3}>
+                  <TextField className={"card" + card.id}
+                    variant="outlined"
+                    onBlur={() => maybeDisable(card)}
+                    aria-label="Front"
+                    fullWidth
+                    disabled={isEditing !== card.id}
+                    defaultValue={card.back}
+                    inputProps={{
+                      maxLength: MAX_BACK_LENGTH,
+                      "aria-label": "Back of the card"
+                    }}
+                    onChange={e => setBack(e.target.value)}
+                    style={{ height: "100%" }} />
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                  <TextField className={"card" + card.id}
+                    variant="outlined"
+                    onBlur={() => maybeDisable(card)}
+                    aria-label="Description"
+                    fullWidth
+                    disabled={isEditing !== card.id}
+                    defaultValue={card.description}
+                    inputProps={{
+                      maxLength: MAX_CARD_DESCRIPTION_LENGTH,
+                      "aria-label": "Description of the card"
+                    }}
+                    onChange={e => setDescription(e.target.value)}
+                    style={{ height: "100%" }} />
+                </Grid>
+              </Grid>
+            </Box>
+            <Box p={1} />
+            <Box display="flex">
+              <StyledEditDeleteContainer container spacing={1}>
+                <Grid item xs={6} sm={12} md={6}>
+                  <Box display={isEditing === card.id ? "block" : "none"}
+                    style={{ height: "100%" }}>
+                    <Button
+                      color="primary"
+                      startIcon={<Save />}
+                      variant="contained"
+                      fullWidth
                       style={{ height: "100%" }}
+                      aria-label={`Edit ${card.front}`}
+                      onClick={() => editCard({ id: 0 })}>
+                      Save
+                    </Button>
+                  </Box>
+                  <Box display={isEditing !== card.id ? "block" : "none"}
+                    style={{ height: "100%" }}>
+                    <StyledEditButton style={{ height: "100%" }}
+                      startIcon={<EditIcon />} variant="contained" fullWidth
                       aria-label={`Edit ${card.front}`}
                       onClick={() => editCard(card)}>
                       Edit
-                  </StyledEditButton>
-                  </Grid>
-                  <Grid item xs={6} sm={12} md={6}>
-                    <Button startIcon={<DeleteIcon />} variant="contained" color="secondary" fullWidth
-                      style={{ height: "100%" }}
-                      aria-label={`Delete ${card.front}`}
-                      onClick={() => handleDelete(card)}>
-                      Delete
+                      </StyledEditButton>
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sm={12} md={6}>
+                  <Button startIcon={<DeleteIcon />}
+                    variant="contained"
+                    color="secondary"
+                    fullWidth
+                    style={{ height: "100%" }}
+                    aria-label={`Delete ${card.front}`}
+                    onClick={() => handleDelete(card)}>
+                    Delete
                   </Button>
-                  </Grid>
-                </StyledEditDeleteContainer>
-              </Box>
-            </StyledFlashcardInfo>
-          </>
+                </Grid>
+              </StyledEditDeleteContainer>
+            </Box>
+          </StyledFlashcardInfo>
         ))}
       </Box>
       <Dialog open={deleteConfirmationOpen} >
         <CardContent>
-        <Grid
+          <Grid
             container
             spacing={2}
             justify="flex-start"
@@ -161,7 +199,9 @@ export default function DeckCardList() {
           >
             <Grid item xs={12}>
               <StyledDialogTitle variant="h2">Are you sure?</StyledDialogTitle>
-              <StyledDialogTitle variant="body1">Are you sure you want to delete the card "{cardToDelete.front}"?</StyledDialogTitle>
+              <StyledDialogTitle variant="body1">
+                Are you sure you want to delete the card "{cardToDelete.front}"?
+              </StyledDialogTitle>
             </Grid>
             <Grid item xs={6}>
               <Button
@@ -176,7 +216,14 @@ export default function DeckCardList() {
             </Grid>
             <Grid item xs={6}>
               <Button variant="contained"
-              onClick={() => {deleteCard(cardToDelete); setDeleteConfirmationOpen(false)}} color="secondary" fullWidth>Delete</Button>
+                onClick={() => {
+                  deleteCard(cardToDelete);
+                  setDeleteConfirmationOpen(false)
+                }}
+                color="secondary"
+                fullWidth>
+                Delete
+              </Button>
             </Grid>
           </Grid>
         </CardContent>
