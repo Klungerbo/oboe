@@ -2,13 +2,13 @@ import React from 'react'
 import {
   Dialog, CardContent, Grid,
   TextField, Button, Typography,
-  Box,
+  Box
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { StyledDialogTitle } from "./SignupDialogStyled";
 import { API_AUTH_SIGNUP, API_AUTH_SIGNIN, API_AUTH_SIGNUP_VERIFY } from '../../data/config';
-import { setLoggedIn, setUserEmail } from '../../store/actions/DataActions';
+import { setLoggedIn, setOpenVerifyCookies, setUserEmail } from '../../store/actions/DataActions';
 
 import validateEmail from '../../utils/emailValidator';
 
@@ -21,13 +21,13 @@ import validateEmail from '../../utils/emailValidator';
  */
 export default function SignUpDialog({ open, onClose }) {
   const dispatch = useDispatch();
+  const acceptedCookies = useSelector(state => state.acceptedCookies)
 
   const [passwordMatching, setPasswordMatching] = React.useState(true);
   const [emailTaken, setEmailTaken] = React.useState(false);
   const [isEmail, setIsEmail] = React.useState(true);
   const [verifyCodePhase, setVerifyCodePhase] = React.useState(false);
   const [incorrectVerifyCode, setIncorrectVerifyCode] = React.useState(false);
-
   const [newUserInfo, setNewUserInfo] = React.useState({
     email: "",
     password: "",
@@ -36,6 +36,11 @@ export default function SignUpDialog({ open, onClose }) {
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    if (!acceptedCookies) {
+      dispatch(setOpenVerifyCookies(true))
+      return;
+    }
 
     if (!verifyCodePhase) {
       handleNewSignup(e);
@@ -125,6 +130,7 @@ export default function SignUpDialog({ open, onClose }) {
     });
   }
 
+
   return (
     <Dialog open={open} maxWidth="xs" onClose={handleClose} aria-label="Create new user form">
       <CardContent>
@@ -193,7 +199,7 @@ export default function SignUpDialog({ open, onClose }) {
                     variant="outlined"
                     label="Code"
                     id="verify-code"
-                    autoFocus 
+                    autoFocus
                   />
                 </Grid>
               }

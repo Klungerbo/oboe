@@ -42,3 +42,21 @@ export function setDecks(decks) {
     });
   };
 }
+
+export function setOpenVerifyCookies(openVerifyCookies) {
+  return function (dispatch) {
+    dispatch({
+      type: "SET_OPEN_VERIFY_COOKIES",
+      openVerifyCookies: openVerifyCookies 
+    });
+  };
+}
+
+export function setAcceptedCookies(acceptedCookies) {
+  return function (dispatch) {
+    dispatch({
+      type: "SET_ACCEPTED_COOKIES",
+      acceptedCookies: acceptedCookies
+    });
+  };
+}

@@ -24,8 +24,10 @@ export default function Footer() {
    * A list of nav links.
    */
   const navLinks = [
-    { title: `about`, path: `/about` },
-    { title: `contact`, path: `/contact` }
+    { title: `terms`, path: `/terms` },
+    { title: `privacy`, path: `/privacy` },
+    { title: `contact`, path: `/contact` },
+    { title: `about`, path: `/about` }
   ];
 
   /**

@@ -3,19 +3,27 @@ import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router';
 import styled from 'styled-components';
 
-import Navbar from '../components/Navbar/Navbar';
-import Footer from '../components/Footer/Footer';
-
 import Home from './Home/Home';
 import About from './About/About';
 import Contact from './Contact/Contact';
 import Review from './Review/Review';
 
 import { API_EMAIL } from '../data/config';
-import { setLoggedIn, setUserEmail } from '../store/actions/DataActions';
+import { ACCEPTED_COOKIES } from '../data/localStorageVariables';
+import {
+  setAcceptedCookies, setLoggedIn, setOpenVerifyCookies,
+  setUserEmail
+} from '../store/actions/DataActions';
+
+import CookiesAcceptModal from '../components/CookiesAcceptModal/CookiesAcceptModal';
+import TermsAndConditions from '../components/TermsAndConditions/TermsAndConditions';
+import PrivacyPolicy from '../components/PrivacyPolicy/PrivacyPolicy';
+import Navbar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer/Footer';
 
 export default function Pages() {
   const dispatch = useDispatch();
+  const initAcceptedCookies = window.localStorage.getItem(ACCEPTED_COOKIES);
 
   useEffect(() => {
     fetch(API_EMAIL, {
@@ -31,7 +39,12 @@ export default function Pages() {
         }
       }).catch(console.log);
     }).catch(console.log);
-  }, [dispatch])
+
+    if (initAcceptedCookies === "TRUE") {
+      dispatch(setAcceptedCookies(true));
+      dispatch(setOpenVerifyCookies(false));
+    }
+  }, [dispatch, initAcceptedCookies])
 
   return (
     <Body>
@@ -39,11 +52,18 @@ export default function Pages() {
         <Navbar />
       </StyledHeader>
 
+      {
+        (window.localStorage.getItem(ACCEPTED_COOKIES) !== "TRUE") &&
+        <CookiesAcceptModal />
+      }
+
       <StyledMainContent>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path='/about' component={About} />
+          <Route path='/terms' component={TermsAndConditions} />
+          <Route path='/privacy' component={PrivacyPolicy} />
           <Route path='/contact' component={Contact} />
+          <Route path='/about' component={About} />
           <Route path='/review/:id' component={Review} />
         </Switch>
       </StyledMainContent>
