@@ -73,7 +73,8 @@ export default function ReviewCard({deckId}) {
 
   useEffect(() => {
     fetch(API_DECKS, {
-      method: "GET"
+      method: "GET",
+      credentials: "include"
     }).then(response => {
       response.json().then(jsonObject => {
         
@@ -90,7 +91,8 @@ export default function ReviewCard({deckId}) {
 
   useEffect(() => {
     fetch(`${API_FLASHCARDS}/${deckId}`, {
-      method: "GET"
+      method: "GET",
+      credentials: "include"
     }).then(response => {
       response.json().then(flashcards => {
         const cards = flashcards.filter(card => card.consecutiveCorrect < 5);

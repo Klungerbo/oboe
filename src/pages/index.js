@@ -18,9 +18,12 @@ import { setLoggedIn, setUserEmail } from '../store/actions/DataActions';
 export default function Pages() {
   const dispatch = useDispatch();
 
+  
+
   useEffect(() => {
     fetch(API_EMAIL, {
-      method: "GET"
+      method: "GET",
+      credentials: "include"
     }).then(response => {
       response.json().then(jsonObject => {
         if (response.status === 200) {

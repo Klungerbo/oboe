@@ -37,7 +37,8 @@ export default function Home() {
     fetch(API_DECKS, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(newDeck)
+      body: JSON.stringify(newDeck),
+      credentials: "include"
     }).then(response => {
       if (response.status !== 200)
         return
@@ -79,7 +80,8 @@ export default function Home() {
 
   const handleGetDecks = useCallback(() => {
     fetch(API_DECKS, {
-      method: "GET"
+      method: "GET",
+      credentials: "include"
     }).then(response => {
       response.json().then(jsonObject => {
         dispatch(setDecks(jsonObject));

@@ -33,7 +33,8 @@ export default function LoginForm({ onOpen }) {
     fetch(API_AUTH_SIGNIN, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: userInfoJson
+      body: userInfoJson,
+      credentials: "include"
     }).then(response => {
       if (response.status === 200) {
         response.json().then(jsonObject => {
