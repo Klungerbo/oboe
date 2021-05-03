@@ -66,7 +66,7 @@ export default function Home() {
           <Grid item xs={12} sm={6} lg={4}>
             <Button variant="contained" color="primary" onClick={handleAddDeck} >ADD DECK </Button>
           </Grid>
-          {decks && decks.length > 0 && decks.map(deck => {
+          {decks && decks.length > 0 && decks.sort((a, b) => a.id - b.id) && decks.map(deck => {
             return (
               <Grid key={deck.id} item xs={12} sm={6} lg={4}>
                 <Deck deck={deck} color={deck.hexColor} />
@@ -113,7 +113,7 @@ export default function Home() {
             </Box>
           </Grid>
         </Grid>
-          {mapDecks()}
+        {mapDecks()}
       </Container>
     );
   }
