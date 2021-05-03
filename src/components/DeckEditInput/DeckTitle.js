@@ -36,6 +36,7 @@ export default function DeckTitle() {
 
   return (
     <TextField variant="outlined"
+      autoFocus
       label={`Title (max ${MAX_DECK_TITLE_LENGTH} characters)`}
       inputProps={{ maxLength: MAX_DECK_TITLE_LENGTH, "aria-label": `Deck title, ${MAX_DECK_TITLE_LENGTH-deckTitleText.length} characters remaining.` }}
       onChange={e => setDeckTitleText(e.target.value)}
