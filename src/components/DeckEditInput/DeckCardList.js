@@ -95,7 +95,7 @@ export default function DeckCardList() {
   return (
     <>
       <Box display="flex" gridRowGap={20} flexDirection="column">
-        {currentCards.slice(0).reverse().map(card => (
+        {currentCards.sort((a, b) => b.id - a.id ) && currentCards.map(card => (
           <StyledFlashcardInfo display="flex" key={card.id}>
             <Box flexGrow={1}>
               <Grid container spacing={1}>
