@@ -19,7 +19,7 @@ export default function DeckCardFilter() {
     srSpeak(`${filteredCards.length} matching ${cardFilter}`)
 
     dispatch(setCurrentCardFilter(filteredCards))
-  }, [cardFilter, currentCards]);
+  }, [cardFilter, currentCards, dispatch]);
 
   return (
     <TextField variant="outlined"
