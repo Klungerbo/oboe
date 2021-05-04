@@ -6,7 +6,7 @@ import { setCurrentDeck } from '../../store/actions/DataActions';
 import { API_DECKS } from '../../data/config';
 import { useParams } from 'react-router';
 
-export default function DeckColorPalette() {
+export default React.memo(() => {
   const currentDeck = useSelector(state => state.currentDeck);
   const dispatch = useDispatch();
   const {id} = useParams();
@@ -43,4 +43,4 @@ export default function DeckColorPalette() {
     </div>
     
   )
-}
+})

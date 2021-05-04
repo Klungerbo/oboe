@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentCards, setCurrentDeck, setDecks } from '../../store/actions/DataActions'
 import { useHistory, useParams } from 'react-router';
-import { DeckDescription } from "../../components/DeckEditInput/DeckDescription"
+import DeckDescription from "../../components/DeckEditInput/DeckDescription"
 import DeckTitle from '../../components/DeckEditInput/DeckTitle';
 import DeckColorPalette from '../../components/DeckEditInput/DeckColorPalette';
 import DeckCardList from '../../components/DeckEditInput/DeckCardList';
@@ -55,10 +55,6 @@ export default function Edit() {
       srSpeak("Unable to add. A card must have back text", "assertive")
     }
   }
-
-  useEffect(() => {
-
-  })
 
   const handleAddFlashcard = () => {
 

@@ -18,7 +18,7 @@ const MAX_FRONT_LENGTH = 100;
 const MAX_BACK_LENGTH = 100;
 const MAX_CARD_DESCRIPTION_LENGTH = 100;
 
-export default function DeckCardList() {
+export default React.memo(() => {
   const [isEditing, setIsEditing] = useState(0);
   const currentCards = useSelector(state => state.currentCards);
   const currentCardFilter = useSelector(state => state.currentCardFilter);
@@ -231,4 +231,4 @@ export default function DeckCardList() {
       </Dialog>
     </>
   )
-}
+})

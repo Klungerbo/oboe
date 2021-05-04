@@ -7,7 +7,7 @@ import { setCurrentDeck } from "../../store/actions/DataActions"
 
 const MAX_DECK_DESCRIPTION_LENGTH = 150;
 
-export function DeckDescription() {
+export default React.memo(() => {
   const {id} = useParams();
 
   const currentDeck = useSelector(state => state.currentDeck)
@@ -44,4 +44,4 @@ export function DeckDescription() {
       onBlur={() => handleDescriptionUpdate()}
       value={deckDescriptionText} />
   )
-}
+})

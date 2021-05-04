@@ -7,7 +7,7 @@ import { setCurrentDeck } from '../../store/actions/DataActions';
 
 const MAX_DECK_TITLE_LENGTH = 50;
 
-export default function DeckTitle() {
+export default React.memo(() => {
   const {id} = useParams();
 
   const currentDeck = useSelector(state => state.currentDeck)
@@ -44,4 +44,4 @@ export default function DeckTitle() {
       onBlur={() => handleTitleUpdate()}
       value={deckTitleText} />
   )
-}
+})
