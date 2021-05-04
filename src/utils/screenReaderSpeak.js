@@ -5,6 +5,9 @@
 /**
  * Make the screen reader say a message
  * 
+ * Code adapted from:
+ * https://a11y-guidelines.orange.com/en/web/components-examples/make-a-screen-reader-talk/
+ * 
  * @param {String} text Text the screen reader should announce
  * @param {"polite"|"assertive"|"off"} priority Whether the screen reader should be interrupted
  */
