@@ -7,10 +7,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { StyledDialogTitle } from "./SignupDialogStyled";
-import { API_AUTH_SIGNUP, API_AUTH_SIGNIN, API_AUTH_SIGNUP_VERIFY } from '../../data/config';
 import { setLoggedIn, setOpenVerifyCookies, setUserEmail } from '../../store/actions/DataActions';
 
 import validateEmail from '../../utils/emailValidator';
+import { API_AUTH_SIGNIN, API_AUTH_SIGNUP, API_AUTH_SIGNUP_VERIFY } from '../../utils/oboeFetch';
 
 /**
  * Represents the sign up dialog that pops up when you click "Create new user" when not logged in

@@ -11,8 +11,8 @@ import Deck from '../../components/Deck/Deck';
 
 import colors from '../../data/colors';
 import * as flashcards from '../../data/flashcards';
-import { API_DECKS, API_FLASHCARDS } from '../../data/config';
 import { setDecks } from '../../store/actions/DataActions';
+import { API_DECKS, API_FLASHCARDS } from '../../utils/oboeFetch';
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,

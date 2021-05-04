@@ -15,7 +15,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
 import { setDecks, setLoggedIn } from '../../store/actions/DataActions';
-import { API_AUTH_SIGNOUT } from '../../data/config';
+import { API_AUTH_SIGNOUT } from '../../utils/oboeFetch';
 
 
 /**

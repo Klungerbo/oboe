@@ -8,8 +8,7 @@ import About from './About/About';
 import Contact from './Contact/Contact';
 import Review from './Review/Review';
 
-import { API_EMAIL } from '../data/config';
-import { ACCEPTED_COOKIES } from '../data/localStorageVariables';
+import { ACCEPTED_COOKIES, LOGGED_IN, LOGGED_IN_EMAIL } from '../data/localStorageVariables';
 import {
   setAcceptedCookies, setLoggedIn, setOpenVerifyCookies,
   setUserEmail
@@ -20,6 +19,7 @@ import TermsAndConditions from '../components/TermsAndConditions/TermsAndConditi
 import PrivacyPolicy from '../components/PrivacyPolicy/PrivacyPolicy';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
+import { API_EMAIL } from '../utils/oboeFetch';
 
 export default function Pages() {
   const dispatch = useDispatch();

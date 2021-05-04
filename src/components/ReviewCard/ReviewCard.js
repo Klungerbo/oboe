@@ -9,7 +9,7 @@ import { useHistory } from 'react-router';
 import { useSpring } from "@react-spring/web";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDeck, setReviewStats, setDecks } from '../../store/actions/DataActions';
-import { API_FLASHCARDS, API_DECKS } from '../../data/config';
+import { API_DECKS, API_FLASHCARDS } from '../../utils/oboeFetch';
 
 export default function ReviewCard({deckId}) {
   const history = useHistory();
