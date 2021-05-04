@@ -46,13 +46,13 @@ export default function Edit() {
 
   const alertIfNewCardInvalid = () => {
     if (!cardFrontText.trim() && !cardBackText.trim()) {
-      srSpeak("A card must have front and back text", "assertive")
+      srSpeak("Unable to add. A card must have front and back text", "assertive")
     }
     else if (!cardFrontText.trim()) {
-      srSpeak("A card must have front text", "assertive")
+      srSpeak("Unable to add. A card must have front text", "assertive")
     }
     else if (!cardBackText.trim()) {
-      srSpeak("A card must have back text", "assertive")
+      srSpeak("Unable to add. A card must have back text", "assertive")
     }
   }
 

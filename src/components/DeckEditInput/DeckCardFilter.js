@@ -1,8 +1,12 @@
-import { TextField } from '@material-ui/core';
+import {
+  Box, Divider, InputAdornment,
+  TextField
+} from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentCardFilter } from '../../store/actions/DataActions';
 import { srSpeak } from '../../utils/screenReaderSpeak';
+import SearchIcon from '@material-ui/icons/Search';
 
 export default function DeckCardFilter() {
   const currentCards = useSelector(state => state.currentCards);
@@ -11,9 +15,9 @@ export default function DeckCardFilter() {
 
   useEffect(() => {
     const filteredCards = currentCards.filter(card => {
-      return (card.front.includes(cardFilter)
-       || card.back.includes(cardFilter)
-       || card.description.includes(cardFilter))
+      return (card.front.toLowerCase().includes(cardFilter.toLowerCase())
+        || card.back.toLowerCase().includes(cardFilter.toLowerCase())
+        || card.description.toLowerCase().includes(cardFilter.toLowerCase()))
     });
 
     srSpeak(`${filteredCards.length} matching ${cardFilter}`)
@@ -22,12 +26,24 @@ export default function DeckCardFilter() {
   }, [cardFilter, currentCards, dispatch]);
 
   return (
-    <TextField variant="outlined"
-      onChange={e => setCardFilter(e.target.value)}
-      value={cardFilter}
-      label="Filter"
-      inputProps={{
-        "aria-label": "Filter cards by front, back or description"
-      }} />
+    <>
+      <TextField variant="outlined"
+        onChange={e => setCardFilter(e.target.value)}
+        value={cardFilter}
+        label={`Search in flashcards`}
+        style={{ flexShrink: "1" }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+        inputProps={{
+          "aria-label": "Filter cards by front, back or description"
+        }} />
+      <Box my={1.5} />
+      <Divider />
+    </>
   )
 }
