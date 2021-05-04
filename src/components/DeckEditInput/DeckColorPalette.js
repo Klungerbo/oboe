@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { ColorPalette } from "material-ui-color";
 import { colorPalette } from '../../data/colors'
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,16 @@ export default function DeckColorPalette() {
   const currentDeck = useSelector(state => state.currentDeck);
   const dispatch = useDispatch();
   const {id} = useParams();
+
+  const paletteElement = useRef();
+
+  useEffect(() => {
+    const paletteButtons = paletteElement.current.querySelectorAll("button");
+    const colorNames = Object.keys(colorPalette);
+    paletteButtons.forEach((el, index) => {
+      el.setAttribute("aria-label", colorNames[index]);
+    })
+  }, [])
 
   const handleUpdateColor = e => {
     const paletteColor = colorPalette[e];
@@ -27,8 +37,10 @@ export default function DeckColorPalette() {
   }
 
   return (
-    <>
+    
+    <div ref={paletteElement}>
       <ColorPalette onSelect={e => handleUpdateColor(e)} palette={colorPalette} />
-    </>
+    </div>
+    
   )
 }

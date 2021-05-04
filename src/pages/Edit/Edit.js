@@ -19,6 +19,8 @@ import { StyledAddButton, StyledAddButtonContainer } from '../../components/Deck
 import { Add, Delete } from '@material-ui/icons';
 import { StyledFlashcardPaper } from '../../components/DeckEditInput/FlashcardPaperStyled';
 import { StyledDialogTitle } from '../../components/SignUpDialog/SignupDialogStyled';
+import { srSpeak } from '../../utils/screenReaderSpeak';
+import DeckCardFilter from '../../components/DeckEditInput/DeckCardFilter';
 
 const MAX_FRONT_LENGTH = 100;
 const MAX_BACK_LENGTH = 100;
@@ -42,21 +44,40 @@ export default function Edit() {
 
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
 
+  const alertIfNewCardInvalid = () => {
+    if (!cardFrontText.trim() && !cardBackText.trim()) {
+      srSpeak("A card must have front and back text", "assertive")
+    }
+    else if (!cardFrontText.trim()) {
+      srSpeak("A card must have front text", "assertive")
+    }
+    else if (!cardBackText.trim()) {
+      srSpeak("A card must have back text", "assertive")
+    }
+  }
+
+  useEffect(() => {
+
+  })
+
   const handleAddFlashcard = () => {
-    
+
     if (!cardFrontText.trim()) {
       setinputFrontError(true)
     } else {
       setinputFrontError(false)
     }
-    
+
     if (!cardBackText.trim()) {
       setinputBackError(true)
     } else {
       setinputBackError(false)
     }
-    
+
+    alertIfNewCardInvalid()
+
     if (!cardFrontText.trim() || !cardBackText.trim()) {
+
       return;
     }
 
@@ -84,6 +105,8 @@ export default function Edit() {
         setCardFrontText("");
         setCardBackText("");
         setCardDescriptionText("");
+
+        srSpeak("Flashcard added")
       }).catch(console.log);
     }).catch(console.log);
   };
@@ -126,19 +149,18 @@ export default function Edit() {
       return <DeckCardList />
     } else {
       return (
-        <>
-          <Box display="flex" alignItems="center" >
-            <InfoOutlinedIcon fontSize="large" />
-            <Box px={0.5} />
-            <Typography variant="body2">There are no cards in the deck. You can start by adding a card in the section right above.</Typography>
-          </Box>
-        </>
+        <Box display="flex" alignItems="center" >
+          <InfoOutlinedIcon fontSize="large" />
+          <Box px={0.5} />
+          <Typography variant="body2">There are no cards in the deck. You can start by adding a card in the section right above.</Typography>
+        </Box>
       )
     }
   }
 
   const handleDeleteDeck = () => {
     setDeleteConfirmationOpen(true);
+    srSpeak(`Are you sure you want to delete the deck ${currentDeck.name}`, "assertive")
   }
 
   const deleteDeck = ({ id }) => {
@@ -239,7 +261,8 @@ export default function Edit() {
           <Box p={1} />
           <StyledAddButtonContainer>
             <StyledAddButton color="primary" variant="contained" fullWidth
-              onClick={() => handleAddFlashcard()}>
+              onClick={() => handleAddFlashcard()}
+              onFocus={() => alertIfNewCardInvalid()}>
               <Add />
               Add card
             </StyledAddButton>
@@ -248,19 +271,26 @@ export default function Edit() {
         <Box pb={1} pt={3}>
           <Typography variant="h2">Cards in deck</Typography>
         </Box>
+        <Box py={2}>
+          <DeckCardFilter />
+        </Box>
         {showCardsIfPresent()}
         <Box pt={7}>
-          <Button variant="contained" color="secondary" startIcon={<Delete />} onClick={handleDeleteDeck}>Delete deck</Button>
+          <Button variant="contained"
+            color="secondary"
+            startIcon={<Delete />}
+            onClick={handleDeleteDeck}>
+            Delete deck
+          </Button>
         </Box>
       </Container >
-      <Dialog aria-labelledby="cancel-confirm-title" aria-describedby="cancel-confirm-description" open={deleteConfirmationOpen} >
+      <Dialog
+        open={deleteConfirmationOpen} >
         <CardContent>
-          <Grid
-            container
+          <Grid container
             spacing={2}
             justify="flex-start"
-            align="center"
-          >
+            align="center">
             <Grid item xs={12}>
               <StyledDialogTitle variant="h2" id="cancel-confirm-title">Are you sure?</StyledDialogTitle>
               <StyledDialogTitle variant="body1" id="cancel-confirm-description">
@@ -273,14 +303,20 @@ export default function Edit() {
                 color="primary"
                 fullWidth
                 onClick={() => setDeleteConfirmationOpen(false)}
-                type="submit"
-              >
+                type="submit">
                 Cancel
-          </Button>
+              </Button>
             </Grid>
             <Grid item xs={6}>
               <Button variant="contained"
-                onClick={() => { deleteDeck(currentDeck); setDeleteConfirmationOpen(false) }} color="secondary" fullWidth>Delete</Button>
+                onClick={() => {
+                  deleteDeck(currentDeck);
+                  setDeleteConfirmationOpen(false)
+                }}
+                color="secondary"
+                fullWidth>
+                Delete
+              </Button>
             </Grid>
           </Grid>
         </CardContent>

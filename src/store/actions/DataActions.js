@@ -34,6 +34,15 @@ export function setCurrentDeck(currentDeck) {
   };
 }
 
+export function setCurrentCardFilter(currentCardFilter) {
+  return function (dispatch) {
+    dispatch({
+      type: "SET_CURRENT_CARD_FILTER",
+      currentCardFilter: currentCardFilter
+    });
+  };
+}
+
 export function setCurrentCards(currentCards) {
   return function (dispatch) {
     dispatch({

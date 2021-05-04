@@ -21,6 +21,7 @@ const MAX_CARD_DESCRIPTION_LENGTH = 100;
 export default function DeckCardList() {
   const [isEditing, setIsEditing] = useState(0);
   const currentCards = useSelector(state => state.currentCards);
+  const currentCardFilter = useSelector(state => state.currentCardFilter);
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
   const [description, setDescription] = useState("");
@@ -95,7 +96,7 @@ export default function DeckCardList() {
   return (
     <>
       <Box display="flex" gridRowGap={20} flexDirection="column">
-        {currentCards.sort((a, b) => b.id - a.id ) && currentCards.map(card => (
+        {currentCardFilter.sort((a, b) => b.id - a.id ) && currentCardFilter.map(card => (
           <StyledFlashcardInfo display="flex" key={card.id}>
             <Box flexGrow={1}>
               <Grid container spacing={1}>
