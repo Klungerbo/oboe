@@ -1,7 +1,10 @@
 const initialState = {
   loggedIn: false,
   currentDeck: {
-    cardColor: "#111"
+    id: -1,
+    name: "",
+    description: "",
+    hexColor: "#111"
   },
   reviewStats: {
     correct: 0,
@@ -10,6 +13,8 @@ const initialState = {
   },
   // Array of deck objects
   decks: [],
+  currentCards: [],
+  currentCardFilter: [],
   acceptedCookies: false,
   openVerifyCookies: true 
 };
@@ -30,6 +35,16 @@ function DataReducer(state = initialState, action) {
       return {
         ...state,
         currentDeck: action.currentDeck
+      };
+    case "SET_CURRENT_CARDS":
+      return {
+        ...state,
+        currentCards: action.currentCards
+      };
+    case "SET_CURRENT_CARD_FILTER":
+      return {
+        ...state,
+        currentCardFilter: action.currentCardFilter
       };
     case "SET_USER_EMAIL":
       return {

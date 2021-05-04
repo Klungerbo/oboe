@@ -69,7 +69,8 @@ export default function SignUpDialog({ open, onClose }) {
     fetch(API_AUTH_SIGNUP_VERIFY, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: newUserInfoJson
+      body: newUserInfoJson,
+      credentials: "include"
     }).then(response => {
       if (response.status === 400) {
         setEmailTaken(true);
@@ -85,7 +86,8 @@ export default function SignUpDialog({ open, onClose }) {
         fetch(API_AUTH_SIGNIN, {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: newUserInfoJson
+          body: newUserInfoJson,
+          credentials: "include"
         }).then(response => {
           if (response.status === 200) {
             response.json().then(() => {
@@ -120,6 +122,7 @@ export default function SignUpDialog({ open, onClose }) {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: newUserInfoJson,
+      credentials: "include"
     }).then(response => {
       if (response.status === 400) {
         setEmailTaken(true);

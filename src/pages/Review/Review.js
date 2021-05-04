@@ -11,7 +11,6 @@ import { ExitToDecksButton } from '../../components/ExitToDecksButton/ExitToDeck
 import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentDeck } from "../../store/actions/DataActions";
-import colors from "../../data/colors";
 
 export default function Review() {
   const { id } = useParams();
@@ -25,7 +24,6 @@ export default function Review() {
     if (!deck)
       return;
 
-    deck.cardColor = colors[deck.colorId - 1].color;
     dispatch(setCurrentDeck(deck));
   }, [decks, dispatch, id])
 
