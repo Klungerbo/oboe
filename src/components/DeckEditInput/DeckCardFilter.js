@@ -2,6 +2,7 @@ import { TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentCardFilter } from '../../store/actions/DataActions';
+import { srSpeak } from '../../utils/screenReaderSpeak';
 
 export default function DeckCardFilter() {
   const currentCards = useSelector(state => state.currentCards);
@@ -15,8 +16,7 @@ export default function DeckCardFilter() {
        || card.description.includes(cardFilter))
     });
 
-    console.log(filteredCards);
-    console.log(currentCards);
+    srSpeak(`${filteredCards.length} matching ${cardFilter}`)
 
     dispatch(setCurrentCardFilter(filteredCards))
   }, [cardFilter, currentCards]);

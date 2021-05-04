@@ -17,7 +17,7 @@ export default function DeckColorPalette() {
     const paletteButtons = paletteElement.current.querySelectorAll("button");
     const colorNames = Object.keys(colorPalette);
     paletteButtons.forEach((el, index) => {
-      el.setAttribute("aria-label", colorNames[index]);
+      el.setAttribute("aria-label", `${colorNames[index]} card color`);
     })
   }, [])
 
