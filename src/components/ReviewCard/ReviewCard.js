@@ -73,7 +73,8 @@ export default function ReviewCard({deckId}) {
 
   useEffect(() => {
     fetch(API_DECKS, {
-      method: "GET"
+      method: "GET",
+      credentials: "include"
     }).then(response => {
       response.json().then(jsonObject => {
         
@@ -90,7 +91,8 @@ export default function ReviewCard({deckId}) {
 
   useEffect(() => {
     fetch(`${API_FLASHCARDS}/${deckId}`, {
-      method: "GET"
+      method: "GET",
+      credentials: "include"
     }).then(response => {
       response.json().then(flashcards => {
         const cards = flashcards.filter(card => card.consecutiveCorrect < 5);
@@ -156,7 +158,7 @@ export default function ReviewCard({deckId}) {
       <StyledCardFace style={{
         opacity: opacity.to(o => 1 - o),
         transform
-      }} color={currentDeck.cardColor}>
+      }} color={currentDeck.hexColor}>
         <Box display="flex" flexDirection="column" height="100%">
           <Box flexGrow={1} display="flex" justifyContent="center" alignItems="center">
             <Typography align="center" ref={questionElement} tabIndex={isFlipped ? -1 : 0}
@@ -185,7 +187,7 @@ export default function ReviewCard({deckId}) {
         transform: transform.to((t) => {
           return `${t} rotateY(180deg)`
         })
-      }} color={currentDeck.cardColor}>
+      }} color={currentDeck.hexColor}>
         <Box display="flex" flexDirection="column" justifyContent="center"
           p={1} height="100%">
           <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center">

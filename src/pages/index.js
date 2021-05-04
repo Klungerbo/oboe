@@ -7,6 +7,7 @@ import Home from './Home/Home';
 import About from './About/About';
 import Contact from './Contact/Contact';
 import Review from './Review/Review';
+import Edit from './Edit/Edit';
 
 import { API_EMAIL } from '../data/config';
 import { ACCEPTED_COOKIES } from '../data/localStorageVariables';
@@ -25,9 +26,12 @@ export default function Pages() {
   const dispatch = useDispatch();
   const initAcceptedCookies = window.localStorage.getItem(ACCEPTED_COOKIES);
 
+  
+
   useEffect(() => {
     fetch(API_EMAIL, {
-      method: "GET"
+      method: "GET",
+      credentials: "include"
     }).then(response => {
       response.json().then(jsonObject => {
         if (response.status === 200) {
@@ -65,6 +69,7 @@ export default function Pages() {
           <Route path='/contact' component={Contact} />
           <Route path='/about' component={About} />
           <Route path='/review/:id' component={Review} />
+          <Route path='/edit/:id' component={Edit}/>
         </Switch>
       </StyledMainContent>
 

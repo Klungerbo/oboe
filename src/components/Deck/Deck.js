@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Box, Button } from '@material-ui/core';
+import { Box, Button, fade } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 
-import { StyledFullHeightBox, StyledFullHeightCardActionArea } from './StyledDeck';
+import { StyledColoredCard, StyledFullHeightBox, StyledFullHeightCardActionArea } from './StyledDeck';
 
 
 /**
@@ -18,14 +18,14 @@ export default function Deck({ deck, color }) {
   return (
     <StyledFullHeightBox>
       <Box display="flex">
-        <Box flexGrow="1" />
-        <Box pb={0.5}>
+        <Box pb={1} flexGrow="1">
           <Button
-            size="small"
+            fullWidth
+            size="large"
             component={Link}
             to={`/edit/${deck.id}`}
-            style={{ backgroundColor: `${color}` }}
-            aria-label={`Edit the deck titled: ${deck.title}`}
+            style={{backgroundColor: `${fade(color, 0.8)}`, height: 60 }}
+            aria-label={`Edit the deck titled: ${deck.name}`}
           >
             Configure deck
             <Box pr={0.5} />
@@ -33,25 +33,27 @@ export default function Deck({ deck, color }) {
           </Button>
         </Box>
       </Box>
-      <Card raised style={{ backgroundColor: `${color}`, height: "320px" }}>
+      <StyledColoredCard color={color} raised style={{ height: "320px" }}>
         <StyledFullHeightCardActionArea
           component={Link}
           to={`/review/${deck.id}`}
-          aria-label={`Review the deck titled: ${deck.title}, and the description: ${deck.description}`}
+          aria-label={`Review the deck titled: ${deck.name}, and the description: ${deck.description}`}
         >
           <StyledFullHeightBox display="flex" flexDirection="column" >
             <Box px={1.5} pt={2} pb={1} >
-              <Typography style={{fontSize: "1.5rem", fontFamily: "Bebas Neue"}}>{deck.title}</Typography>
+              <Typography style={{ fontSize: "1.5rem", fontFamily: "Bebas Neue" }}>{deck.name}</Typography>
             </Box>
             <Box px={1.5} flexGrow="1">
               <Typography variant="body2" color="textSecondary" component="p">{deck.description}</Typography>
             </Box>
-            <Box pb={1.5}>
-              <Typography style={{fontSize: "1.8rem", fontFamily: "Thasadith"}} align="center">Review deck</Typography>
+            <Box pb={4} display="flex" justifyContent="center">
+              <Button style={{backgroundColor: `${fade(color, 0.5)}`}} variant="contained">
+                <Typography style={{ fontSize: "1.8rem", color: "white", fontFamily: "Alatsi" }} align="center">Review deck</Typography>
+              </Button>
             </Box>
           </StyledFullHeightBox>
         </StyledFullHeightCardActionArea>
-      </Card>
+      </StyledColoredCard>
     </StyledFullHeightBox>
   );
 }
