@@ -201,7 +201,7 @@ export default function DeckCardList() {
             <Grid item xs={12}>
               <StyledDialogTitle variant="h2">Are you sure?</StyledDialogTitle>
               <StyledDialogTitle variant="body1">
-                Are you sure you want to delete the card "{cardToDelete.front}"?
+                {`Are you sure you want to delete the card "${cardToDelete.front}"?`}
               </StyledDialogTitle>
             </Grid>
             <Grid item xs={6}>

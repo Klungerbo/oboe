@@ -294,7 +294,7 @@ export default function Edit() {
             <Grid item xs={12}>
               <StyledDialogTitle variant="h2" id="cancel-confirm-title">Are you sure?</StyledDialogTitle>
               <StyledDialogTitle variant="body1" id="cancel-confirm-description">
-                Are you sure you want to delete the deck "{currentDeck.name}"?
+                {`Are you sure you want to delete the deck "${currentDeck.name}"?`}
                 </StyledDialogTitle>
             </Grid>
             <Grid item xs={6}>
