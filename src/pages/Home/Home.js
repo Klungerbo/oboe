@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box, Button, Container,
-  Grid, Hidden, Typography
+  Box, Container, Grid,
+  Hidden, Typography
 } from '@material-ui/core'
 
 import LoginForm from '../../components/LoginForm/LoginForm';
@@ -11,6 +11,12 @@ import Deck from '../../components/Deck/Deck';
 
 import { API_DECKS } from '../../data/config';
 import { setDecks } from '../../store/actions/DataActions';
+import {
+  StyledColoredCard,
+  StyledFullHeightBox,
+  StyledFullHeightCardActionArea
+} from '../../components/Deck/StyledDeck';
+import { srSpeak } from '../../utils/screenReaderSpeak';
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,
@@ -29,7 +35,7 @@ export default function Home() {
 
   const handleAddDeck = () => {
     const newDeck = {
-      name: "Deck title",
+      name: "New deck",
       description: "Deck description",
       hexColor: "#333"
     };
@@ -50,6 +56,8 @@ export default function Home() {
         } else {
           dispatch(setDecks([deckToAdd]));
         }
+
+        srSpeak("Deck created.")
       })
     }).catch(console.log);
   };
@@ -64,7 +72,22 @@ export default function Home() {
       <Box pt={4} >
         <Grid container spacing={4} >
           <Grid item xs={12} sm={6} lg={4}>
-            <Button variant="contained" color="primary" onClick={handleAddDeck} >ADD DECK </Button>
+            <StyledFullHeightBox>
+              <Box display="flex">
+                <Box py={4.3} flexGrow="1" />
+              </Box>
+              <StyledColoredCard color={"#111"} raised style={{ height: "320px" }}>
+                <StyledFullHeightCardActionArea
+                  aria-label={`Create deck`}
+                  onClick={handleAddDeck}>
+                  <StyledFullHeightBox display="flex" flexDirection="column" >
+                    <Box px={1.5} display="flex" flexGrow={1} justifyContent="center" alignItems="center">
+                      <Typography style={{ fontSize: "3.5rem", fontFamily: "Bebas Neue" }}>Create deck</Typography>
+                    </Box>{}
+                  </StyledFullHeightBox>
+                </StyledFullHeightCardActionArea>
+              </StyledColoredCard>
+            </StyledFullHeightBox>
           </Grid>
           {decks && decks.length > 0 && decks.sort((a, b) => a.id - b.id) && decks.map(deck => {
             return (
