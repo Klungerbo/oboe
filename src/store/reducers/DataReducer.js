@@ -33,6 +33,15 @@ function DataReducer(state = initialState, action) {
         ...state,
         decks: action.decks
       };
+    case "ADD_DECK":
+      console.log(action)
+      return {
+        ...state,
+        decks: [
+          ...state.decks,
+          action.newDeck
+        ]
+      };
     case "SET_CURRENT_DECK":
       return {
         ...state,

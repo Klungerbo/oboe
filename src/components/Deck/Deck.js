@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, fade } from '@material-ui/core';
+import { Box, Button, Card, CardActionArea, fade } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 
-import { StyledColoredCard, StyledFullHeightBox, StyledFullHeightCardActionArea } from './StyledDeck';
-import { API_FLASHCARDS } from '../../data/config';
+import {
+  StyledColoredCard,
+  StyledFullHeightBox,
+  StyledFullHeightCardActionArea
+} from './StyledDeck';
 
 
 /**
@@ -17,44 +20,34 @@ import { API_FLASHCARDS } from '../../data/config';
  */
 function Deck({ deck, color }) {
 
-  const [cardsInDeck, setCardsInDeck] = useState(0)
-
-  useEffect(() => {
-    fetch(`${API_FLASHCARDS}/${deck.id}`, {
-      credentials: "include"
-    }).then(response => {
-      response.json().then(cardsInDeck => {
-        setCardsInDeck(cardsInDeck.length)
-        console.log(cardsInDeck)
-      })
-    });
-  }, [])
-
   return (
     <StyledFullHeightBox>
       <Box display="flex">
         <Box pb={1} flexGrow="1">
-          <Button
-            fullWidth
-            size="large"
-            component={Link}
-            to={`/edit/${deck.id}`}
-            style={{ backgroundColor: `${fade(color, 0.8)}`, height: 60 }}
-            aria-label={`Edit the deck titled: ${deck.name}`}
-          >
-            Configure deck
-            <Box pr={0.5} />
-            <SettingsApplicationsIcon fontSize="default" />
-          </Button>
+          <Card raised style={{ backgroundColor: color }}>
+            <CardActionArea color={color}
+              component={Link}
+              to={`/edit/${deck.id}`}
+              style={{ backgroundColor: `${fade(color, 0.5)}`, height: 60 }}
+              aria-label={`Edit the deck titled: ${deck.name}`}
+            >
+              <Box display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%">
+                <Typography>Configure deck</Typography>
+                <Box pr={0.5} />
+                <SettingsApplicationsIcon fontSize="default" />
+              </Box>
+            </CardActionArea>
+          </Card>
         </Box>
       </Box>
       <StyledColoredCard color={color} raised style={{ height: "320px" }}>
         <StyledFullHeightCardActionArea
           component={Link}
-          to={cardsInDeck !== 0 && `/review/${deck.id}`}
-          aria-label={cardsInDeck
-            ? `Review the deck titled: ${deck.name}, and the description: ${deck.description}`
-            : `No cards in deck titled: ${deck.name}`}
+          to={`/review/${deck.id}`}
+          aria-label={`Review the deck titled: ${deck.name}, and the description: ${deck.description}`}
         >
           <StyledFullHeightBox display="flex" flexDirection="column" >
             <Box px={1.5} pt={2} pb={1} >
@@ -70,26 +63,15 @@ function Deck({ deck, color }) {
             </Box>
             <Box pb={4} display="flex" justifyContent="center">
               <Button style={{ backgroundColor: `${fade(color, 0.5)}` }} variant="contained">
-                {cardsInDeck !== 0 &&
-                  <Typography
-                    style={{
-                      fontSize: "1.8rem",
-                      color: "white",
-                      fontFamily: "Alatsi"
-                    }}
-                    align="center">
-                    Review deck
-                  </Typography>}
-                {cardsInDeck === 0 &&
-                  <Typography
-                    style={{
-                      fontSize: "1.8rem",
-                      color: "white",
-                      fontFamily: "Alatsi"
-                    }}
-                    align="center">
-                    No cards in deck
-                  </Typography>}
+                <Typography
+                  style={{
+                    fontSize: "1.8rem",
+                    color: "white",
+                    fontFamily: "Alatsi"
+                  }}
+                  align="center">
+                  Review deck
+                  </Typography>
               </Button>
             </Box>
           </StyledFullHeightBox>

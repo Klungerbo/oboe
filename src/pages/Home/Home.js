@@ -1,16 +1,17 @@
-import React, { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   Box, Container, Grid,
   Hidden, Typography
-} from '@material-ui/core'
-
+} from '@material-ui/core';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import AddDeck from '../../components/Deck/AddDeck';
+import Deck from '../../components/Deck/Deck';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
-import Deck from '../../components/Deck/Deck';
-
 import { setDecks } from '../../store/actions/DataActions';
 import { API_DECKS, oboeFetch } from '../../utils/oboeFetch';
+
+
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,
@@ -26,8 +27,6 @@ export default function Home() {
   const decks = useSelector(state => state.decks);
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
-
-  
 
   /**
    * Maps Oboe decks.
@@ -53,22 +52,21 @@ export default function Home() {
     );
   };
 
-  const handleGetDecks = async () => {
+  const handleGetDecks = useCallback(async () => {
     const response = await oboeFetch(API_DECKS)
     if (response.status !== 200) {
-      console.log("This shouldn't happen")
       return;
     }
     
     const decks = await response.json();
     dispatch(setDecks(decks));
-  }
+  }, [dispatch])
 
   useEffect(() => {
     if (userLoggedIn) {
       handleGetDecks();
     }
-  }, [userLoggedIn, handleGetDecks]);
+  }, [handleGetDecks, userLoggedIn]);
 
   /**
    * Oboe home page for a user.
