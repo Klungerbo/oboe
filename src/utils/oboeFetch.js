@@ -30,7 +30,6 @@ function fetchSelect(apiUrl) {
 }
 
 function fetchMutate(apiUrl, method, content) {
-  console.log(method)
   const options = {
     credentials: "include",
     method,
