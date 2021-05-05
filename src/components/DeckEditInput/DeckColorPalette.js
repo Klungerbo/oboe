@@ -3,8 +3,8 @@ import { ColorPalette } from "material-ui-color";
 import { colorPalette } from '../../data/colors'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDeck } from '../../store/actions/DataActions';
-import { API_DECKS } from '../../data/config';
 import { useParams } from 'react-router';
+import { API_DECKS } from '../../utils/oboeFetch';
 
 export default React.memo(() => {
   const currentDeck = useSelector(state => state.currentDeck);

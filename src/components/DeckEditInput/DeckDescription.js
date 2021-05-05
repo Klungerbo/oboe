@@ -2,8 +2,8 @@ import { TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { API_DECKS } from '../../data/config';
 import { setCurrentDeck } from "../../store/actions/DataActions"
+import { API_DECKS } from '../../utils/oboeFetch';
 
 const MAX_DECK_DESCRIPTION_LENGTH = 150;
 

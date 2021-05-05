@@ -4,7 +4,6 @@ import {
 } from '@material-ui/core'
 import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { API_FLASHCARDS } from '../../data/config';
 import { setCurrentCards, setCurrentCardWithAction } from '../../store/actions/DataActions';
 import { StyledDialogTitle } from '../SignUpDialog/SignupDialogStyled';
 import CardInDeck from './CardInDeck';
@@ -18,8 +17,6 @@ export default React.memo(() => {
 
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState({});
-
-  
 
   const handleDelete = useCallback(card => {
     setCardToDelete(card);
