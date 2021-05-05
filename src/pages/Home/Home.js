@@ -17,6 +17,7 @@ import {
   StyledFullHeightCardActionArea
 } from '../../components/Deck/StyledDeck';
 import { srSpeak } from '../../utils/screenReaderSpeak';
+import AddDeck from '../../components/Deck/AddDeck';
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,
@@ -29,38 +30,11 @@ export default function Home() {
 
   const userLoggedIn = useSelector(state => state.loggedIn);
   const userEmail = useSelector(state => state.userEmail);
-  const decks = useSelector(state => state.decks)
+  const decks = useSelector(state => state.decks);
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
 
-  const handleAddDeck = () => {
-    const newDeck = {
-      name: "New deck",
-      description: "Deck description",
-      hexColor: "#333"
-    };
-
-    fetch(API_DECKS, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(newDeck),
-      credentials: "include"
-    }).then(response => {
-      if (response.status !== 200)
-        return
-
-      response.json().then(({ id }) => {
-        const deckToAdd = { ...newDeck, id };
-        if (decks.length > 0) {
-          dispatch(setDecks([...decks, deckToAdd]));
-        } else {
-          dispatch(setDecks([deckToAdd]));
-        }
-
-        srSpeak("Deck created.")
-      })
-    }).catch(console.log);
-  };
+  
 
   /**
    * Maps Oboe decks.
@@ -72,22 +46,7 @@ export default function Home() {
       <Box pt={4} >
         <Grid container spacing={4} >
           <Grid item xs={12} sm={6} lg={4}>
-            <StyledFullHeightBox>
-              <Box display="flex">
-                <Box py={4.3} flexGrow="1" />
-              </Box>
-              <StyledColoredCard color={"#111"} raised style={{ height: "320px" }}>
-                <StyledFullHeightCardActionArea
-                  aria-label={`Create deck`}
-                  onClick={handleAddDeck}>
-                  <StyledFullHeightBox display="flex" flexDirection="column" >
-                    <Box px={1.5} display="flex" flexGrow={1} justifyContent="center" alignItems="center">
-                      <Typography style={{ fontSize: "3.5rem", fontFamily: "Bebas Neue" }}>Create deck</Typography>
-                    </Box>{}
-                  </StyledFullHeightBox>
-                </StyledFullHeightCardActionArea>
-              </StyledColoredCard>
-            </StyledFullHeightBox>
+            <AddDeck />
           </Grid>
           {decks && decks.length > 0 && decks.sort((a, b) => a.id - b.id) && decks.map(deck => {
             return (

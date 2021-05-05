@@ -7,3 +7,6 @@ export const colorPalette =
   blue: "#0B75CB",
   green: "#357a38",
 }
+
+export const defaultDeckColor = "#111";
+export const addNewDeckColor = "#111";

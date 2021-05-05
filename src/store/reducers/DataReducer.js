@@ -1,10 +1,12 @@
+import { defaultDeckColor } from "../../data/colors";
+
 const initialState = {
   loggedIn: false,
   currentDeck: {
     id: -1,
     name: "",
     description: "",
-    hexColor: "#111"
+    hexColor: defaultDeckColor
   },
   reviewStats: {
     correct: 0,
