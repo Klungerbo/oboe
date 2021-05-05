@@ -1,6 +1,12 @@
 {
-  "short_name": "Oboe",
   "name": "Oboe",
+  "short_name": "Oboe",
+  "theme_color": "#219344",
+  "background_color": "#0f7910",
+  "display": "browser",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,18 +14,24 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "oboe192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "oboe256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "oboe384.png",
+      "type": "image/png",
+      "sizes": "384x384"
+    },
+    {
+      "src": "oboe512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  ]
 }

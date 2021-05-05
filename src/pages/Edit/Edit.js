@@ -12,8 +12,6 @@ import DeckTitle from '../../components/DeckEditInput/DeckTitle';
 import DeckColorPalette from '../../components/DeckEditInput/DeckColorPalette';
 import DeckCardList from '../../components/DeckEditInput/DeckCardList';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import "../../data/config"
-import { API_DECKS, API_FLASHCARDS } from '../../data/config';
 import { StyledFlashcardInfo } from '../../components/DeckEditInput/FlashcardInfoStyled';
 import { StyledAddButton, StyledAddButtonContainer } from '../../components/DeckEditInput/AddButtonStyled';
 import { Add, Delete } from '@material-ui/icons';
@@ -21,6 +19,7 @@ import { StyledFlashcardPaper } from '../../components/DeckEditInput/FlashcardPa
 import { StyledDialogTitle } from '../../components/SignUpDialog/SignupDialogStyled';
 import { srSpeak } from '../../utils/screenReaderSpeak';
 import DeckCardFilter from '../../components/DeckEditInput/DeckCardFilter';
+import { API_DECKS, API_FLASHCARDS } from '../../utils/oboeFetch';
 
 const MAX_FRONT_LENGTH = 100;
 const MAX_BACK_LENGTH = 100;

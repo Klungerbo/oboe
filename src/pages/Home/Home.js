@@ -9,15 +9,8 @@ import LoginForm from '../../components/LoginForm/LoginForm';
 import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
 import Deck from '../../components/Deck/Deck';
 
-import { API_DECKS } from '../../data/config';
 import { setDecks } from '../../store/actions/DataActions';
-import {
-  StyledColoredCard,
-  StyledFullHeightBox,
-  StyledFullHeightCardActionArea
-} from '../../components/Deck/StyledDeck';
-import { srSpeak } from '../../utils/screenReaderSpeak';
-import AddDeck from '../../components/Deck/AddDeck';
+import { API_DECKS, oboeFetch } from '../../utils/oboeFetch';
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,
@@ -60,16 +53,16 @@ export default function Home() {
     );
   };
 
-  const handleGetDecks = useCallback(() => {
-    fetch(API_DECKS, {
-      method: "GET",
-      credentials: "include"
-    }).then(response => {
-      response.json().then(jsonObject => {
-        dispatch(setDecks(jsonObject));
-      }).catch(console.log)
-    }).catch(console.log);
-  }, [dispatch]);
+  const handleGetDecks = async () => {
+    const response = await oboeFetch(API_DECKS)
+    if (response.status !== 200) {
+      console.log("This shouldn't happen")
+      return;
+    }
+    
+    const decks = await response.json();
+    dispatch(setDecks(decks));
+  }
 
   useEffect(() => {
     if (userLoggedIn) {
