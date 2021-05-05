@@ -18,7 +18,8 @@ const initialState = {
     id: 0,
     front: "",
     back: "",
-    description: ""
+    description: "",
+    action: ""
   },
   currentCardFilter: [],
   acceptedCookies: false,
@@ -47,10 +48,10 @@ function DataReducer(state = initialState, action) {
         ...state,
         currentCards: action.currentCards
       };
-    case "SET_CURRENT_EDIT_CARD_ID":
+    case "SET_CURRENT_CARD_WITH_ACTION":
       return {
         ...state,
-        currentCardWithActionId: action.currentCardWithActionId
+        currentCardWithAction: action.currentCardWithAction
       };
     case "SET_CURRENT_CARD_FILTER":
       return {

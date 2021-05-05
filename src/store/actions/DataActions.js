@@ -64,7 +64,7 @@ export function setDecks(decks) {
 export function setCurrentCardWithAction(currentCardWithAction) {
   return function (dispatch) {
     dispatch({
-      type: "SET_CURRENT_EDIT_CARD",
+      type: "SET_CURRENT_CARD_WITH_ACTION",
       currentCardWithAction: currentCardWithAction 
     });
   };

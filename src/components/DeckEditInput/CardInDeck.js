@@ -1,9 +1,9 @@
 import { Box, Button, Grid, TextField } from '@material-ui/core'
 import { Delete, Edit, Save } from '@material-ui/icons'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { API_FLASHCARDS } from '../../data/config'
 import { setCurrentCardWithAction, setCurrentCards } from '../../store/actions/DataActions'
+import { API_FLASHCARDS } from '../../utils/oboeFetch'
 import { StyledEditButton } from './EditButtonStyled'
 import { StyledEditDeleteContainer } from './EditDeleteContainerStyled'
 import { StyledFlashcardInfo } from './FlashcardInfoStyled'
@@ -12,33 +12,36 @@ const MAX_FRONT_LENGTH = 100;
 const MAX_BACK_LENGTH = 100;
 const MAX_CARD_DESCRIPTION_LENGTH = 100;
 
-const CardInDeck = ({
-  card,
-  handleDelete,
-}) => {
+const CardInDeck = ({ card }) => {
+
+  const [cardFront, setCardFront] = useState("");
+  const [cardBack, setCardBack] = useState("");
+  const [cardDescription, setDescription] = useState("");
 
   const currentCardWithAction = useSelector(state => state.currentCardWithAction);
   const currentCards = useSelector(state => state.currentCards);
   const dispatch = useDispatch();
 
-  const setFront = e => {
+  const handleFrontChange = useCallback(e => {
     dispatch(setCurrentCardWithAction({
       ...currentCardWithAction,
       front: e.target.value
-    }))
-  }
-  const setBack = e => {
+    }));
+  }, [card.front]);
+
+  const handleBackChange = useCallback(e => {
     dispatch(setCurrentCardWithAction({
       ...currentCardWithAction,
       back: e.target.value
-    }))
-  }
-  const setDescription = e => {
+    }));
+  }, [card.back]);
+
+  const handleDescriptionChange = useCallback(e => {
     dispatch(setCurrentCardWithAction({
       ...currentCardWithAction,
       description: e.target.value
-    }))
-  }
+    }));
+  }, [card.description]);
 
   /**
    * If you are in the edit state, there are two outcomes when clicking somewhere
@@ -57,7 +60,7 @@ const CardInDeck = ({
         return;
       }
 
-      const {id, front, back, description, action} = currentCardWithAction;
+      const {id, front, back, description} = currentCardWithAction;
 
       fetch(API_FLASHCARDS, {
         method: "PUT",
@@ -86,11 +89,24 @@ const CardInDeck = ({
   }, [])
 
   const editCard = useCallback(card => {
-    dispatch(setCurrentCardWithAction({card, action: "edit"}))
-  }, [])
+    console.log(card)
+    dispatch(setCurrentCardWithAction({...card, action: "edit"}))
+    setTimeout(() => {
+      console.log(currentCardWithAction)
+    }, 200)
+  }, [card])
+
+  const deleteCard = useCallback(card => {
+    console.log(card)
+    dispatch(setCurrentCardWithAction({...card, action: "delete"}))
+    setTimeout(() => {
+      console.log(currentCardWithAction)
+    }, 200)
+  }, [card])
 
   useEffect(() => {
     console.log("action updated")
+    console.log(currentCardWithAction)
   }, [currentCardWithAction.action])
 
   return (
@@ -109,7 +125,7 @@ const CardInDeck = ({
                 maxLength: MAX_FRONT_LENGTH,
                 "aria-label": "Front of the card"
               }}
-              onChange={setFront}
+              onChange={handleFrontChange}
               style={{ height: "100%" }} />
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
@@ -124,7 +140,7 @@ const CardInDeck = ({
                 maxLength: MAX_BACK_LENGTH,
                 "aria-label": "Back of the card"
               }}
-              onChange={setBack}
+              onChange={handleBackChange}
               style={{ height: "100%" }} />
           </Grid>
           <Grid item xs={12} lg={6}>
@@ -139,7 +155,7 @@ const CardInDeck = ({
                 maxLength: MAX_CARD_DESCRIPTION_LENGTH,
                 "aria-label": "Description of the card"
               }}
-              onChange={setDescription}
+              onChange={handleDescriptionChange}
               style={{ height: "100%" }} />
           </Grid>
         </Grid>
@@ -178,7 +194,7 @@ const CardInDeck = ({
               fullWidth
               style={{ height: "100%" }}
               aria-label={`Delete ${card.front}`}
-              onClick={() => handleDelete(card)}>
+              onClick={() => deleteCard(card)}>
               Delete
                   </Button>
           </Grid>
