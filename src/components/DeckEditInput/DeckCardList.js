@@ -4,7 +4,6 @@ import {
 } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { API_FLASHCARDS } from '../../data/config';
 import { setCurrentCards } from '../../store/actions/DataActions';
 import { StyledEditButton } from './EditButtonStyled';
 import { StyledEditDeleteContainer } from './EditDeleteContainerStyled';
@@ -13,6 +12,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { StyledFlashcardInfo } from './FlashcardInfoStyled';
 import { StyledDialogTitle } from '../SignUpDialog/SignupDialogStyled';
 import { Save } from '@material-ui/icons';
+import { API_FLASHCARDS } from '../../utils/oboeFetch';
 
 const MAX_FRONT_LENGTH = 100;
 const MAX_BACK_LENGTH = 100;

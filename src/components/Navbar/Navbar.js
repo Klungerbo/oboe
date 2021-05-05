@@ -15,7 +15,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
 import { setDecks, setLoggedIn } from '../../store/actions/DataActions';
-import { API_AUTH_SIGNOUT } from '../../data/config';
+import { API_AUTH_SIGNOUT, oboeFetch } from '../../utils/oboeFetch';
+import { EMAIL, LOGGED_IN } from '../../data/localStorageVariables';
 
 
 /**
@@ -77,13 +78,14 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    fetch(API_AUTH_SIGNOUT, {
-      method: "GET",
-      credentials: "include"
-    }).then(() => {
+    const response = oboeFetch(API_AUTH_SIGNOUT);
+
+    response.then(() => { 
       dispatch(setLoggedIn(false));
       dispatch(setDecks([]));
-    }).catch(console.log);
+      window.localStorage.setItem(LOGGED_IN, "FALSE");
+      window.localStorage.setItem(EMAIL, "");
+    });
   }
 
   /**

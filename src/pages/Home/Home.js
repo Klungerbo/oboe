@@ -9,8 +9,8 @@ import LoginForm from '../../components/LoginForm/LoginForm';
 import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
 import Deck from '../../components/Deck/Deck';
 
-import { API_DECKS } from '../../data/config';
 import { setDecks } from '../../store/actions/DataActions';
+import { API_DECKS } from '../../utils/oboeFetch';
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,

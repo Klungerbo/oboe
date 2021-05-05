@@ -9,8 +9,7 @@ import Contact from './Contact/Contact';
 import Review from './Review/Review';
 import Edit from './Edit/Edit';
 
-import { API_EMAIL } from '../data/config';
-import { ACCEPTED_COOKIES } from '../data/localStorageVariables';
+import { ACCEPTED_COOKIES, LOGGED_IN, EMAIL } from '../data/localStorageVariables';
 import {
   setAcceptedCookies, setLoggedIn, setOpenVerifyCookies,
   setUserEmail
@@ -21,34 +20,51 @@ import TermsAndConditions from '../components/TermsAndConditions/TermsAndConditi
 import PrivacyPolicy from '../components/PrivacyPolicy/PrivacyPolicy';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
+import { API_EMAIL, oboeFetch } from '../utils/oboeFetch';
 
 export default function Pages() {
   const dispatch = useDispatch();
-  const initAcceptedCookies = window.localStorage.getItem(ACCEPTED_COOKIES);
 
-  
-
-  useEffect(() => {
-    fetch(API_EMAIL, {
-      method: "GET",
-      credentials: "include"
-    }).then(response => {
-      response.json().then(jsonObject => {
-        if (response.status === 200) {
-          dispatch(setLoggedIn(true));
-          dispatch(setUserEmail(jsonObject.email));
-        } else {
-          dispatch(setLoggedIn(false));
-          dispatch(setUserEmail(""));
-        }
-      }).catch(console.log);
-    }).catch(console.log);
+  function checkCookies() {
+    const initAcceptedCookies = window.localStorage.getItem(ACCEPTED_COOKIES);
 
     if (initAcceptedCookies === "TRUE") {
       dispatch(setAcceptedCookies(true));
       dispatch(setOpenVerifyCookies(false));
     }
-  }, [dispatch, initAcceptedCookies])
+  }
+
+  async function checkLoginStatus() {
+    const loggedIn = window.localStorage.getItem(LOGGED_IN);
+
+    if (loggedIn === "TRUE" && EMAIL !== "") {
+      const email = window.localStorage.getItem(EMAIL);
+
+      dispatch(setLoggedIn(true));
+      dispatch(setUserEmail(email));
+    } else {
+      try {
+        const response = await oboeFetch(API_EMAIL);
+
+        if (response.status === 200) {
+          const email = await response.json().email;
+
+          dispatch(setLoggedIn(true));
+          dispatch(setUserEmail(email));
+          window.localStorage.setItem(LOGGED_IN, "TRUE");
+          window.localStorage.setItem(EMAIL, email);
+        } else {
+          dispatch(setLoggedIn(false));
+          dispatch(setUserEmail(""));
+          window.localStorage.setItem(LOGGED_IN, "FALSE");
+          window.localStorage.setItem(EMAIL, "");
+        }
+      } catch (err) { console.log(err) }
+    }
+  }
+
+  checkCookies();
+  checkLoginStatus();
 
   return (
     <Body>
@@ -56,10 +72,7 @@ export default function Pages() {
         <Navbar />
       </StyledHeader>
 
-      {
-        (window.localStorage.getItem(ACCEPTED_COOKIES) !== "TRUE") &&
-        <CookiesAcceptModal />
-      }
+      {(window.localStorage.getItem(ACCEPTED_COOKIES) !== "TRUE") && <CookiesAcceptModal />}
 
       <StyledMainContent>
         <Switch>
@@ -69,7 +82,7 @@ export default function Pages() {
           <Route path='/contact' component={Contact} />
           <Route path='/about' component={About} />
           <Route path='/review/:id' component={Review} />
-          <Route path='/edit/:id' component={Edit}/>
+          <Route path='/edit/:id' component={Edit} />
         </Switch>
       </StyledMainContent>
 
