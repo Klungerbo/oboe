@@ -14,6 +14,12 @@ const initialState = {
   // Array of deck objects
   decks: [],
   currentCards: [],
+  currentCardWithAction: {
+    id: 0,
+    front: "",
+    back: "",
+    description: ""
+  },
   currentCardFilter: [],
   acceptedCookies: false,
   openVerifyCookies: true 
@@ -40,6 +46,11 @@ function DataReducer(state = initialState, action) {
       return {
         ...state,
         currentCards: action.currentCards
+      };
+    case "SET_CURRENT_EDIT_CARD_ID":
+      return {
+        ...state,
+        currentCardWithActionId: action.currentCardWithActionId
       };
     case "SET_CURRENT_CARD_FILTER":
       return {

@@ -61,6 +61,15 @@ export function setDecks(decks) {
   };
 }
 
+export function setCurrentCardWithAction(currentCardWithAction) {
+  return function (dispatch) {
+    dispatch({
+      type: "SET_CURRENT_EDIT_CARD",
+      currentCardWithAction: currentCardWithAction 
+    });
+  };
+}
+
 export function setOpenVerifyCookies(openVerifyCookies) {
   return function (dispatch) {
     dispatch({
