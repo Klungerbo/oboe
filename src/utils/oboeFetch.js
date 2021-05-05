@@ -10,44 +10,32 @@ export const API_AUTH_SIGNIN = `${API}/auth/signin`;
 export const API_AUTH_SIGNOUT = `${API}/auth/signout`;
 export const API_AUTH_LOGGED_IN = `${API}/auth/loggedin`;
 
-export const oboeFetch = async (apiUrl, method = "get", content = null) => {
+export function oboeFetch(apiUrl, method = "get", content = null) {
   if (!["get", "put", "post", "delete"].includes(method.toLowerCase()))
     return;
 
   if (method.toLowerCase() === "get") {
-    return await fetchSelect(apiUrl);
+    return fetchSelect(apiUrl);
   } else {
-    return await fetchMutate(apiUrl, method, content);
+    return fetchMutate(apiUrl, method, content);
   }
 }
 
-export const oboeJson = async (response) => {
-  try {
-    return await response.json();
-  } catch (err) { console.log(err) }
+function fetchSelect(apiUrl) {
+  const options = {
+    credentials: "include",
+  };
+
+  return fetch(apiUrl, options);
 }
 
-const fetchSelect = async (apiUrl) => {
-  try {
-    const options = {
-      credentials: "include",
-    };
+function fetchMutate(apiUrl, method, content) {
+  const options = {
+    credentials: "include",
+    method,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(content),
+  };
 
-    const response = await fetch(apiUrl, options);
-    return response;
-  } catch (err) { console.log(err) }
-}
-
-const fetchMutate = async (apiUrl, method, content) => {
-  try {
-    const options = {
-      credentials: "include",
-      method,
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(content),
-    };
-
-    const response = await fetch(apiUrl, options);
-    return response;
-  } catch (err) { console.log(err) }
+  return fetch(apiUrl, options);
 }

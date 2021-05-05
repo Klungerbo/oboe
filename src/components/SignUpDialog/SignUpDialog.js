@@ -10,7 +10,11 @@ import { StyledDialogTitle } from "./SignupDialogStyled";
 import { setLoggedIn, setOpenVerifyCookies, setUserEmail } from '../../store/actions/DataActions';
 
 import validateEmail from '../../utils/emailValidator';
-import { API_AUTH_SIGNIN, API_AUTH_SIGNUP, API_AUTH_SIGNUP_VERIFY } from '../../utils/oboeFetch';
+import {
+  API_AUTH_SIGNIN, API_AUTH_SIGNUP, API_AUTH_SIGNUP_VERIFY,
+  oboeFetch
+} from '../../utils/oboeFetch';
+import { EMAIL, LOGGED_IN } from '../../data/localStorageVariables';
 
 /**
  * Represents the sign up dialog that pops up when you click "Create new user" when not logged in
@@ -59,19 +63,27 @@ export default function SignUpDialog({ open, onClose }) {
     onClose(false);
   }
 
-  const handleVerifySignup = e => {
-    const newUserInfoJson = JSON.stringify({
-      email: newUserInfo.email,
-      password: newUserInfo.password,
-      registrationCode: newUserInfo.registrationCode
-    });
+  async function login() {
+    try {
+      const res = await oboeFetch(API_AUTH_SIGNIN, "POST", newUserInfo);
 
-    fetch(API_AUTH_SIGNUP_VERIFY, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: newUserInfoJson,
-      credentials: "include"
-    }).then(response => {
+      if (res.status === 200) {
+        const email = newUserInfo.email;
+
+        dispatch(setLoggedIn(true));
+        dispatch(setUserEmail(email));
+        window.localStorage.setItem(LOGGED_IN, "TRUE");
+        window.localStorage.setItem(EMAIL, email);
+      }
+
+      handleClose();
+    } catch (error) { console.log(error) }
+  }
+
+  async function handleVerifySignup(e) {
+    try {
+      const response = await oboeFetch(API_AUTH_SIGNUP_VERIFY, "POST", newUserInfo);
+
       if (response.status === 400) {
         setEmailTaken(true);
       } else if (response.status === 401) {
@@ -81,27 +93,12 @@ export default function SignUpDialog({ open, onClose }) {
         setVerifyCodePhase(false);
         setIncorrectVerifyCode(false);
 
-        dispatch(setUserEmail(newUserInfo.email));
-
-        fetch(API_AUTH_SIGNIN, {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: newUserInfoJson,
-          credentials: "include"
-        }).then(response => {
-          if (response.status === 200) {
-            response.json().then(() => {
-              dispatch(setLoggedIn(true));
-            });
-          }
-        });
-
-        handleClose();
+        login(newUserInfo);
       }
-    }).catch(console.log);
+    } catch (error) { console.log(error) }
   }
 
-  const handleNewSignup = e => {
+  async function handleNewSignup(e) {
     if (!validateEmail(newUserInfo.email)) {
       setIsEmail(false);
       return;
@@ -110,27 +107,20 @@ export default function SignUpDialog({ open, onClose }) {
     }
 
     setPasswordMatching(newUserInfo.password === newUserInfo.confirmedPassword);
-    if (newUserInfo.password !== newUserInfo.confirmedPassword)
+    if (newUserInfo.password !== newUserInfo.confirmedPassword) {
       return;
+    }
 
-    const newUserInfoJson = JSON.stringify({
-      email: newUserInfo.email,
-      password: newUserInfo.password
-    });
+    try {
+      const response = await oboeFetch(API_AUTH_SIGNUP, "POST", newUserInfo);
 
-    fetch(API_AUTH_SIGNUP, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: newUserInfoJson,
-      credentials: "include"
-    }).then(response => {
       if (response.status === 400) {
         setEmailTaken(true);
       } else if (response.status === 200) {
         setEmailTaken(false);
         setVerifyCodePhase(true);
       }
-    });
+    } catch (error) { console.log(error) }
   }
 
 

@@ -8,8 +8,8 @@ import {
 import { setLoggedIn, setUserEmail } from '../../store/actions/DataActions';
 import { StyledSignUpButton } from "./LoginFormStyled";
 import validateEmail from '../../utils/emailValidator';
-import { LOGGED_IN, LOGGED_IN_EMAIL } from '../../data/localStorageVariables';
-import { API_AUTH_SIGNIN, fetchJson, oboeFetch, oboeJson } from '../../utils/oboeFetch';
+import { LOGGED_IN, EMAIL } from '../../data/localStorageVariables';
+import { API_AUTH_SIGNIN, oboeFetch } from '../../utils/oboeFetch';
 
 export default function LoginForm({ onOpen }) {
   const dispatch = useDispatch();
@@ -30,24 +30,26 @@ export default function LoginForm({ onOpen }) {
       setIsEmail(true);
     }
 
-    const response = oboeFetch(API_AUTH_SIGNIN, "POST", userInfo);
+    try {
+      const response = await oboeFetch(API_AUTH_SIGNIN, "POST", userInfo);
 
-    if (response.status === 200) {
-      const email = oboeJson(response).email;
+      if (response.status === 200) {
+        dispatch(setLoggedIn(true));
+        dispatch(setUserEmail(userInfo.email));
+        window.localStorage.setItem(LOGGED_IN, "TRUE");
+        window.localStorage.setItem(EMAIL, userInfo.email);
+      } else if (response.status === 401) {
+        const type = await response.json().type
 
-      dispatch(setLoggedIn(true));
-      dispatch(setUserEmail(email));
-    } else if (response.status === 401) {
-      const type = oboeJson(response).type
-
-      if (type === "email") {
-        setEmailNotRegistered(true);
-        setInvalidPassword(false);
-      } else if (type === "password") {
-        setEmailNotRegistered(false);
-        setInvalidPassword(true);
+        if (type === "email") {
+          setEmailNotRegistered(true);
+          setInvalidPassword(false);
+        } else if (type === "password") {
+          setEmailNotRegistered(false);
+          setInvalidPassword(true);
+        }
       }
-    }
+    } catch (error) { console.log(error) }
   }
 
   return (
