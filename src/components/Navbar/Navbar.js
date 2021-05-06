@@ -144,10 +144,10 @@ export default function Navbar() {
    */
   return (
     <>
-    <StyledHiddenLink class="skip-to-main-content" href='#main-content'>
+    <StyledHiddenLink className="skip-to-main-content" href='#main-content'>
       Skip to content
     </StyledHiddenLink>
-    <StyledHiddenLink class="skip-to-footer" href='#footer-content'>
+    <StyledHiddenLink className="skip-to-footer" href='#footer-content'>
       Skip to footer 
     </StyledHiddenLink>
 

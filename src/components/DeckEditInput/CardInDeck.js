@@ -71,7 +71,7 @@ const CardInDeck = ({ card }) => {
 
     dispatch(promptDeleteCard(cardToDelete));
     srSpeak(`Are you sure you want to delete the card ${cardFront}?`, "assertive")
-  }, [dispatch, card, cardFront])
+  }, [dispatch, card, cardFront, cardBack, cardDescription])
 
   return (
     <StyledFlashcardInfo display="flex" key={card.id}>
