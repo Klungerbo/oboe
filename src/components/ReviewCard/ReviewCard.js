@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDeck, setReviewStats, setDecks } from '../../store/actions/DataActions';
 import { API_DECKS, API_FLASHCARDS, oboeFetch } from '../../utils/oboeFetch';
 import { Link } from 'react-router-dom';
-import { Check } from '@material-ui/icons';
 
 export default function ReviewCard({ deckId }) {
   const history = useHistory();

@@ -16,7 +16,8 @@ export function srSpeak(text, priority) {
   var id = "speak-" + Date.now();
   el.setAttribute("id", id);
   el.setAttribute("aria-live", priority || "polite");
-  el.classList.add("sr-only");
+  el.style.position = "absolute";
+  el.style.left = "-9999px";
   document.body.appendChild(el);
 
   window.setTimeout(function () {

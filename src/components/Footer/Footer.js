@@ -2,8 +2,7 @@ import React from 'react';
 import { useLocation, NavLink } from 'react-router-dom';
 import {
   Container, Typography, ListItemText,
-  ListItem,
-  Button
+  ListItem, Button
 } from '@material-ui/core';
 
 import theme from '../../theme';
