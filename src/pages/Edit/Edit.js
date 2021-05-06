@@ -83,22 +83,22 @@ export default function Edit() {
       deckId: deckId
     }
 
-    oboeFetch(API_FLASHCARDS, "POST", newFlashcard)
-      .then(res => {
-        if (res.status !== 200)
-          return;
-
-        res.json().then(({ id }) => {
-          newFlashcard.id = id;
-          dispatch(addCard(newFlashcard));
-          setCardFrontText("");
-          setCardBackText("");
-          setCardDescriptionText("");
-
-          srSpeak("Flashcard added")
-        }).catch(console.log);
-      }).catch(console.log);
-  };
+    try {
+      const response = await oboeFetch(API_FLASHCARDS, "POST", newFlashcard)
+      if (response.status !== 200) {
+        return;
+      }
+      
+      const { id } = await response.json()
+      newFlashcard.id = id;
+      dispatch(addCard(newFlashcard));
+      setCardFrontText("");
+      setCardBackText("");
+      setCardDescriptionText("");
+      
+      srSpeak("Flashcard added");
+    } catch (error) { console.log(error) }
+  }
 
   const getDecks = useCallback(async () => {
     if (decks && decks.length !== 0) {
@@ -108,31 +108,35 @@ export default function Edit() {
         return;
       }
       dispatch(setCurrentDeck(foundDeck));
-    }
-
-    const response = await oboeFetch(API_DECKS);
-    if (response.status !== 200) {
       return;
     }
 
-    const foundDecks = await response.json();
-    const foundDeck = foundDecks.find(deck => deck.id === parseInt(deckId))
-    if (!foundDeck) {
-      history.push("/");
-      return;
-    }
-    dispatch(setCurrentDeck(foundDeck));
+    try {
+      const response = await oboeFetch(API_DECKS);
+      if (response.status !== 200) {
+        return;
+      }
+
+      const foundDecks = await response.json();
+      const foundDeck = foundDecks.find(deck => deck.id === parseInt(deckId))
+      if (!foundDeck) {
+        history.push("/");
+        return;
+      }
+      dispatch(setCurrentDeck(foundDeck));
+    } catch (error) { console.log(error) }
   }, [deckId, decks, dispatch, history])
 
   const getFlashcards = useCallback(async () => {
+    try {
+      const response = await oboeFetch(`${API_FLASHCARDS}/${deckId}`);
+      if (response.status !== 200) {
+        return;
+      }
 
-    const response = await oboeFetch(`${API_FLASHCARDS}/${deckId}`);
-    if (response.status !== 200) {
-      return;
-    }
-    const foundCards = await response.json();
-
-    dispatch(setCurrentCards(foundCards))
+      const foundCards = await response.json();
+      dispatch(setCurrentCards(foundCards))
+    } catch (error) { console.log(error) }
   }, [deckId, dispatch])
 
   const setupEditPage = useCallback(async () => {
@@ -145,8 +149,6 @@ export default function Edit() {
   }, [setupEditPage])
 
   const showCardsIfPresent = useCallback(() => {
-    console.log("SHOWCARDSIFPRESENT")
-    console.log(currentCards)
     if (currentCards && currentCards.length !== 0) {
       return <DeckCardList />
     } else {
