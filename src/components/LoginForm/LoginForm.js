@@ -39,8 +39,7 @@ export default function LoginForm({ onOpen }) {
         window.localStorage.setItem(LOGGED_IN, "TRUE");
         window.localStorage.setItem(EMAIL, userInfo.email);
       } else if (response.status === 401) {
-        const type = await response.json().type
-
+        const {type} = await response.json()
         if (type === "email") {
           setEmailNotRegistered(true);
           setInvalidPassword(false);
@@ -55,7 +54,7 @@ export default function LoginForm({ onOpen }) {
   return (
     <Card raised id="login-form" aria-label="Login form">
       <CardContent>
-        <form onSubmit={handleLogin} >
+        <form onSubmit={handleLogin} noValidate>
           <Grid
             container
             direction="column"
@@ -65,6 +64,7 @@ export default function LoginForm({ onOpen }) {
           >
             <Grid item xs={12}>
               <TextField
+                inputProps={{inputMode: "email"}}
                 onChange={e => setUserInfo({ ...userInfo, email: e.target.value })}
                 required id="email" fullWidth variant="outlined" label="E-mail"
                 helperText={(emailNotRegistered && "Email is not registered") ||
