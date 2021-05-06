@@ -2,16 +2,19 @@ import {
   Button, Grid, Box,
   Typography
 } from '@material-ui/core';
-import { useState, useEffect, useRef } from 'react'
+import {
+  useState, useEffect, useRef,
+  useCallback
+} from 'react'
 import { StyledReviewCard, StyledCardFace, StyledFlipOverlay } from "./ReviewCardStyled";
 import useKeyPress from "react-use-keypress";
 import { useHistory } from 'react-router';
 import { useSpring } from "@react-spring/web";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDeck, setReviewStats, setDecks } from '../../store/actions/DataActions';
-import { API_DECKS, API_FLASHCARDS } from '../../utils/oboeFetch';
+import { API_DECKS, API_FLASHCARDS, oboeFetch } from '../../utils/oboeFetch';
 
-export default function ReviewCard({deckId}) {
+export default function ReviewCard({ deckId }) {
   const history = useHistory();
 
   const [cardQueue, setCardQueue] = useState(null);
@@ -24,6 +27,7 @@ export default function ReviewCard({deckId}) {
 
   const currentDeck = useSelector(state => state.currentDeck);
   const reviewStats = useSelector(state => state.reviewStats);
+
 
   const { transform, opacity } = useSpring({
     opacity: isFlipped ? 1 : 0,
@@ -71,23 +75,22 @@ export default function ReviewCard({deckId}) {
     setIsFlipped(false);
   })
 
-  useEffect(() => {
-    fetch(API_DECKS, {
-      method: "GET",
-      credentials: "include"
-    }).then(response => {
-      response.json().then(jsonObject => {
-        
-        const receivedDecks = jsonObject;
-        dispatch(setDecks(receivedDecks));
+  const fetchDecks = useCallback(async () => {
+    try {
+      const response = await oboeFetch(API_DECKS);
+      const receivedDecks = await response.json();
+      dispatch(setDecks(receivedDecks));
 
-        const currentDeck = receivedDecks.find(e => e.id === parseInt(deckId));
-        if (currentDeck) {
-          dispatch(setCurrentDeck(currentDeck));
-        }
-      }).catch(console.log)
-    }).catch(console.log);
-  }, [dispatch, deckId]);
+      const currentDeck = receivedDecks.find(e => e.id === parseInt(deckId));
+      if (currentDeck) {
+        dispatch(setCurrentDeck(currentDeck));
+      }
+    } catch (error) { console.log(error) }
+  }, [deckId, dispatch]);
+
+  useEffect(() => {
+    fetchDecks();
+  }, [fetchDecks]);
 
   useEffect(() => {
     fetch(`${API_FLASHCARDS}/${deckId}`, {
@@ -96,10 +99,18 @@ export default function ReviewCard({deckId}) {
     }).then(response => {
       response.json().then(flashcards => {
         const cards = flashcards.filter(card => card.consecutiveCorrect < 5);
+        const reviewDelayTimes = [0, 0.166, 48, 168, 720];
 
         let finalConsecutive = [];
+        let currentTime = Date.now();
         for (let i = 0; i < 5; i++) {
-          let n = cards.filter(card => card.consecutiveCorrect === i);
+          let n = cards.filter(card => {
+            let lastReviewedAt = new Date(card.lastReviewedAt).getTime();
+            const elapsedMilliseconds = currentTime - lastReviewedAt;
+            const elapsedHours = elapsedMilliseconds / 1000 / 60 / 60;
+
+            return card.consecutiveCorrect === i && elapsedHours >= reviewDelayTimes[i];
+          });
           n.sort((card1, card2) => card1.lastReviewedAt - card2.lastReviewedAt);
           finalConsecutive = finalConsecutive.concat(n);
         }
@@ -131,19 +142,35 @@ export default function ReviewCard({deckId}) {
     if (!cardQueue)
       return;
 
+    let consecutiveCorrect = cardQueue[cardIndex].consecutiveCorrect;
+
     if (didRemember) {
       dispatch(setReviewStats({
         ...reviewStats,
         correct: reviewStats.correct + 1,
         cardsLeft: reviewStats.cardsLeft - 1
-      }))
+      }));
+
+      ++consecutiveCorrect;
     } else {
       dispatch(setReviewStats({
         ...reviewStats,
         incorrect: reviewStats.incorrect + 1,
         cardsLeft: reviewStats.cardsLeft - 1
-      }))
+      }));
+
+      consecutiveCorrect = 0;
     }
+
+    const body = {
+      ...cardQueue[cardIndex],
+      consecutiveCorrect,
+      lastReviewedAt: Date.now()
+    };
+
+    try {
+      oboeFetch(API_FLASHCARDS, "PUT", body);
+    } catch (error) { console.log(error) }
 
     if (cardIndex + 1 < cardQueue.length) {
       setCardIndex(cardIndex + 1);
@@ -200,7 +227,7 @@ export default function ReviewCard({deckId}) {
                 ", back. Up arrow key if remembered, down arrow key if forgotten."}>
               {cardQueue && cardQueue.length && cardQueue[cardIndex].back}
             </Typography>
-            <Typography tabIndex={isFlipped && cardQueue && cardQueue[cardIndex] &&cardQueue[cardIndex].description ? 0 : -1}
+            <Typography tabIndex={isFlipped && cardQueue && cardQueue[cardIndex] && cardQueue[cardIndex].description ? 0 : -1}
               align="center" style={{ fontFamily: "Mada" }}>
               {cardQueue && cardQueue.length && cardQueue[cardIndex].description}
             </Typography>
