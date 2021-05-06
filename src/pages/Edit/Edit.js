@@ -56,7 +56,6 @@ export default function Edit() {
   }
 
   const handleAddFlashcard = () => {
-
     if (!cardFrontText.trim()) {
       setinputFrontError(true)
     } else {
@@ -134,7 +133,9 @@ export default function Edit() {
       credentials: "include"
     }).then(response => {
       response.json().then(res => {
-        dispatch(setCurrentCards(res))
+        if (response.status === 200) {
+          dispatch(setCurrentCards(res))
+        }
       })
     })
   }, [deckId, decks, dispatch, history])

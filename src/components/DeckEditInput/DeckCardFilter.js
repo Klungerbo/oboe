@@ -14,6 +14,10 @@ export default React.memo(() => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!currentCards || currentCards.length <= 0) {
+      return;
+    }
+
     const filteredCards = currentCards.filter(card => {
       return (card.front.toLowerCase().includes(cardFilter.toLowerCase())
         || card.back.toLowerCase().includes(cardFilter.toLowerCase())
