@@ -3,9 +3,9 @@ import {
   TextField, Grid, Button,
   Dialog, CardContent
 } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentCards, setCurrentDeck, setDecks } from '../../store/actions/DataActions'
+import { addCard, setCurrentCards, setCurrentDeck, setDecks } from '../../store/actions/DataActions'
 import { useHistory, useParams } from 'react-router';
 import DeckDescription from "../../components/DeckEditInput/DeckDescription"
 import DeckTitle from '../../components/DeckEditInput/DeckTitle';
@@ -19,7 +19,7 @@ import { StyledFlashcardPaper } from '../../components/DeckEditInput/FlashcardPa
 import { StyledDialogTitle } from '../../components/SignUpDialog/SignupDialogStyled';
 import { srSpeak } from '../../utils/screenReaderSpeak';
 import DeckCardFilter from '../../components/DeckEditInput/DeckCardFilter';
-import { API_DECKS, API_FLASHCARDS } from '../../utils/oboeFetch';
+import { API_DECKS, API_FLASHCARDS, oboeFetch } from '../../utils/oboeFetch';
 
 const MAX_FRONT_LENGTH = 100;
 const MAX_BACK_LENGTH = 100;
@@ -30,8 +30,8 @@ export default function Edit() {
   const { id: deckId } = useParams();
   const history = useHistory();
   const currentDeck = useSelector(state => state.currentDeck);
-  const decks = useSelector(state => state.decks);
   const currentCards = useSelector(state => state.currentCards);
+  const decks = useSelector(state => state.decks)
   const dispatch = useDispatch();
 
   const [cardFrontText, setCardFrontText] = useState("")
@@ -55,7 +55,7 @@ export default function Edit() {
     }
   }
 
-  const handleAddFlashcard = () => {
+  const handleAddFlashcard = async () => {
     if (!cardFrontText.trim()) {
       setinputFrontError(true)
     } else {
@@ -71,7 +71,6 @@ export default function Edit() {
     alertIfNewCardInvalid()
 
     if (!cardFrontText.trim() || !cardBackText.trim()) {
-
       return;
     }
 
@@ -84,64 +83,71 @@ export default function Edit() {
       deckId: deckId
     }
 
-    fetch(API_FLASHCARDS, {
-      credentials: "include",
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(newFlashcard)
-    }).then(res => {
-      if (res.status !== 200)
-        return;
+    oboeFetch(API_FLASHCARDS, "POST", newFlashcard)
+      .then(res => {
+        if (res.status !== 200)
+          return;
 
-      res.json().then(({ id }) => {
-        newFlashcard.id = id;
-        dispatch(setCurrentCards([...currentCards, newFlashcard]));
-        setCardFrontText("");
-        setCardBackText("");
-        setCardDescriptionText("");
+        res.json().then(({ id }) => {
+          newFlashcard.id = id;
+          dispatch(addCard(newFlashcard));
+          setCardFrontText("");
+          setCardBackText("");
+          setCardDescriptionText("");
 
-        srSpeak("Flashcard added")
+          srSpeak("Flashcard added")
+        }).catch(console.log);
       }).catch(console.log);
-    }).catch(console.log);
   };
 
-  useEffect(() => {
-    if (decks.length === 0) {
-      fetch(API_DECKS, {
-        credentials: "include"
-      }).then(response => {
-        response.json().then(response => {
-          const foundDeck = response.find(deck => deck.id === parseInt(deckId))
-          if (!foundDeck) {
-            history.push("/");
-            return;
-          }
-          dispatch(setCurrentDeck(foundDeck));
-        })
-      })
-    } else {
-      const _currentDeck = decks.find(deck => deck.id === parseInt(deckId))
-      if (!_currentDeck) {
+  const getDecks = useCallback(async () => {
+    if (decks && decks.length !== 0) {
+      const foundDeck = decks.find(deck => deck.id === parseInt(deckId))
+      if (!foundDeck) {
         history.push("/");
         return;
       }
-
-      dispatch(setCurrentDeck(_currentDeck));
+      dispatch(setCurrentDeck(foundDeck));
     }
 
-    fetch(`${API_FLASHCARDS}/${deckId}`, {
-      credentials: "include"
-    }).then(response => {
-      response.json().then(res => {
-        if (response.status === 200) {
-          dispatch(setCurrentCards(res))
-        }
-      })
-    })
+    const response = await oboeFetch(API_DECKS);
+    if (response.status !== 200) {
+      return;
+    }
+
+    const foundDecks = await response.json();
+    const foundDeck = foundDecks.find(deck => deck.id === parseInt(deckId))
+    if (!foundDeck) {
+      history.push("/");
+      return;
+    }
+    dispatch(setCurrentDeck(foundDeck));
   }, [deckId, decks, dispatch, history])
 
-  const showCardsIfPresent = () => {
-    if (currentCards.length !== 0) {
+  const getFlashcards = useCallback(async () => {
+
+    const response = await oboeFetch(`${API_FLASHCARDS}/${deckId}`);
+    if (response.status !== 200) {
+      return;
+    }
+    const foundCards = await response.json();
+
+    dispatch(setCurrentCards(foundCards))
+  }, [deckId, dispatch])
+
+  const setupEditPage = useCallback(async () => {
+    getDecks()
+    getFlashcards()
+  }, [getDecks, getFlashcards])
+
+  useEffect(() => {
+    setupEditPage()
+  }, [setupEditPage])
+
+  const showCardsIfPresent = useCallback(() => {
+    console.log("SHOWCARDSIFPRESENT")
+    console.log(currentCards)
+    if (currentCards && currentCards.length !== 0) {
       return <DeckCardList />
     } else {
       return (
@@ -152,24 +158,18 @@ export default function Edit() {
         </Box>
       )
     }
-  }
+  }, [currentCards])
 
   const handleDeleteDeck = () => {
     setDeleteConfirmationOpen(true);
     srSpeak(`Are you sure you want to delete the deck ${currentDeck.name}`, "assertive")
   }
 
-  const deleteDeck = ({ id }) => {
-    fetch(API_DECKS, {
-      method: "DELETE",
-      credentials: "include",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ id })
-    }).then(() => {
-      dispatch(setDecks(decks.filter(deck => currentDeck.id !== deck.id)));
-      history.push("/");
-    })
-  }
+  const deleteDeck = useCallback(({ id }) => {
+    oboeFetch(API_DECKS, "DELETE", { id })
+    dispatch(setDecks(decks.filter(deck => currentDeck.id !== deck.id)));
+    history.push("/");
+  }, [currentDeck.id, decks, dispatch, history])
 
   return (
     <>
@@ -291,7 +291,7 @@ export default function Edit() {
               <StyledDialogTitle variant="h2" id="cancel-confirm-title">Are you sure?</StyledDialogTitle>
               <StyledDialogTitle variant="body1" id="cancel-confirm-description">
                 {`Are you sure you want to delete the deck "${currentDeck.name}"?`}
-                </StyledDialogTitle>
+              </StyledDialogTitle>
             </Grid>
             <Grid item xs={6}>
               <Button

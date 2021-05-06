@@ -14,13 +14,7 @@ const initialState = {
   // Array of deck objects
   decks: [],
   currentCards: [],
-  currentCardWithAction: {
-    id: 0,
-    front: "",
-    back: "",
-    description: "",
-    action: ""
-  },
+  cardToDelete: {},
   currentCardFilter: [],
   acceptedCookies: false,
   openVerifyCookies: true 
@@ -47,6 +41,43 @@ function DataReducer(state = initialState, action) {
       return {
         ...state,
         currentCards: action.currentCards
+      };
+    case "UPDATE_CARD":
+      const updateCardIndex = state.currentCards.findIndex(card => {
+        return card.id === action.cardToUpdate.id
+      });
+      state.currentCards[updateCardIndex] = action.cardToUpdate
+      return {
+        ...state,
+        currentCards: state.currentCards
+      };
+    case "PROMPT_DELETE_CARD":
+      return {
+        ...state,
+        cardToDelete: action.cardToDelete
+      };
+    case "DELETE_CARD":
+      const deleteCardIndex = state.currentCards.findIndex(card => {
+        return card.id === action.cardToDelete.id
+      });
+
+      const newCurrentCards = [
+        ...state.currentCards.slice(0, deleteCardIndex),
+        ...state.currentCards.slice(deleteCardIndex + 1)
+      ];
+
+      state.cardToDelete = {};
+      return {
+        ...state,
+        currentCards: newCurrentCards
+      };
+    case "ADD_CARD":
+      return {
+        ...state,
+        currentCards: [
+          ...state.currentCards,
+          action.cardToAdd
+        ]
       };
     case "SET_CURRENT_CARD_WITH_ACTION":
       return {

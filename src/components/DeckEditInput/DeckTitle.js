@@ -7,7 +7,7 @@ import { API_DECKS } from '../../utils/oboeFetch';
 
 const MAX_DECK_TITLE_LENGTH = 50;
 
-export default React.memo(() => {
+function DeckTitle() {
   const {id} = useParams();
 
   const currentDeck = useSelector(state => state.currentDeck)
@@ -44,4 +44,6 @@ export default React.memo(() => {
       onBlur={() => handleTitleUpdate()}
       value={deckTitleText} />
   )
-})
+}
+
+export default React.memo(DeckTitle);

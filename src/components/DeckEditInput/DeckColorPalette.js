@@ -6,10 +6,10 @@ import { setCurrentDeck } from '../../store/actions/DataActions';
 import { useParams } from 'react-router';
 import { API_DECKS } from '../../utils/oboeFetch';
 
-export default React.memo(() => {
+function DeckColorPalette() {
   const currentDeck = useSelector(state => state.currentDeck);
   const dispatch = useDispatch();
-  const {id} = useParams();
+  const { id } = useParams();
 
   const paletteElement = useRef();
 
@@ -26,7 +26,7 @@ export default React.memo(() => {
     fetch(API_DECKS, {
       method: "PUT",
       credentials: "include",
-      headers: {"content-type": "application/json"},
+      headers: { "content-type": "application/json" },
       body: JSON.stringify({
         id: id,
         hexColor: paletteColor
@@ -37,10 +37,12 @@ export default React.memo(() => {
   }
 
   return (
-    
+
     <div ref={paletteElement}>
       <ColorPalette onSelect={e => handleUpdateColor(e)} palette={colorPalette} />
     </div>
-    
+
   )
-})
+}
+
+export default React.memo(DeckColorPalette);

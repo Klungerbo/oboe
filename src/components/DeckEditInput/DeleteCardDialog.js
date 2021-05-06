@@ -1,7 +1,7 @@
 import { Button, CardContent, Dialog, Grid } from '@material-ui/core';
-import React, { useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentCardWithAction } from '../../store/actions/DataActions';
+import { deleteCard, promptDeleteCard } from '../../store/actions/DataActions';
 import { API_FLASHCARDS, oboeFetch } from '../../utils/oboeFetch';
 import { StyledDialogTitle } from '../SignUpDialog/SignupDialogStyled';
 
@@ -9,29 +9,22 @@ export default function DeleteCardDialog() {
   
 
   const dispatch = useDispatch();
-  const currentCardWithAction = useSelector(state => state.currentCardWithAction);
-
-  if (currentCardWithAction.action === "delete") {
-    console.log("Deleting")
-  }
+  const cardToDelete = useSelector(state => state.cardToDelete);
 
   const cancel = () => {
-    dispatch(setCurrentCardWithAction({
-      id: 0,
-      front: "",
-      back: "",
-      description: "",
-      action: ""
-    }))
+    dispatch(promptDeleteCard({}))
   }
 
-  const deleteCard = () => {
-    const { id } = currentCardWithAction;
-    oboeFetch(API_FLASHCARDS, "DELETE", id);
-  }
+  const deleteCardAction = useCallback(() => {
+
+    const { id } = cardToDelete;
+    oboeFetch(API_FLASHCARDS, "DELETE", {id});
+    dispatch(deleteCard(cardToDelete));
+    dispatch(promptDeleteCard({}))
+  }, [cardToDelete, dispatch])
 
   return (
-    <Dialog open={currentCardWithAction.action === "delete"} >
+    <Dialog open={Object.keys(cardToDelete).length !== 0} >
       <CardContent>
         <Grid
           container
@@ -41,7 +34,7 @@ export default function DeleteCardDialog() {
           <Grid item xs={12}>
             <StyledDialogTitle variant="h2">Are you sure?</StyledDialogTitle>
             <StyledDialogTitle variant="body1">
-              {`Are you sure you want to delete the card "${currentCardWithAction.front}"?`}
+              {`Are you sure you want to delete the card "${cardToDelete.front}"?`}
             </StyledDialogTitle>
           </Grid>
           <Grid item xs={6}>
@@ -56,7 +49,7 @@ export default function DeleteCardDialog() {
           </Grid>
           <Grid item xs={6}>
             <Button variant="contained"
-              onClick={deleteCard}
+              onClick={deleteCardAction}
               color="secondary"
               fullWidth>
               Delete

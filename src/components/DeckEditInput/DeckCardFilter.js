@@ -8,7 +8,7 @@ import { setCurrentCardFilter } from '../../store/actions/DataActions';
 import { srSpeak } from '../../utils/screenReaderSpeak';
 import SearchIcon from '@material-ui/icons/Search';
 
-export default React.memo(() => {
+function DeckCardFilter() {
   const currentCards = useSelector(state => state.currentCards);
   const [cardFilter, setCardFilter] = useState("");
   const dispatch = useDispatch();
@@ -50,4 +50,6 @@ export default React.memo(() => {
       <Divider />
     </>
   )
-})
+}
+
+export default React.memo(DeckCardFilter);
