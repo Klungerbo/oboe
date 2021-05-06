@@ -41,7 +41,7 @@ function DeckDescription() {
       label={`Description (max ${MAX_DECK_DESCRIPTION_LENGTH} characters)`}
       multiline rows={4}
       helperText={`${deckDescriptionText.length} / ${MAX_DECK_DESCRIPTION_LENGTH}`}
-      onBlur={() => handleDescriptionUpdate()}
+      onBlur={handleDescriptionUpdate}
       value={deckDescriptionText} />
   )
 }

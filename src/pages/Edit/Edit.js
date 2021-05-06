@@ -262,8 +262,8 @@ export default function Edit() {
           <Box p={1} />
           <StyledAddButtonContainer>
             <StyledAddButton color="primary" variant="contained" fullWidth
-              onClick={() => handleAddFlashcard()}
-              onFocus={() => alertIfNewCardInvalid()}>
+              onClick={handleAddFlashcard}
+              onFocus={alertIfNewCardInvalid}>
               <Add />
               Add card
             </StyledAddButton>
