@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   Typography, Accordion, AccordionDetails,
   Box, Divider
@@ -7,13 +8,19 @@ import Keyboard from '@material-ui/icons/KeyboardOutlined';
 import { ExpandLessRounded } from "@material-ui/icons";
 
 export default function ReviewHelp() {
+  const keyboardShortcuts = useRef();
+
+  useEffect(() => {
+    keyboardShortcuts.current.focus();
+  }, [])
+
   return (
     <Box minWidth={250}>
-      <Accordion>
+      <Accordion id="main-content">
         <StyledAccordionSummary
           expandIcon={<ExpandLessRounded />}
           aria-controls="panel1a-content"
-          id="panel1a-header">
+          ref={keyboardShortcuts}>
           <Box display="flex" alignItems="center"
             justifyContent="space-between">
             <StyledHelpText>Keyboard shortcuts</StyledHelpText>

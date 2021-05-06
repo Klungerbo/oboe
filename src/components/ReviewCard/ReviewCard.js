@@ -20,6 +20,7 @@ export default function ReviewCard({ deckId }) {
   const [cardQueue, setCardQueue] = useState(null);
   const [cardIndex, setCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [hasInited, setHasInited] = useState(false);
 
   const answerElement = useRef();
   const questionElement = useRef();
@@ -126,13 +127,20 @@ export default function ReviewCard({ deckId }) {
   }, [dispatch, currentDeck, deckId])
 
   useEffect(() => {
+    if (!hasInited)
+      return;
+
     if (!isFlipped) {
       // I have to use setTimeout because if I don't, the else code never runs. Really weird
       setTimeout(() => questionElement.current && questionElement.current.focus(), 0);
     } else {
       setTimeout(() => answerElement.current && answerElement.current.focus(), 0);
     }
-  }, [isFlipped])
+  }, [isFlipped, hasInited])
+
+  useEffect(() => {
+    setHasInited(true);
+  }, [])
 
   function flipCard() {
     setIsFlipped(!isFlipped);

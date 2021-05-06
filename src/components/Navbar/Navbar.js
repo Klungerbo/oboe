@@ -13,7 +13,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
+import { StyledDrawerList, StyledHiddenLink, StyledHomeNav } from './NavbarStyled';
 import { setDecks, setLoggedIn } from '../../store/actions/DataActions';
 import { API_AUTH_SIGNOUT, oboeFetch } from '../../utils/oboeFetch';
 import { EMAIL, LOGGED_IN } from '../../data/localStorageVariables';
@@ -138,8 +138,20 @@ export default function Navbar() {
     );
   }
 
+  /**
+   * Skip to content adapted from:
+   * https://css-tricks.com/how-to-create-a-skip-to-content-link/
+   */
   return (
-    <div role="navigation">
+    <>
+    <StyledHiddenLink class="skip-to-main-content" href='#main-content'>
+      Skip to content
+    </StyledHiddenLink>
+    <StyledHiddenLink class="skip-to-footer" href='#footer-content'>
+      Skip to footer 
+    </StyledHiddenLink>
+
+    <nav role="navigation">
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -152,6 +164,7 @@ export default function Navbar() {
           </Toolbar>
         </Container>
       </AppBar>
-    </div>
+    </nav>
+    </>
   );
 }

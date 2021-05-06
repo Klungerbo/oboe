@@ -20,13 +20,13 @@ import { StyledDialogTitle } from '../../components/SignUpDialog/SignupDialogSty
 import { srSpeak } from '../../utils/screenReaderSpeak';
 import DeckCardFilter from '../../components/DeckEditInput/DeckCardFilter';
 import { API_DECKS, API_FLASHCARDS } from '../../utils/oboeFetch';
+import { Helmet } from 'react-helmet';
 
 const MAX_FRONT_LENGTH = 100;
 const MAX_BACK_LENGTH = 100;
 const MAX_CARD_DESCRIPTION_LENGTH = 100;
 
 export default function Edit() {
-
   const { id: deckId } = useParams();
   const history = useHistory();
   const currentDeck = useSelector(state => state.currentDeck);
@@ -177,8 +177,9 @@ export default function Edit() {
 
   return (
     <>
+      <Helmet><title>Oboe - Edit deck</title></Helmet>
       <Container>
-        <Typography variant="h1">Deck</Typography>
+        <Typography variant="h1" id="main-content">Deck</Typography>
         <Box mt={2} mb={5}>
           <Grid container spacing={4}>
             <Grid item xs={12} md={4}>
@@ -295,7 +296,7 @@ export default function Edit() {
               <StyledDialogTitle variant="h2" id="cancel-confirm-title">Are you sure?</StyledDialogTitle>
               <StyledDialogTitle variant="body1" id="cancel-confirm-description">
                 {`Are you sure you want to delete the deck "${currentDeck.name}"?`}
-                </StyledDialogTitle>
+              </StyledDialogTitle>
             </Grid>
             <Grid item xs={6}>
               <Button

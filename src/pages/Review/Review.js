@@ -11,6 +11,7 @@ import { ExitToDecksButton } from '../../components/ExitToDecksButton/ExitToDeck
 import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentDeck } from "../../store/actions/DataActions";
+import { Helmet } from "react-helmet";
 
 export default function Review() {
   const { id } = useParams();
@@ -28,31 +29,34 @@ export default function Review() {
   }, [decks, dispatch, id])
 
   return (
-    <Container>
-      <Grid container style={{ height: "100%" }}>
-        <Hidden smDown>
-          <Grid item container md={4}>
-            <Box display="flex" pl={2} alignSelf="flex-end">
-              <ReviewHelp />
+    <>
+      <Helmet><title>Oboe - Review</title></Helmet>
+      <Container>
+        <Grid container style={{ height: "100%" }}>
+          <Hidden smDown>
+            <Grid item container md={4}>
+              <Box display="flex" pl={2} alignSelf="flex-end">
+                <ReviewHelp />
+              </Box>
+            </Grid>
+          </Hidden>
+          <Grid container item direction="column" alignItems="center"
+            justify="center" xs={12} md={4}>
+            <Box width={280}>
+              <ReviewCard deckId={id} />
+              <ReviewStats />
             </Box>
-          </Grid>
-        </Hidden>
-        <Grid container item direction="column" alignItems="center"
-          justify="center" xs={12} md={4}>
-          <Box width={280}>
-            <ReviewCard deckId={id} />
-            <ReviewStats />
-          </Box>
-          {!verticalLimit && <Box pt={3} />}
-          <ExitToDecksButton component={Link} to="/" variant="contained" endIcon={<SendIcon />}>
-            Wrap up session
+            {!verticalLimit && <Box pt={3} />}
+            <ExitToDecksButton component={Link} to="/" variant="contained" endIcon={<SendIcon />}>
+              Wrap up session
           </ExitToDecksButton>
-        </Grid>
-        <Hidden>
-          <Grid item md={4}>
           </Grid>
-        </Hidden>
-      </Grid>
-    </Container>
+          <Hidden>
+            <Grid item md={4}>
+            </Grid>
+          </Hidden>
+        </Grid>
+      </Container>
+    </>
   )
 }
