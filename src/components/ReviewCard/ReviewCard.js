@@ -13,6 +13,8 @@ import { useSpring } from "@react-spring/web";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDeck, setReviewStats, setDecks } from '../../store/actions/DataActions';
 import { API_DECKS, API_FLASHCARDS, oboeFetch } from '../../utils/oboeFetch';
+import { Link } from 'react-router-dom';
+import { Check } from '@material-ui/icons';
 
 export default function ReviewCard({ deckId }) {
   const history = useHistory();
@@ -20,6 +22,7 @@ export default function ReviewCard({ deckId }) {
   const [cardQueue, setCardQueue] = useState(null);
   const [cardIndex, setCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [deckHasCards, setDeckHasCards] = useState(false);
 
   const answerElement = useRef();
   const questionElement = useRef();
@@ -98,6 +101,7 @@ export default function ReviewCard({ deckId }) {
       credentials: "include"
     }).then(response => {
       response.json().then(flashcards => {
+        setDeckHasCards(flashcards.length > 0);
         const cards = flashcards.filter(card => card.consecutiveCorrect < 5);
         const reviewDelayTimes = [0, 0.166, 48, 168, 720];
 
@@ -255,9 +259,41 @@ export default function ReviewCard({ deckId }) {
   }
 
   return (
-    <StyledReviewCard onClick={() => { if (!isFlipped) flipCard() }}>
-      <CardFront />
-      <CardBack />
-    </StyledReviewCard>
+    <>
+      {cardQueue && cardQueue.length > 0 &&
+        <>
+          <StyledReviewCard onClick={() => { if (!isFlipped) flipCard() }}>
+            <CardFront />
+            <CardBack />
+          </StyledReviewCard>
+        </>
+      }
+
+      {cardQueue && cardQueue.length === 0 && deckHasCards &&
+        <>
+          <Typography variant="h1">You're on the road to greatness!🥳</Typography >
+          <Box py={1} />
+          <Button variant="contained"
+            color="primary"
+            component={Link}
+            to={`/edit/${deckId}`}>While you wait, why not make new cards?</Button>
+          <Box py={4} />
+
+          
+        </>
+      }
+
+      {cardQueue && cardQueue.length === 0 && !deckHasCards &&
+        <>
+          <Typography variant="h1">There are no cards in the deck!😴</Typography>
+          <Box py={1} />
+          <Button variant="contained"
+            color="primary"
+            component={Link}
+            to={`/edit/${deckId}`}>Maybe you want to add a new card?</Button>
+          <Box py={4} />
+        </>
+      }
+    </>
   )
 }

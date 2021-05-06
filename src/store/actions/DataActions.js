@@ -61,6 +61,15 @@ export function setDecks(decks) {
   };
 }
 
+export function addDeck(newDeck) {
+  return function (dispatch) {
+    dispatch({
+      type: "ADD_DECK",
+      newDeck: newDeck
+    });
+  };
+}
+
 export function setOpenVerifyCookies(openVerifyCookies) {
   return function (dispatch) {
     dispatch({
