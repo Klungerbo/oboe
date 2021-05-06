@@ -1,4 +1,7 @@
-import { Toolbar, List, Box } from '@material-ui/core';
+import {
+  Toolbar, List, Box,
+  ListItem
+} from '@material-ui/core';
 import styled from 'styled-components';
 
 /**
@@ -41,6 +44,17 @@ export const StyledToolbar = styled(Toolbar)`
   ${({ theme }) => `
     ${theme.breakpoints.down('xs')} {
       flex-direction: column-reverse;
+    }
+  `}
+`;
+
+export const StyledListItem = styled(ListItem)`
+  ${({ theme }) => `
+    ${theme.breakpoints.down('xs')} {
+      padding: 0;
+    }
+    ${theme.breakpoints.up('sm')} {
+      padding: 0 16px;
     }
   `}
 `;
