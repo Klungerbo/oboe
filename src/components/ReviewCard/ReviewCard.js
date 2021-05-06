@@ -271,24 +271,26 @@ export default function ReviewCard({ deckId }) {
 
       {cardQueue && cardQueue.length === 0 && deckHasCards &&
         <>
-          <Typography variant="h1">There are no cards in the deck!😴</Typography>
-          <Box py={1} />
-          <Button variant="contained"
-            color="primary"
-            component={Link}
-            to={`/edit/${deckId}`}>Maybe you want to add a new card?</Button>
-          <Box py={4} />
-        </>
-      }
-
-      {cardQueue && cardQueue.length === 0 && !deckHasCards &&
-        <>
           <Typography variant="h1">You're on the road to greatness!🥳</Typography >
           <Box py={1} />
           <Button variant="contained"
             color="primary"
             component={Link}
             to={`/edit/${deckId}`}>While you wait, why not make new cards?</Button>
+          <Box py={4} />
+
+          
+        </>
+      }
+
+      {cardQueue && cardQueue.length === 0 && !deckHasCards &&
+        <>
+          <Typography variant="h1">There are no cards in the deck!😴</Typography>
+          <Box py={1} />
+          <Button variant="contained"
+            color="primary"
+            component={Link}
+            to={`/edit/${deckId}`}>Maybe you want to add a new card?</Button>
           <Box py={4} />
         </>
       }
