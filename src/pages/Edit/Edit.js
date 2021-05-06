@@ -3,9 +3,12 @@ import {
   TextField, Grid, Button,
   Dialog, CardContent
 } from '@material-ui/core'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { addCard, setCurrentCards, setCurrentDeck, setDecks } from '../../store/actions/DataActions'
+import {
+  addCard, setCurrentCards, setCurrentDeck,
+  setDecks
+} from '../../store/actions/DataActions'
 import { useHistory, useParams } from 'react-router';
 import DeckDescription from "../../components/DeckEditInput/DeckDescription"
 import DeckTitle from '../../components/DeckEditInput/DeckTitle';
