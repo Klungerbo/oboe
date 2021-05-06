@@ -179,8 +179,8 @@ export default function SignUpDialog({ open, onClose }) {
                 <Grid item xs={12}>
                   <Box pt={2} pb={1}>
                     <Typography align="left">
-                      A six digit verification code is being sent to you email.
-                      To complete your registration, please insert that code into the box bellow.
+                      A six digit verification code is being sent to your email.
+                      To complete your registration, please insert that code into the box below.
                   </Typography>
                   </Box>
                   <TextField
@@ -189,6 +189,8 @@ export default function SignUpDialog({ open, onClose }) {
                     error={incorrectVerifyCode}
                     required
                     fullWidth
+                    inputProps={{'aria-label': `A six digit verification code is being sent to your email.
+                      To complete your registration, please insert that code into this box.`}}
                     variant="outlined"
                     label="Code"
                     id="verify-code"
