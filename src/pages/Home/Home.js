@@ -1,16 +1,17 @@
+import {
+  Box, Container, Grid,
+  Hidden, Typography
+} from '@material-ui/core';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Box, Button, Container,
-  Grid, Hidden, Typography
-} from '@material-ui/core'
-
+import AddDeck from '../../components/Deck/AddDeck';
+import Deck from '../../components/Deck/Deck';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
-import Deck from '../../components/Deck/Deck';
-
 import { setDecks } from '../../store/actions/DataActions';
-import { API_DECKS } from '../../utils/oboeFetch';
+import { API_DECKS, oboeFetch } from '../../utils/oboeFetch';
+
+
 
 /**
  * The home page of Oboe. When logged in, it will display all the user's decks. When logged out,
@@ -23,36 +24,9 @@ export default function Home() {
 
   const userLoggedIn = useSelector(state => state.loggedIn);
   const userEmail = useSelector(state => state.userEmail);
-  const decks = useSelector(state => state.decks)
+  const decks = useSelector(state => state.decks);
 
   const [isSignUpDialogOpen, setIsSignupDialogOpen] = React.useState(false);
-
-  const handleAddDeck = () => {
-    const newDeck = {
-      name: "Deck title",
-      description: "Deck description",
-      hexColor: "#333"
-    };
-
-    fetch(API_DECKS, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(newDeck),
-      credentials: "include"
-    }).then(response => {
-      if (response.status !== 200)
-        return
-
-      response.json().then(({ id }) => {
-        const deckToAdd = { ...newDeck, id };
-        if (decks.length > 0) {
-          dispatch(setDecks([...decks, deckToAdd]));
-        } else {
-          dispatch(setDecks([deckToAdd]));
-        }
-      })
-    }).catch(console.log);
-  };
 
   /**
    * Maps Oboe decks.
@@ -64,7 +38,7 @@ export default function Home() {
       <Box pt={4} >
         <Grid container spacing={4} >
           <Grid item xs={12} sm={6} lg={4}>
-            <Button variant="contained" color="primary" onClick={handleAddDeck} >ADD DECK </Button>
+            <AddDeck />
           </Grid>
           {decks && decks.length > 0 && decks.sort((a, b) => a.id - b.id) && decks.map(deck => {
             return (
@@ -78,22 +52,23 @@ export default function Home() {
     );
   };
 
-  const handleGetDecks = useCallback(() => {
-    fetch(API_DECKS, {
-      method: "GET",
-      credentials: "include"
-    }).then(response => {
-      response.json().then(jsonObject => {
-        dispatch(setDecks(jsonObject));
-      }).catch(console.log)
-    }).catch(console.log);
-  }, [dispatch]);
+  const handleGetDecks = useCallback(async () => {
+    try {
+      const response = await oboeFetch(API_DECKS)
+      if (response.status !== 200) {
+        return;
+      }
+
+      const decks = await response.json();
+      dispatch(setDecks(decks));
+    } catch (error) { console.log(error) }
+  }, [dispatch])
 
   useEffect(() => {
     if (userLoggedIn) {
       handleGetDecks();
     }
-  }, [userLoggedIn, handleGetDecks]);
+  }, [handleGetDecks, userLoggedIn]);
 
   /**
    * Oboe home page for a user.

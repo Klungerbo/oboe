@@ -97,11 +97,11 @@ export function setDecks(decks) {
   };
 }
 
-export function setCurrentCardWithAction(currentCardWithAction) {
+export function addDeck(newDeck) {
   return function (dispatch) {
     dispatch({
-      type: "SET_CURRENT_CARD_WITH_ACTION",
-      currentCardWithAction: currentCardWithAction 
+      type: "ADD_DECK",
+      newDeck: newDeck
     });
   };
 }

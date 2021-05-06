@@ -1,37 +1,35 @@
+import { Box, Typography } from '@material-ui/core';
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { addNewDeckColor } from '../../data/colors';
+import { addDeck } from '../../store/actions/DataActions';
+import { API_DECKS, oboeFetch } from '../../utils/oboeFetch';
+import { srSpeak } from '../../utils/screenReaderSpeak';
+import { StyledColoredCard, StyledFullHeightBox, StyledFullHeightCardActionArea } from './StyledDeck';
 
 export default function AddDeck() {
-  
-  const decks = useSelector(state => state.decks);
 
-  const handleAddDeck = () => {
-    const newDeck = {
+  const dispatch = useDispatch();
+
+  const handleAddDeck = async () => {
+    const partialDeck = {
       name: "New deck",
       description: "Deck description",
       hexColor: addNewDeckColor
     };
-
-    fetch(API_DECKS, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(newDeck),
-      credentials: "include"
-    }).then(response => {
-      if (response.status !== 200)
-        return
-
-      response.json().then(({ id }) => {
-        const deckToAdd = { ...newDeck, id };
-        if (decks.length > 0) {
-          dispatch(setDecks([...decks, deckToAdd]));
-        } else {
-          dispatch(setDecks([deckToAdd]));
-        }
-
-        srSpeak("Deck created.")
-      })
-    }).catch(console.log);
+    
+    try {
+      const response = await oboeFetch(API_DECKS, "POST", partialDeck);
+      if (response.status !== 200) {
+        return;
+      }
+      
+      const { id } = await response.json()
+      const newDeck = { ...partialDeck, id };
+      
+      dispatch(addDeck(newDeck));
+      srSpeak("Deck created.")
+    } catch (error) { console.log(error) }
   };
 
   return (

@@ -1,10 +1,12 @@
+import { defaultDeckColor } from "../../data/colors";
+
 const initialState = {
   loggedIn: false,
   currentDeck: {
     id: -1,
     name: "",
     description: "",
-    hexColor: "#111"
+    hexColor: defaultDeckColor
   },
   reviewStats: {
     correct: 0,
@@ -31,6 +33,14 @@ function DataReducer(state = initialState, action) {
       return {
         ...state,
         decks: action.decks
+      };
+    case "ADD_DECK":
+      return {
+        ...state,
+        decks: [
+          ...state.decks,
+          action.newDeck
+        ]
       };
     case "SET_CURRENT_DECK":
       return {
