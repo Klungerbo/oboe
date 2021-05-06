@@ -7,7 +7,7 @@ import { API_DECKS } from '../../utils/oboeFetch';
 
 const MAX_DECK_DESCRIPTION_LENGTH = 150;
 
-export function DeckDescription() {
+function DeckDescription() {
   const {id} = useParams();
 
   const currentDeck = useSelector(state => state.currentDeck)
@@ -45,3 +45,5 @@ export function DeckDescription() {
       value={deckDescriptionText} />
   )
 }
+
+export default React.memo(DeckDescription);

@@ -52,6 +52,42 @@ export function setCurrentCards(currentCards) {
   };
 }
 
+export function addCard(cardToAdd) {
+  return function (dispatch) {
+    dispatch({
+      type: "ADD_CARD",
+      cardToAdd: cardToAdd
+    });
+  };
+}
+
+export function updateCard(cardToUpdate) {
+  return function (dispatch) {
+    dispatch({
+      type: "UPDATE_CARD",
+      cardToUpdate: cardToUpdate
+    });
+  };
+}
+
+export function promptDeleteCard(cardToDelete) {
+  return function (dispatch) {
+    dispatch({
+      type: "PROMPT_DELETE_CARD",
+      cardToDelete: cardToDelete
+    });
+  };
+}
+
+export function deleteCard(cardToDelete) {
+  return function (dispatch) {
+    dispatch({
+      type: "DELETE_CARD",
+      cardToDelete: cardToDelete
+    });
+  };
+}
+
 export function setDecks(decks) {
   return function (dispatch) {
     dispatch({
