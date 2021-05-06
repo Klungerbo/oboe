@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDeck, setReviewStats, setDecks } from '../../store/actions/DataActions';
 import { API_DECKS, API_FLASHCARDS, oboeFetch } from '../../utils/oboeFetch';
 import { Link } from 'react-router-dom';
-import { Check } from '@material-ui/icons';
 
 export default function ReviewCard({ deckId }) {
   const history = useHistory();
@@ -22,6 +21,7 @@ export default function ReviewCard({ deckId }) {
   const [cardQueue, setCardQueue] = useState(null);
   const [cardIndex, setCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [hasInited, setHasInited] = useState(false);
   const [deckHasCards, setDeckHasCards] = useState(false);
 
   const answerElement = useRef();
@@ -130,13 +130,20 @@ export default function ReviewCard({ deckId }) {
   }, [dispatch, currentDeck, deckId])
 
   useEffect(() => {
+    if (!hasInited)
+      return;
+
     if (!isFlipped) {
       // I have to use setTimeout because if I don't, the else code never runs. Really weird
       setTimeout(() => questionElement.current && questionElement.current.focus(), 0);
     } else {
       setTimeout(() => answerElement.current && answerElement.current.focus(), 0);
     }
-  }, [isFlipped])
+  }, [isFlipped, hasInited])
+
+  useEffect(() => {
+    setHasInited(true);
+  }, [])
 
   function flipCard() {
     setIsFlipped(!isFlipped);
@@ -276,6 +283,7 @@ export default function ReviewCard({ deckId }) {
           <Button variant="contained"
             color="primary"
             component={Link}
+            aria-label="No cards left to review. Press to go to edit page"
             to={`/edit/${deckId}`}>While you wait, why not make new cards?</Button>
           <Box py={4} />
 
@@ -285,11 +293,12 @@ export default function ReviewCard({ deckId }) {
 
       {cardQueue && cardQueue.length === 0 && !deckHasCards &&
         <>
-          <Typography variant="h1">There are no cards in the deck!😴</Typography>
+          <Typography variant="h1">There are no cards in the deck... 😴</Typography>
           <Box py={1} />
           <Button variant="contained"
             color="primary"
             component={Link}
+            aria-label="No cards in the deck. Press to go to edit page"
             to={`/edit/${deckId}`}>Maybe you want to add a new card?</Button>
           <Box py={4} />
         </>

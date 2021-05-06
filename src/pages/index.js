@@ -16,8 +16,8 @@ import {
 } from '../store/actions/DataActions';
 
 import CookiesAcceptModal from '../components/CookiesAcceptModal/CookiesAcceptModal';
-import TermsAndConditions from '../components/TermsAndConditions/TermsAndConditions';
-import PrivacyPolicy from '../components/PrivacyPolicy/PrivacyPolicy';
+import TermsAndConditions from './TermsAndConditions/TermsAndConditions';
+import PrivacyPolicy from './PrivacyPolicy/PrivacyPolicy';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import { API_EMAIL, oboeFetch } from '../utils/oboeFetch';

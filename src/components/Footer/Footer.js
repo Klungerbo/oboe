@@ -1,12 +1,12 @@
 import React from 'react';
 import { useLocation, NavLink } from 'react-router-dom';
 import {
-  Container, Typography, ListItemText, 
-  ListItem
+  Container, Typography, ListItemText,
+  ListItem, Button
 } from '@material-ui/core';
 
 import theme from '../../theme';
-import { 
+import {
   StyledFooterContainer, StyledToolbar, StyledHorizontalList,
   StyledCopyrightContainer
 } from './FooterStyled';
@@ -39,13 +39,15 @@ export default function Footer() {
    */
   const mapPaths = () => {
     return navLinks.map(({ title, path }) => (
-      <ListItem key={title} button component={NavLink} exact to={path} aria-label={title}>
-        <ListItemText
-          style={{
-            borderBottom: pathname === path && `1px solid ${theme.palette.text.primary}`,
-            color: pathname === path ? theme.palette.text.primary : theme.palette.text.secondary,
-          }}
-          primaryTypographyProps={{ variant: "button" }} primary={title} />
+      <ListItem key={title} aria-label={title}>
+        <Button component={NavLink} exact to={path} aria-label={title}>
+          <ListItemText
+            style={{
+              borderBottom: pathname === path && `1px solid ${theme.palette.text.primary}`,
+              color: pathname === path ? theme.palette.text.primary : theme.palette.text.secondary,
+            }}
+            primaryTypographyProps={{ variant: "button" }} primary={title} />
+        </Button>
       </ListItem>
     ));
   }
@@ -57,7 +59,9 @@ export default function Footer() {
           <StyledCopyrightContainer flexGrow="1">
             <Typography noWrap variant="body2" color="textSecondary">©2021 WORK Rooted</Typography>
           </StyledCopyrightContainer>
-          <StyledHorizontalList component="nav">{mapPaths()}</StyledHorizontalList>
+          <nav>
+            <StyledHorizontalList id="footer-content">{mapPaths()}</StyledHorizontalList>
+          </nav>
         </StyledToolbar>
       </Container>
     </StyledFooterContainer>

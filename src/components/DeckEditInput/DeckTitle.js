@@ -41,7 +41,7 @@ function DeckTitle() {
       inputProps={{ maxLength: MAX_DECK_TITLE_LENGTH, "aria-label": `Deck title, ${MAX_DECK_TITLE_LENGTH-deckTitleText.length} characters remaining.` }}
       onChange={e => setDeckTitleText(e.target.value)}
       helperText={`${deckTitleText.length} / ${MAX_DECK_TITLE_LENGTH}`}
-      onBlur={() => handleTitleUpdate()}
+      onBlur={handleTitleUpdate}
       value={deckTitleText} />
   )
 }

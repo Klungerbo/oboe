@@ -9,6 +9,7 @@ import Deck from '../../components/Deck/Deck';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import SignUpDialog from '../../components/SignUpDialog/SignUpDialog';
 import { setDecks } from '../../store/actions/DataActions';
+import { Helmet } from 'react-helmet';
 import { API_DECKS, oboeFetch } from '../../utils/oboeFetch';
 
 
@@ -77,19 +78,22 @@ export default function Home() {
    */
   const homeUser = () => {
     return (
-      <Container maxWidth="lg">
-        <Grid container>
-          <Grid item>
-            <Box pb={3} display="flex" flexDirection="row">
-              <Typography variant="h1">My decks</Typography>
-              <Box px={1} alignSelf="flex-end">
-                <Typography gutterBottom variant="body1" color="textSecondary">({userEmail})</Typography>
+      <>
+        <Helmet><title>Oboe - Home</title></Helmet>
+        <Container maxWidth="lg">
+          <Grid container>
+            <Grid item>
+              <Box pb={3} display="flex" flexDirection="row">
+                <Typography variant="h1" id="main-content">My decks</Typography>
+                <Box px={1} alignSelf="flex-end">
+                  <Typography gutterBottom variant="body1" color="textSecondary">({userEmail})</Typography>
+                </Box>
               </Box>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
-        {mapDecks()}
-      </Container>
+          {mapDecks()}
+        </Container>
+      </>
     );
   }
 
@@ -101,10 +105,11 @@ export default function Home() {
   const homeGuest = () => {
     return (
       <>
+        <Helmet><title>Oboe - Home</title></Helmet>
         <Container>
           <Grid container justify="space-between" spacing={4}>
             <Grid item xs={12} sm={12} md={6}>
-              <Typography variant="h1">Oboe</Typography>
+              <Typography variant="h1" id="main-content">Oboe</Typography>
 
               <Box mx={3}>
                 <Typography variant="h2">Important!</Typography>

@@ -5,7 +5,7 @@ import {
   ListItem, Container, Box,
   Button, AppBar, Hidden,
   IconButton, Drawer, ListItemText,
-  ListItemIcon, Toolbar
+  ListItemIcon, Toolbar, List
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import InfoIcon from '@material-ui/icons/Info';
@@ -13,7 +13,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import { StyledDrawerList, StyledHomeNav } from './NavbarStyled';
+import { StyledDrawerList, StyledHiddenLink, StyledHomeNav } from './NavbarStyled';
 import { setDecks, setLoggedIn } from '../../store/actions/DataActions';
 import { API_AUTH_SIGNOUT, oboeFetch } from '../../utils/oboeFetch';
 import { EMAIL, LOGGED_IN } from '../../data/localStorageVariables';
@@ -77,15 +77,15 @@ export default function Navbar() {
     setState(newState);
   };
 
-  const handleLogout = () => {
-    const response = oboeFetch(API_AUTH_SIGNOUT);
+  async function handleLogout() {
+    try {
+      oboeFetch(API_AUTH_SIGNOUT);
 
-    response.then(() => { 
       dispatch(setLoggedIn(false));
       dispatch(setDecks([]));
       window.localStorage.setItem(LOGGED_IN, "FALSE");
       window.localStorage.setItem(EMAIL, "");
-    });
+    } catch (error) { console.log(error) }
   }
 
   /**
@@ -95,15 +95,23 @@ export default function Navbar() {
    */
   const defaultNavbar = () => {
     return (
-      <>
-        <Box flexGrow="1" >
-          <Button component={NavLink} to="/" underline="none">
-            <StyledHomeNav variant="h4" aria-label="home">Oboe</StyledHomeNav>
+      <List style={{ display: "flex", flexDirection: "row", padding: 0, width: "100%" }}>
+        <ListItem style={{ width: "initial", paddingRight: "2px" }}>
+          <Button component={NavLink} to="/" aria-label="Home">
+            <StyledHomeNav>Oboe</StyledHomeNav>
           </Button>
-          {userLoggedIn && <Button component={NavLink} to="/" underline="none">Decks</Button>}
-        </Box>
-        {userLoggedIn && <Button onClick={handleLogout} component={NavLink} to="/">Log out</Button>}
-      </>
+        </ListItem>
+        {userLoggedIn &&
+          <>
+            <ListItem style={{ flexGrow: "1", width: "initial", paddingLeft: "0px" }}>
+              <Button style={{ height: "100%" }} component={NavLink} to="/">Decks</Button>
+            </ListItem>
+            <ListItem style={{ width: "initial" }}>
+              <Button style={{ height: "100%" }} onClick={handleLogout} component={NavLink} to="/" >Log out</Button>
+            </ListItem>
+          </>
+        }
+      </List>
     );
   }
 
@@ -130,7 +138,19 @@ export default function Navbar() {
     );
   }
 
+  /**
+   * Skip to content adapted from:
+   * https://css-tricks.com/how-to-create-a-skip-to-content-link/
+   */
   return (
+    <>
+    <StyledHiddenLink className="skip-to-main-content" href='#main-content'>
+      Skip to content
+    </StyledHiddenLink>
+    <StyledHiddenLink className="skip-to-footer" href='#footer-content'>
+      Skip to footer 
+    </StyledHiddenLink>
+
     <nav role="navigation">
       <AppBar position="static">
         <Container maxWidth="xl">
@@ -145,5 +165,6 @@ export default function Navbar() {
         </Container>
       </AppBar>
     </nav>
+    </>
   );
 }

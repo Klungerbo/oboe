@@ -22,6 +22,7 @@ import { StyledFlashcardPaper } from '../../components/DeckEditInput/FlashcardPa
 import { StyledDialogTitle } from '../../components/SignUpDialog/SignupDialogStyled';
 import { srSpeak } from '../../utils/screenReaderSpeak';
 import DeckCardFilter from '../../components/DeckEditInput/DeckCardFilter';
+import { Helmet } from 'react-helmet';
 import { API_DECKS, API_FLASHCARDS, oboeFetch } from '../../utils/oboeFetch';
 
 const MAX_FRONT_LENGTH = 100;
@@ -29,7 +30,6 @@ const MAX_BACK_LENGTH = 100;
 const MAX_CARD_DESCRIPTION_LENGTH = 100;
 
 export default function Edit() {
-
   const { id: deckId } = useParams();
   const history = useHistory();
   const currentDeck = useSelector(state => state.currentDeck);
@@ -178,8 +178,9 @@ export default function Edit() {
 
   return (
     <>
+      <Helmet><title>Oboe - Edit deck</title></Helmet>
       <Container>
-        <Typography variant="h1">Deck</Typography>
+        <Typography variant="h1" id="main-content">Deck</Typography>
         <Box mt={2} mb={5}>
           <Grid container spacing={4}>
             <Grid item xs={12} md={4}>
@@ -262,8 +263,8 @@ export default function Edit() {
           <Box p={1} />
           <StyledAddButtonContainer>
             <StyledAddButton color="primary" variant="contained" fullWidth
-              onClick={() => handleAddFlashcard()}
-              onFocus={() => alertIfNewCardInvalid()}>
+              onClick={handleAddFlashcard}
+              onFocus={alertIfNewCardInvalid}>
               <Add />
               Add card
             </StyledAddButton>
