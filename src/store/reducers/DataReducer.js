@@ -34,7 +34,6 @@ function DataReducer(state = initialState, action) {
         decks: action.decks
       };
     case "ADD_DECK":
-      console.log(action)
       return {
         ...state,
         decks: [

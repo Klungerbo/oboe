@@ -13,6 +13,7 @@ import { useSpring } from "@react-spring/web";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDeck, setReviewStats, setDecks } from '../../store/actions/DataActions';
 import { API_DECKS, API_FLASHCARDS, oboeFetch } from '../../utils/oboeFetch';
+import { Link } from 'react-router-dom';
 
 export default function ReviewCard({ deckId }) {
   const history = useHistory();
@@ -255,9 +256,25 @@ export default function ReviewCard({ deckId }) {
   }
 
   return (
-    <StyledReviewCard onClick={() => { if (!isFlipped) flipCard() }}>
-      <CardFront />
-      <CardBack />
-    </StyledReviewCard>
+    <>
+      {cardQueue && cardQueue?.length > 0 &&
+        <StyledReviewCard onClick={() => { if (!isFlipped) flipCard() }}>
+          <CardFront />
+          <CardBack />
+        </StyledReviewCard>
+      }
+
+      {cardQueue && cardQueue?.length === 0 &&
+        <>
+          <Typography variant="h1">There are no cards left to review!🙌</Typography>
+          <Box py={1} />
+          <Button variant="contained"
+           color="primary"
+           component={Link}
+           to={`/edit/${deckId}`}>Maybe you want to add a new card?</Button>
+          <Box py={4} />
+        </>
+      }
+    </>
   )
 }
