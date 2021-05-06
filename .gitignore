@@ -24,6 +24,5 @@ yarn-error.log*
 
 .vscode
 README.old.md
-package-lock.json
 
 oboe-workspace.code-workspace
