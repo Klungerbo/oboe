@@ -257,14 +257,14 @@ export default function ReviewCard({ deckId }) {
 
   return (
     <>
-      {cardQueue && cardQueue?.length > 0 &&
+      {cardQueue && cardQueue.length > 0 &&
         <StyledReviewCard onClick={() => { if (!isFlipped) flipCard() }}>
           <CardFront />
           <CardBack />
         </StyledReviewCard>
       }
 
-      {cardQueue && cardQueue?.length === 0 &&
+      {cardQueue && cardQueue.length === 0 &&
         <>
           <Typography variant="h1">There are no cards left to review!🙌</Typography>
           <Box py={1} />

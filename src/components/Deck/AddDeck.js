@@ -18,16 +18,18 @@ export default function AddDeck() {
       hexColor: addNewDeckColor
     };
     
-    const response = await oboeFetch(API_DECKS, "POST", partialDeck);
-    if (response.status !== 200) {
-      return;
-    }
-    
-    const { id } = await response.json()
-    const newDeck = { ...partialDeck, id };
-    
-    dispatch(addDeck(newDeck));
-    srSpeak("Deck created.")
+    try {
+      const response = await oboeFetch(API_DECKS, "POST", partialDeck);
+      if (response.status !== 200) {
+        return;
+      }
+      
+      const { id } = await response.json()
+      const newDeck = { ...partialDeck, id };
+      
+      dispatch(addDeck(newDeck));
+      srSpeak("Deck created.")
+    } catch (error) { console.log(error) }
   };
 
   return (

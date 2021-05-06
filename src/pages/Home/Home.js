@@ -53,13 +53,15 @@ export default function Home() {
   };
 
   const handleGetDecks = useCallback(async () => {
-    const response = await oboeFetch(API_DECKS)
-    if (response.status !== 200) {
-      return;
-    }
-    
-    const decks = await response.json();
-    dispatch(setDecks(decks));
+    try {
+      const response = await oboeFetch(API_DECKS)
+      if (response.status !== 200) {
+        return;
+      }
+
+      const decks = await response.json();
+      dispatch(setDecks(decks));
+    } catch (error) { console.log(error) }
   }, [dispatch])
 
   useEffect(() => {
