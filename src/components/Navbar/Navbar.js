@@ -5,7 +5,7 @@ import {
   ListItem, Container, Box,
   Button, AppBar, Hidden,
   IconButton, Drawer, ListItemText,
-  ListItemIcon, Toolbar
+  ListItemIcon, Toolbar, List
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import InfoIcon from '@material-ui/icons/Info';
@@ -77,15 +77,15 @@ export default function Navbar() {
     setState(newState);
   };
 
-  const handleLogout = () => {
-    const response = oboeFetch(API_AUTH_SIGNOUT);
+  async function handleLogout() {
+    try {
+      oboeFetch(API_AUTH_SIGNOUT);
 
-    response.then(() => { 
       dispatch(setLoggedIn(false));
       dispatch(setDecks([]));
       window.localStorage.setItem(LOGGED_IN, "FALSE");
       window.localStorage.setItem(EMAIL, "");
-    });
+    } catch (error) { console.log(error) }
   }
 
   /**
@@ -95,15 +95,23 @@ export default function Navbar() {
    */
   const defaultNavbar = () => {
     return (
-      <>
-        <Box flexGrow="1" >
-          <Button component={NavLink} to="/" underline="none">
-            <StyledHomeNav variant="h4" aria-label="home">Oboe</StyledHomeNav>
+      <List style={{ display: "flex", flexDirection: "row", padding: 0, width: "100%" }}>
+        <ListItem style={{ width: "initial", paddingRight: "2px" }}>
+          <Button component={NavLink} to="/" aria-label="Home">
+            <StyledHomeNav>Oboe</StyledHomeNav>
           </Button>
-          {userLoggedIn && <Button component={NavLink} to="/" underline="none">Decks</Button>}
-        </Box>
-        {userLoggedIn && <Button onClick={handleLogout} component={NavLink} to="/">Log out</Button>}
-      </>
+        </ListItem>
+        {userLoggedIn &&
+          <>
+            <ListItem style={{ flexGrow: "1", width: "initial", paddingLeft: "0px" }}>
+              <Button style={{ height: "100%" }} component={NavLink} to="/">Decks</Button>
+            </ListItem>
+            <ListItem style={{ width: "initial" }}>
+              <Button style={{ height: "100%" }} onClick={handleLogout} component={NavLink} to="/" >Log out</Button>
+            </ListItem>
+          </>
+        }
+      </List>
     );
   }
 
@@ -131,7 +139,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav role="navigation">
+    <div role="navigation">
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -144,6 +152,6 @@ export default function Navbar() {
           </Toolbar>
         </Container>
       </AppBar>
-    </nav>
+    </div>
   );
 }
