@@ -2,13 +2,13 @@ import React from 'react';
 import { useLocation, NavLink } from 'react-router-dom';
 import {
   Container, Typography, ListItemText,
-  ListItem, Button
+  Button
 } from '@material-ui/core';
 
 import theme from '../../theme';
 import {
   StyledFooterContainer, StyledToolbar, StyledHorizontalList,
-  StyledCopyrightContainer
+  StyledCopyrightContainer, StyledListItem
 } from './FooterStyled';
 
 
@@ -39,7 +39,7 @@ export default function Footer() {
    */
   const mapPaths = () => {
     return navLinks.map(({ title, path }) => (
-      <ListItem key={title} aria-label={title}>
+      <StyledListItem key={title} aria-label={title}>
         <Button component={NavLink} exact to={path} aria-label={title}>
           <ListItemText
             style={{
@@ -48,7 +48,7 @@ export default function Footer() {
             }}
             primaryTypographyProps={{ variant: "button" }} primary={title} />
         </Button>
-      </ListItem>
+      </StyledListItem>
     ));
   }
 
