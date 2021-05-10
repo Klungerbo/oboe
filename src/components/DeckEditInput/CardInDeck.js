@@ -29,7 +29,6 @@ const CardInDeck = ({ card }) => {
 
   const handleFrontChange = e => {
     setCardFront(e.target.value)
-    console.log(cardFront)
   }
 
   const handleBackChange = e => {
@@ -47,8 +46,6 @@ const CardInDeck = ({ card }) => {
       back: cardBack,
       description: cardDescription
     }
-
-    console.log(cardToUpdate)
 
     oboeFetch(API_FLASHCARDS, "PUT", cardToUpdate)
     dispatch(updateCard(cardToUpdate))
