@@ -1,4 +1,6 @@
-export const URL = "http://127.0.0.1:8080";
+import {BACKEND_PORT, BACKEND_URL} from "./config";
+
+export const URL = `${BACKEND_URL}:${BACKEND_PORT}`;
 export const API = URL + "/api";
 export const API_DECKS = `${API}/decks`;
 export const API_EMAIL = `${API}/email`;
