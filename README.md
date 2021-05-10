@@ -11,6 +11,9 @@ The SRS system balances the frequency of a card’s presence in a review. Cards 
 To build or run Oboe, you need to have [Node.js](https://nodejs.org/en/) installed on your machine.
 For this installation to work optimally, you should also acquire and set up the [oboe-backend](https://github.com/Klungerbo/oboe-backend)
 
+## Configuration
+Configurations can be found in the file `./src/utils/config.js` where you can set your own backend url as well as the port which it's running at.
+
 ## Installation
 Prerequisites:
 - A terminal with path to node
